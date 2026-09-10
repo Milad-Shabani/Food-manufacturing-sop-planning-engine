@@ -1,0 +1,34 @@
+# Central configuration for the S&OP planning engine.
+
+paths:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  parquet_dir: "data/processed/planning_output_parquet"
+
+forecast:
+  horizon_weeks: 12
+  backtest_weeks: 8
+
+# Planning assumption: operators required to run one line at full capacity
+# for one hour. Used to translate a production plan into a labor-hours
+# requirement for the capacity LP's second constraint. Not derived from the
+# HR dataset — a documented planning assumption, tune it if plant reality
+# differs.
+planning:
+  operators_per_running_hour:
+    L1: 6   # Sponge Cake Line
+    L2: 7   # Cream-Filled Cake Line
+    L3: 8   # Traditional Kolucheh Line
+    L4: 5   # Wafer & Biscuit Line
+    L5: 6   # Seasonal & Holiday Line
+  hours_per_shift: 8
+  # Overall Equipment Effectiveness: the fraction of nameplate machine-hour
+  # capacity actually available for production once changeovers, minor
+  # stoppages, and multi-product sharing on a line are accounted for. A
+  # line quoted at "900 units/hour" does not really deliver that, all week,
+  # every week — this is the standard manufacturing way of saying so.
+  oee: 0.62
+
+quality:
+  min_fill_rate: 0.80          # fail if the plan meets less than 80% of any week's forecast, company-wide
+  max_backtest_wape: 0.45      # fail if overall backtest WAPE exceeds this

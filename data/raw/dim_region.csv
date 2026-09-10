@@ -1,0 +1,8 @@
+region_id,region_name,customer_type,payment_terms_days
+R01,Tehran Metro,Retail Chain,50
+R02,Alborz (Karaj),Wholesale Distributor,80
+R03,Isfahan,Retail Chain,55
+R04,Fars (Shiraz),Wholesale Distributor,85
+R05,Khorasan Razavi (Mashhad),Retail Chain,60
+R06,East Azerbaijan (Tabriz),Wholesale Distributor,90
+R07,National Export,Export,120

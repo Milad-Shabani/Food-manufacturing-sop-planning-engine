@@ -1,0 +1,8 @@
+pandas>=2.0
+numpy>=1.24
+SQLAlchemy>=2.0
+pyarrow>=14.0
+PyYAML>=6.0
+statsmodels>=0.14
+scipy>=1.11
+Faker>=22.0

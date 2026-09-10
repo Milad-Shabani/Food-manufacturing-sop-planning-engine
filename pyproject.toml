@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sop-planning"
+version = "1.0.0"
+description = "S&OP planning engine for a multi-line industrial cake & confectionery food manufacturer: demand forecasting, capacity-constrained production planning (LP), MRP, and cash conversion cycle simulation."
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "MIT" }
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "pytest-cov>=4.1", "flake8>=7.0", "black>=24.0", "matplotlib>=3.8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 100

@@ -1,0 +1,26 @@
+product_id,product_name,category,primary_line_id,unit_weight_g,shelf_life_days,unit_price_irr,is_seasonal,seasonal_peak
+P001,Classic Vanilla Sponge Cake,Sponge Cake,L1,400,21,185000,False,
+P002,Chocolate Sponge Cake,Sponge Cake,L1,400,21,195000,False,
+P003,Lemon Yogurt Sponge Cake,Sponge Cake,L1,380,18,175000,False,
+P004,Honey Sponge Roll,Sponge Cake,L1,300,14,165000,False,
+P005,Vanilla Cream Cake,Cream Cake,L2,450,10,245000,False,
+P006,Chocolate Cream Cake,Cream Cake,L2,450,10,255000,False,
+P007,Strawberry Cream Roll,Cream Cake,L2,350,8,235000,False,
+P008,Hazelnut Cream Cake,Cream Cake,L2,420,9,265000,False,
+P009,Walnut Kolucheh,Kolucheh,L3,55,45,68000,True,Nowruz
+P010,Date Kolucheh,Kolucheh,L3,60,45,65000,True,Nowruz
+P011,Cardamom Kolucheh,Kolucheh,L3,50,45,62000,True,Nowruz
+P012,Fars-style Kolucheh (Rice Flour),Kolucheh,L3,55,40,70000,True,Nowruz
+P013,Plain Butter Kolucheh,Kolucheh,L3,50,45,58000,False,
+P014,Rosewater Kolucheh,Kolucheh,L3,55,45,66000,True,Yalda
+P015,Vanilla Wafer,Wafer,L4,45,90,32000,False,
+P016,Chocolate Wafer,Wafer,L4,45,90,34000,False,
+P017,Hazelnut Wafer,Wafer,L4,45,90,36000,False,
+P018,Plain Butter Biscuit,Cookie,L4,200,120,48000,False,
+P019,Oat & Honey Cookie,Cookie,L4,200,100,55000,False,
+P020,Cocoa Sandwich Cookie,Cookie,L4,180,100,52000,False,
+P021,Yalda Night Gift Box,Seasonal,L5,900,30,480000,True,Yalda
+P022,Nowruz Sweets Assortment Box,Seasonal,L5,1000,40,520000,True,Nowruz
+P023,Ramadan Date & Nut Pack,Seasonal,L5,500,60,310000,True,Ramadan
+P024,Summer Fruit Roll Cake,Seasonal,L5,380,12,210000,True,Summer
+P025,Back-to-School Snack Pack,Seasonal,L5,250,60,145000,True,AutumnStart

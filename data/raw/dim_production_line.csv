@@ -1,0 +1,6 @@
+line_id,line_name,capacity_units_per_hour,shifts_per_day,changeover_minutes,commissioned_date
+L1,Sponge Cake Line,900,2,25,2016-03-01
+L2,Cream-Filled Cake Line,650,2,35,2017-08-15
+L3,Traditional Kolucheh Line,220,3,20,2015-01-10
+L4,Wafer & Biscuit Line,1400,2,15,2019-05-20
+L5,Seasonal & Holiday Line,750,2,30,2020-11-01

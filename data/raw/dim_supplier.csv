@@ -1,0 +1,9 @@
+supplier_id,supplier_name,material_categories,avg_lead_time_days,reliability_score,payment_terms_days
+SUP01,Alborz Flour Mills,"Wheat Flour, Rice Flour",5,0.97,40
+SUP02,Karaj Sugar Trading Co.,Sugar,4,0.98,35
+SUP03,Fresh Dairy Distributors,"Eggs, Butter, Milk Powder",2,0.95,10
+SUP04,Golestan Nut & Dried Fruit Co.,"Walnuts, Dates, Almonds",7,0.93,30
+SUP05,Persia Cocoa & Flavoring Imports,"Cocoa Powder, Vanilla, Cardamom, Rosewater",12,0.9,40
+SUP06,National Packaging Industries,"Packaging Film, Cartons, Labels",6,0.96,45
+SUP07,Alborz Vegetable Oil Refinery,"Vegetable Oil, Baking Powder, Yeast",5,0.97,30
+SUP08,Sepahan Industrial Sugar & Additives,"Sugar, Baking Powder",5,0.94,35

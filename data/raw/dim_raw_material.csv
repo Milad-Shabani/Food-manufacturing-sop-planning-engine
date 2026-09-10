@@ -1,0 +1,19 @@
+material_id,material_name,unit_of_measure,unit_cost_irr,default_supplier_id,lead_time_days,safety_stock_days
+M01,Wheat Flour,kg,28000,SUP01,5,7
+M02,Rice Flour,kg,42000,SUP01,6,10
+M03,Sugar,kg,45000,SUP02,4,7
+M04,Eggs,unit,6500,SUP03,2,3
+M05,Butter,kg,210000,SUP03,3,5
+M06,Milk Powder,kg,165000,SUP03,4,7
+M07,Vegetable Oil,L,95000,SUP07,5,7
+M08,Cocoa Powder,kg,320000,SUP05,12,15
+M09,Walnuts,kg,480000,SUP04,7,10
+M10,Dates,kg,190000,SUP04,7,10
+M11,Cardamom,kg,950000,SUP05,12,20
+M12,Rosewater,L,140000,SUP05,12,15
+M13,Vanilla Extract,L,380000,SUP05,12,15
+M14,Baking Powder,kg,65000,SUP07,5,10
+M15,Yeast,kg,120000,SUP07,4,7
+M16,Packaging Film,unit,1800,SUP06,6,10
+M17,Cartons,unit,4200,SUP06,6,10
+M18,Gift Box Packaging,unit,22000,SUP06,8,12

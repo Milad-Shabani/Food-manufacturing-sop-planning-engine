@@ -1,0 +1,8 @@
+# `docker compose up planning` generates the synthetic dataset and runs the
+# full forecast -> capacity plan -> MRP pipeline in one shot — no external
+# services required.
+services:
+  planning:
+    build: .
+    volumes:
+      - ./data:/app/data
