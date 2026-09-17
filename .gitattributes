@@ -1,0 +1,14 @@
+# Keep GitHub's language bar honest: generated reports and notebooks are
+# output, not the source of the project.
+*.html      linguist-documentation
+*.ipynb     linguist-documentation
+docs/**     linguist-documentation
+reports/**  linguist-documentation
+dist/**     linguist-generated
+data/**     linguist-generated
+
+# Binary artefacts: no diffs, no language detection.
+*.pbix  binary linguist-detectable=false
+*.xlsx  binary
+*.xlsm  binary
+*.png   binary

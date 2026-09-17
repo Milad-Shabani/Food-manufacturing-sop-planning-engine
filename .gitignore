@@ -12,3 +12,4 @@ data/processed/*
 .coverage
 htmlcov/
 .DS_Store
+*.draft.md
