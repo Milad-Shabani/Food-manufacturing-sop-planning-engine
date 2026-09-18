@@ -23,13 +23,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Assemble the site
+      - name: Find and assemble the dashboard
         run: |
+          set -e
+          DIR=""
+          for c in dashboard reports docs site public .; do
+            if [ -f "$c/index.html" ]; then DIR="$c"; break; fi
+          done
+          if [ -z "$DIR" ]; then
+            F=$(find . -name '*.html' -not -path './.git/*' | head -n 1)
+            if [ -z "$F" ]; then echo "no html file in this repository"; exit 1; fi
+            DIR=$(dirname "$F")
+          fi
+          echo "publishing folder: $DIR"
           mkdir -p _site
-          cp -r 
-dashboard
-/. _site/
-          if [  actions/configure-pages@v5
+          rsync -a --exclude '_site' --exclude '.git' "$DIR"/ _site/
+          if [ ! -f _site/index.html ]; then
+            FIRST=$(ls _site/*.html | head -n 1)
+            echo "using $FIRST as index.html"
+            cp "$FIRST" _site/index.html
+          fi
+
+      - uses: actions/configure-pages@v5
         with:
           enablement: true
 
