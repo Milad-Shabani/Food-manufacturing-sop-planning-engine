@@ -75,10 +75,19 @@ than "reduce safety stock."
 
 ## Dashboard
 
-![Dashboard preview](dashboard/preview.png)
+![Dashboard preview: eight S&OP KPIs and forecast vs. planned output by week](dashboard/preview.png)
+
+![Bottleneck line, SKUs absorbing the shortfall, and the production-line scorecard](docs/screenshots/shortfall_and_lines.png)
+
+![Materials below safety stock, recommended reorders, and the cash conversion cycle](docs/screenshots/materials_and_cash.png)
 
 A static, self-contained HTML dashboard (`dashboard/index.html`) renders the
-pipeline's actual output — no server, no build step, works offline. Open it
+pipeline's actual output — no server, no build step, works offline. Eight KPIs
+sit up top (forecast, planned output, revenue planned and at risk, the weakest
+week, weeks short, forecast error, material reorders), followed by the weekly
+plan, the bottleneck line, a scorecard for every production line, the MRP's
+materials at risk and largest reorders, the cash conversion cycle, and
+forecast accuracy. Open it
 directly, or enable **GitHub Pages** (Settings → Pages → Deploy from a
 branch → `main` → folder `/dashboard`) to get a live link for the README /
 your portfolio. It reads from `dashboard/data.js`, a plain JS file exported

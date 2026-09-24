@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
 <title>Zarrin Cake & Confectionery Industries — S&amp;OP Control Room</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -10,114 +11,140 @@
 <script src="./data.js"></script>
 <style>
   :root{
-    --bg:#26100a;
-    --panel:#341709;
-    --panel-2:#3f1c0e;
-    --line:#5c2e18;
-    --accent:#EB5B2A;
-    --accent-dim:#B8431E;
+    --bg:#FFFFFF;
+    --panel:#FFFFFF;
+    --panel-2:#FBF5F1;
+    --line:#EEE2D9;
+    --grid:#F3EAE3;
+    --accent:#E0531F;
+    --accent-ink:#B8431E;
+    --accent-soft:#FDEDE5;
     --jam:#D62839;
-    --jam-dim:#4a1a12;
-    --sage:#8FA377;
-    --text:#FBEFE6;
-    --text-dim:#D9B9A8;
-    --text-faint:#B08872;
-    --radius:10px;
+    --jam-soft:#FCE8EA;
+    --sage:#5F7C4A;
+    --sage-soft:#EEF3E8;
+    --tan:#EBD8CB;
+    --text:#2B160D;
+    --text-dim:#6A4B3C;
+    --text-faint:#9A7A69;
+    --radius:12px;
+    --shadow:0 1px 2px rgba(43,22,13,0.04), 0 6px 18px rgba(43,22,13,0.05);
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
     background:var(--bg);
-    background-image:
-      radial-gradient(circle at 15% 0%, rgba(235,91,42,0.09), transparent 45%),
-      radial-gradient(circle at 85% 15%, rgba(214,40,57,0.07), transparent 40%);
     color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
+    font-family:'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
     line-height:1.5;
   }
-  .wrap{max-width:1120px; margin:0 auto; padding:56px 28px 90px;}
-  header{margin-bottom:44px;}
+  .topbar{height:6px; background:linear-gradient(90deg, var(--accent), var(--jam) 60%, #F2994A);}
+  .wrap{max-width:1160px; margin:0 auto; padding:48px 28px 80px;}
+  header{margin-bottom:32px;}
   .eyebrow{
     font-family:'IBM Plex Mono', monospace;
     font-size:12.5px;
-    color:var(--accent-dim);
+    color:var(--accent-ink);
     letter-spacing:0.02em;
   }
   h1{
     font-family:'Fraunces', serif;
     font-weight:500;
     font-size:clamp(28px, 4vw, 42px);
-    margin:6px 0 10px;
+    line-height:1.2;
+    margin:8px 0 12px;
     color:var(--text);
-    max-width:820px;
+    max-width:900px;
+    text-wrap:balance;
   }
   header p{
     color:var(--text-dim);
-    max-width:640px;
+    max-width:680px;
     font-size:15px;
     margin:0;
   }
   .kpi-row{
     display:grid;
-    grid-template-columns:repeat(4, 1fr);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    overflow:hidden;
-    margin:36px 0 48px;
-    background:var(--panel);
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:14px;
+    margin:32px 0 48px;
   }
   .kpi{
-    padding:22px 22px;
-    border-right:1px solid var(--line);
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-top:3px solid var(--accent);
+    border-radius:var(--radius);
+    padding:16px 18px 15px;
+    box-shadow:var(--shadow);
+    min-width:0;
   }
-  .kpi:last-child{border-right:none;}
+  .kpi.risk{border-top-color:var(--jam);}
+  .kpi.good{border-top-color:var(--sage);}
+  .kpi .label{
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--text-dim);
+  }
   .kpi .num{
     font-family:'Fraunces', serif;
     font-size:30px;
     font-weight:500;
-    color:var(--accent);
-    line-height:1.1;
+    color:var(--text);
+    line-height:1.15;
+    margin-top:6px;
+    font-variant-numeric:tabular-nums;
   }
   .kpi.risk .num{color:var(--jam);}
-  .kpi .label{
-    font-size:12.5px;
-    color:var(--text-dim);
-    margin-top:6px;
+  .kpi .sub{
+    font-size:12px;
+    color:var(--text-faint);
+    margin-top:4px;
   }
   section{margin-bottom:52px;}
   .section-head{
     display:flex;
     justify-content:space-between;
     align-items:baseline;
-    margin-bottom:16px;
+    margin-bottom:14px;
     gap:16px;
     flex-wrap:wrap;
   }
   h2{
     font-family:'Fraunces', serif;
     font-weight:500;
-    font-size:20px;
+    font-size:21px;
     margin:0;
     color:var(--text);
   }
   .section-note{
     font-size:13px;
     color:var(--text-faint);
-    max-width:420px;
+    max-width:460px;
     text-align:right;
   }
   .panel{
     background:var(--panel);
     border:1px solid var(--line);
     border-radius:var(--radius);
-    padding:22px 24px 16px;
+    padding:20px 22px 16px;
+    box-shadow:var(--shadow);
+    min-width:0;
   }
+  .panel-title{font-size:12.5px; font-weight:600; color:var(--text-dim); margin:0 0 10px;}
   .two-col{
     display:grid;
-    grid-template-columns:1.3fr 1fr;
+    grid-template-columns:minmax(0, 1.3fr) minmax(0, 1fr);
     gap:20px;
   }
-  canvas{max-width:100%;}
+  .two-col.even{grid-template-columns:repeat(2, minmax(0, 1fr));}
+  /* Charts fill a box of fixed height, so they keep a readable shape at any width. */
+  .chart-box{position:relative; width:100%; height:300px;}
+  .chart-box.tall{height:340px;}
+  .chart-box.short{height:240px;}
+  /* A chart beside a taller table grows to the table's height. */
+  .panel.fill{display:flex; flex-direction:column;}
+  .panel.fill .chart-box{flex:1 1 auto; height:auto; min-height:240px;}
+  .table-scroll{overflow-x:auto;}
   table{
     width:100%;
     border-collapse:collapse;
@@ -130,29 +157,44 @@
   }
   th{
     color:var(--text-faint);
-    font-weight:500;
+    font-weight:600;
     font-size:11.5px;
     text-transform:uppercase;
     letter-spacing:0.03em;
+    white-space:nowrap;
   }
-  td.num, th.num{text-align:right; font-family:'IBM Plex Mono', monospace; font-size:12.5px;}
+  td.num, th.num{text-align:right; white-space:nowrap;}
+  td.num{font-family:'IBM Plex Mono', monospace; font-size:12.5px;}
+  td.nowrap{white-space:nowrap;}
+  table.compact th, table.compact td{padding:9px 6px;}
+  table.compact th:first-child, table.compact td:first-child{padding-left:0;}
   tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--panel-2);}
   .pill{
     display:inline-block;
     padding:2px 8px;
     border-radius:20px;
     font-size:11px;
     font-family:'IBM Plex Mono', monospace;
+    white-space:nowrap;
   }
-  .pill.good{background:rgba(143,163,119,0.16); color:var(--sage);}
-  .pill.tight{background:rgba(214,40,57,0.16); color:var(--jam);}
+  .pill.good{background:var(--sage-soft); color:var(--sage);}
+  .pill.tight{background:var(--jam-soft); color:var(--jam);}
+  .bar{display:inline-block; vertical-align:middle; width:90px; height:7px; border-radius:4px; background:var(--grid); margin-right:8px; overflow:hidden;}
+  .bar > i{display:block; height:100%; background:var(--sage); border-radius:4px;}
+  .bar.tight > i{background:var(--jam);}
   .story{
     font-size:14px;
     color:var(--text-dim);
-    max-width:680px;
+    max-width:720px;
     margin:14px 0 0;
   }
   .story b{color:var(--text);}
+  .ccc-side{display:flex; flex-direction:column; justify-content:center; gap:14px;}
+  .ccc-big{font-family:'Fraunces',serif; font-size:36px; color:var(--accent-ink);}
+  .ccc-side .explain{border-top:1px solid var(--line); padding-top:14px; font-size:13.5px; color:var(--text-dim); line-height:1.6;}
+  .ccc-side b{color:var(--text);}
+  code{background:var(--panel-2); padding:1px 5px; border-radius:3px; font-size:12px;}
   footer{
     margin-top:60px;
     padding-top:24px;
@@ -164,16 +206,27 @@
     flex-wrap:wrap;
     gap:10px;
   }
-  footer a{color:var(--accent-dim);}
-  @media (max-width: 760px){
-    .kpi-row{grid-template-columns:repeat(2,1fr);}
-    .kpi{border-bottom:1px solid var(--line);}
-    .two-col{grid-template-columns:1fr;}
+  footer a{color:var(--accent-ink);}
+  @media (max-width: 1100px){
+    .two-col.even{grid-template-columns:minmax(0, 1fr);}
+  }
+  @media (max-width: 900px){
+    .kpi-row{grid-template-columns:repeat(2, minmax(0, 1fr));}
+    .two-col, .two-col.even{grid-template-columns:minmax(0, 1fr);}
     .section-note{text-align:left;}
+  }
+  @media (max-width: 560px){
+    .wrap{padding:32px 16px 60px;}
+    .kpi-row{gap:10px;}
+    .kpi{padding:12px 12px 11px;}
+    .kpi .num{font-size:23px;}
+    .panel{padding:16px 12px 12px;}
+    .chart-box, .chart-box.tall{height:260px;}
   }
 </style>
 </head>
 <body>
+<div class="topbar"></div>
 <div class="wrap">
 
   <header>
@@ -189,9 +242,9 @@
   <section>
     <div class="section-head">
       <h2>Forecast vs. planned output, by week</h2>
-      <div class="section-note">Bars: units. Line: fill rate. The two shaded weeks are the ones where demand outruns what the plant can actually make.</div>
+      <div class="section-note">Bars: units. Line: fill rate. Red bars mark the weeks where demand outruns what the plant can actually make.</div>
     </div>
-    <div class="panel"><canvas id="weeklyChart" height="90"></canvas></div>
+    <div class="panel"><div class="chart-box tall"><canvas id="weeklyChart"></canvas></div></div>
     <p class="story">Every ordinary week, the plan meets <b>100%</b> of forecast. The two weeks before
       Nowruz are different: forecast jumps to <b>55,610</b> and <b>54,061</b> units while the plant's
       real capacity holds — fill rate drops to <b>88.5%</b> and <b>91.0%</b>, worth
@@ -204,7 +257,10 @@
         <div class="section-head">
           <h2>Where the shortfall actually happens</h2>
         </div>
-        <div class="panel"><canvas id="lineChart" height="130"></canvas></div>
+        <div class="panel">
+          <p class="panel-title" id="lineChartTitle">Bottleneck line — weekly output</p>
+          <div class="chart-box"><canvas id="lineChart"></canvas></div>
+        </div>
         <p class="story">All five lines forecast fine except one: the <b>Traditional Kolucheh Line</b>.
           Its capacity (tuned to a realistic hand-folded-pastry rate) simply can't clear both peak
           weeks at once.</p>
@@ -213,7 +269,10 @@
         <div class="section-head">
           <h2>Which SKUs absorb it</h2>
         </div>
-        <div class="panel"><canvas id="unmetChart" height="130"></canvas></div>
+        <div class="panel">
+          <p class="panel-title">Revenue lost to unmet demand, by SKU</p>
+          <div class="chart-box"><canvas id="unmetChart"></canvas></div>
+        </div>
         <p class="story">The LP's call: fully serve the higher-margin Nowruz specialty items first.
           <b>Cardamom</b> and <b>Plain Butter Kolucheh</b> — the two lowest-priced varieties on the
           line — absorb the entire shortfall instead.</p>
@@ -223,10 +282,35 @@
 
   <section>
     <div class="section-head">
-      <h2>Materials at risk, by week</h2>
-      <div class="section-note">Count of raw materials whose projected on-hand falls below their safety-stock target that week.</div>
+      <h2>Production lines, 12-week scorecard</h2>
+      <div class="section-note">Planned output against forecast for every line; revenue at list price.</div>
     </div>
-    <div class="panel"><canvas id="materialChart" height="70"></canvas></div>
+    <div class="panel table-scroll">
+      <table>
+        <thead><tr><th>Line</th><th class="num">Forecast</th><th class="num">Planned</th><th>Fill rate</th><th class="num">Unmet units</th><th class="num">Revenue planned</th><th class="num">Revenue lost</th></tr></thead>
+        <tbody id="lineTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Materials at risk, and what to reorder</h2>
+      <div class="section-note">The MRP nets the plan's material needs against projected stock and safety-stock targets.</div>
+    </div>
+    <div class="two-col even">
+      <div class="panel fill">
+        <p class="panel-title">Raw materials below their safety-stock target, by week</p>
+        <div class="chart-box"><canvas id="materialChart"></canvas></div>
+      </div>
+      <div class="panel table-scroll">
+        <p class="panel-title">Largest recommended reorders over the horizon · <span style="font-weight:400">Lead: supplier lead time · Short: weeks below safety stock</span></p>
+        <table class="compact">
+          <thead><tr><th>Material</th><th class="num">Order qty</th><th class="num">Value (IRR)</th><th class="num" title="Supplier lead time">Lead</th><th class="num" title="Weeks below the safety-stock target">Short</th></tr></thead>
+          <tbody id="reorderTable"></tbody>
+        </table>
+      </div>
+    </div>
   </section>
 
   <section>
@@ -235,25 +319,25 @@
       <div class="section-note">Trailing 90-day DIO + DSO − DPO, weekly. Steady-state weeks only (see docs/DATA_DICTIONARY.md).</div>
     </div>
     <div class="two-col">
-      <div class="panel"><canvas id="cccChart" height="130"></canvas></div>
-      <div class="panel" style="display:flex; flex-direction:column; justify-content:center; gap:14px;">
+      <div class="panel"><div class="chart-box"><canvas id="cccChart"></canvas></div></div>
+      <div class="panel ccc-side">
         <div>
-          <div style="font-family:'Fraunces',serif; font-size:34px; color:var(--accent);" id="cccBig">—</div>
+          <div class="ccc-big" id="cccBig">—</div>
           <div style="font-size:12.5px; color:var(--text-dim);">Average CCC, last 12 weeks of data</div>
         </div>
-        <div style="border-top:1px solid var(--line); padding-top:14px; font-size:13.5px; color:var(--text-dim); line-height:1.6;">
-          <b style="color:var(--text)">Raw materials (DIO) barely move the number</b> — short shelf life keeps
+        <div class="explain">
+          <b>Raw materials (DIO) barely move the number</b> — short shelf life keeps
           finished-goods stock near zero, so inventory isn't where the cash is tied up.
           <br><br>
-          The real driver is the gap between <b style="color:var(--text)">how slowly retail/wholesale
-          customers pay (DSO)</b> and <b style="color:var(--text)">how quickly perishable-ingredient
+          The real driver is the gap between <b>how slowly retail/wholesale
+          customers pay (DSO)</b> and <b>how quickly perishable-ingredient
           suppliers must be paid (DPO)</b> — dairy suppliers run near cash-on-delivery, while large
           retail chains routinely stretch 50–90 days.
         </div>
       </div>
     </div>
     <p class="story">This is computed from simulated receivables and payables ledgers
-      (<code style="background:var(--panel-2); padding:1px 5px; border-radius:3px; font-size:12px;">analytics/working_capital.py</code>),
+      (<code>analytics/working_capital.py</code>),
       not asserted — the same inventory and purchasing decisions the rest of this engine
       plans around are what move this number.</p>
   </section>
@@ -261,9 +345,9 @@
   <section>
     <div class="section-head">
       <h2>Forecast accuracy, backtested</h2>
-      <div class="section-note">8-week rolling backtest, WAPE per SKU. Overall: <b style="color:var(--accent)">12.6%</b>.</div>
+      <div class="section-note">8-week rolling backtest, WAPE per SKU. Overall: <b style="color:var(--accent-ink)" id="wapeNote">—</b>.</div>
     </div>
-    <div class="panel">
+    <div class="panel table-scroll">
       <table>
         <thead><tr><th>Best-forecasting SKUs</th><th class="num">WAPE</th><th style="padding-left:40px">Hardest-to-forecast SKUs</th><th class="num">WAPE</th></tr></thead>
         <tbody id="accTable"></tbody>
@@ -280,44 +364,85 @@
 
 <script>
 const D = DASHBOARD_DATA;
+const K = D.kpi;
 const fmt = n => new Intl.NumberFormat('en-US').format(Math.round(n));
 const fmtM = n => (n/1e6).toFixed(0) + 'M';
+const fmtShort = n => n >= 1e9 ? (n/1e9).toFixed(1) + 'B' : fmtM(n);
+const fmtIRR = n => fmtShort(n) + ' IRR';
+const pct = x => (x*100).toFixed(1) + '%';
 const weekLabel = s => new Date(s).toLocaleDateString('en-US', {month:'short', day:'numeric'});
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 // KPI strip and tables render first and don't depend on Chart.js, so the
-// page stays useful even if the charting CDN is slow, blocked, or offline.
-const kpiRow = document.getElementById('kpiRow');
+// page stays useful even if the charting script fails to load.
 const kpis = [
-  {num: fmt(D.kpi.total_forecast), label: 'Units forecast, 12wk horizon'},
-  {num: fmt(D.kpi.total_allocated) + ' (' + (100*D.kpi.total_allocated/D.kpi.total_forecast).toFixed(1) + '%)', label: 'Units the plan can actually produce'},
-  {num: (D.overall_wape*100).toFixed(1) + '%', label: 'Backtested forecast error (WAPE)'},
-  {num: fmtM(D.kpi.total_revenue_lost) + ' IRR', label: 'Revenue at risk from capacity limits', risk: true},
+  {num: fmt(K.total_forecast), label: 'Units forecast', sub: K.n_weeks + '-week horizon, ' + K.n_products + ' SKUs'},
+  {num: fmt(K.total_allocated), label: 'Units the plan can produce', sub: pct(K.total_allocated / K.total_forecast) + ' of forecast'},
+  {num: fmtIRR(K.total_revenue_planned), label: 'Revenue in the plan', sub: 'planned output at list price', tone: 'good'},
+  {num: fmtIRR(K.total_revenue_lost), label: 'Revenue at risk', sub: fmt(K.total_unmet) + ' units the plant can’t make', tone: K.total_revenue_lost > 0 ? 'risk' : 'good'},
+  {num: pct(K.min_fill_rate), label: 'Lowest weekly fill rate', sub: 'week of ' + weekLabel(K.min_fill_week), tone: K.min_fill_rate < 0.95 ? 'risk' : 'good'},
+  {num: K.weeks_short + ' of ' + K.n_weeks, label: 'Weeks short of demand', sub: 'all other weeks fully served', tone: K.weeks_short > 0 ? 'risk' : 'good'},
+  {num: pct(D.overall_wape), label: 'Forecast error (WAPE)', sub: '8-week rolling backtest'},
+  {num: fmtIRR(K.purchase_value), label: 'Material reorders', sub: K.materials_to_reorder + ' raw materials to reorder'},
 ];
-kpiRow.innerHTML = kpis.map(k => `<div class="kpi ${k.risk?'risk':''}"><div class="num">${k.num}</div><div class="label">${k.label}</div></div>`).join('');
+document.getElementById('kpiRow').innerHTML = kpis.map(k =>
+  `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num">${k.num}</div><div class="sub">${k.sub}</div></div>`
+).join('');
+
+// Line scorecard
+document.getElementById('lineTable').innerHTML = D.lines.map(l => {
+  const tight = l.fill_rate < 1;
+  return `<tr>
+    <td>${esc(l.line_name)}</td>
+    <td class="num">${fmt(l.forecast_units)}</td>
+    <td class="num">${fmt(l.allocated_units)}</td>
+    <td><span class="bar ${tight ? 'tight' : ''}"><i style="width:${(l.fill_rate*100).toFixed(1)}%"></i></span><span class="pill ${tight ? 'tight' : 'good'}">${pct(l.fill_rate)}</span></td>
+    <td class="num">${l.unmet_units ? fmt(l.unmet_units) : '—'}</td>
+    <td class="num">${fmtIRR(l.revenue_planned)}</td>
+    <td class="num">${l.revenue_lost ? fmtIRR(l.revenue_lost) : '—'}</td>
+  </tr>`;
+}).join('');
+
+// Reorder table
+document.getElementById('reorderTable').innerHTML = D.reorders.map(r => `<tr>
+    <td class="nowrap">${esc(r.material_name)}</td>
+    <td class="num">${fmt(r.recommended_order_qty)} ${esc(r.unit_of_measure)}</td>
+    <td class="num">${fmtShort(r.order_value_irr)}</td>
+    <td class="num">${r.lead_time_days} d</td>
+    <td class="num"><span class="pill ${r.weeks_below_safety_stock >= 6 ? 'tight' : 'good'}">${r.weeks_below_safety_stock}/${K.n_weeks}</span></td>
+  </tr>`).join('');
 
 // Accuracy table (best 6 / worst 6)
 const best = D.acc.slice(0,6);
 const worst = D.acc.slice(-6).reverse();
-const rows = best.map((b,i) => {
+document.getElementById('accTable').innerHTML = best.map((b,i) => {
   const w = worst[i];
   return `<tr>
-    <td>${b.product_name}</td><td class="num">${(b.wape*100).toFixed(1)}%</td>
-    <td style="padding-left:40px">${w.product_name}</td><td class="num">${(w.wape*100).toFixed(1)}%</td>
+    <td>${esc(b.product_name)}</td><td class="num">${pct(b.wape)}</td>
+    <td style="padding-left:40px">${esc(w.product_name)}</td><td class="num">${pct(w.wape)}</td>
   </tr>`;
 }).join('');
-document.getElementById('accTable').innerHTML = rows;
+document.getElementById('wapeNote').textContent = pct(D.overall_wape);
 
 // CCC big number (renders independent of Chart.js, like the KPI strip)
-if (D.kpi.avg_ccc != null) {
-  document.getElementById('cccBig').textContent = Math.round(D.kpi.avg_ccc) + ' days';
+if (K.avg_ccc != null) {
+  document.getElementById('cccBig').textContent = Math.round(K.avg_ccc) + ' days';
+}
+if (D.l3.length) {
+  document.getElementById('lineChartTitle').textContent = D.l3[0].line_name + ' — weekly output';
 }
 
 function renderCharts(){
 
-Chart.defaults.color = '#D9B9A8';
-Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+const GRID = '#F3EAE3';
+Chart.defaults.color = '#6A4B3C';
+Chart.defaults.font.family = "'IBM Plex Sans', system-ui, sans-serif";
 Chart.defaults.font.size = 12;
-Chart.defaults.borderColor = '#5c2e18';
+Chart.defaults.borderColor = '#EEE2D9';
+Chart.defaults.maintainAspectRatio = false;
+Chart.defaults.plugins.tooltip.backgroundColor = '#2B160D';
+Chart.defaults.plugins.tooltip.padding = 10;
+const legend = {position:'top', align:'end', labels:{boxWidth:10, boxHeight:10, usePointStyle:false}};
 
 // Weekly chart
 new Chart(document.getElementById('weeklyChart'), {
@@ -325,36 +450,36 @@ new Chart(document.getElementById('weeklyChart'), {
   data: {
     labels: D.weekly.map(w => weekLabel(w.week_start)),
     datasets: [
-      {type:'bar', label:'Forecast', data: D.weekly.map(w=>w.forecast_units), backgroundColor:'#5c2e18', borderRadius:3, order:2},
-      {type:'bar', label:'Planned', data: D.weekly.map(w=>w.allocated_units), backgroundColor: D.weekly.map(w=> w.fill_rate<1 ? '#D62839' : '#EB5B2A'), borderRadius:3, order:2},
-      {type:'line', label:'Fill rate', data: D.weekly.map(w=>w.fill_rate*100), yAxisID:'y1', borderColor:'#FBEFE6', backgroundColor:'#FBEFE6', tension:0.25, pointRadius:3, order:1},
+      {type:'bar', label:'Forecast', data: D.weekly.map(w=>w.forecast_units), backgroundColor:'#EBD8CB', borderRadius:4, order:2},
+      {type:'bar', label:'Planned', data: D.weekly.map(w=>w.allocated_units), backgroundColor: D.weekly.map(w=> w.fill_rate<1 ? '#D62839' : '#E0531F'), borderRadius:4, order:2},
+      {type:'line', label:'Fill rate', data: D.weekly.map(w=>w.fill_rate*100), yAxisID:'y1', borderColor:'#2B160D', backgroundColor:'#2B160D', tension:0.25, pointRadius:3, borderWidth:2, order:1},
     ]
   },
   options: {
-    responsive:true,
     interaction:{mode:'index', intersect:false},
-    plugins:{legend:{position:'top', align:'end', labels:{boxWidth:10, boxHeight:10}}},
+    plugins:{legend, tooltip:{callbacks:{label:c => c.dataset.label + ': ' + (c.dataset.yAxisID === 'y1' ? c.parsed.y.toFixed(1) + '%' : fmt(c.parsed.y))}}},
     scales:{
-      y:{ grid:{color:'#4a2413'}, ticks:{callback:v=>fmt(v)} },
+      x:{ grid:{display:false} },
+      y:{ grid:{color:GRID}, ticks:{callback:v=>fmt(v)} },
       y1:{ position:'right', min:80, max:105, grid:{display:false}, ticks:{callback:v=>v+'%'} },
     }
   }
 });
 
-// L3 line chart
+// Bottleneck line chart
 new Chart(document.getElementById('lineChart'), {
   type:'bar',
   data:{
     labels: D.l3.map(w=>weekLabel(w.week_start)),
     datasets:[
-      {label:'Planned', data:D.l3.map(w=>w.allocated_units), backgroundColor:'#EB5B2A', borderRadius:3, stack:'s'},
+      {label:'Planned', data:D.l3.map(w=>w.allocated_units), backgroundColor:'#E0531F', borderRadius:3, stack:'s'},
       {label:'Unmet', data:D.l3.map(w=>w.unmet_units), backgroundColor:'#D62839', borderRadius:3, stack:'s'},
     ]
   },
   options:{
-    responsive:true,
-    plugins:{legend:{position:'top', align:'end', labels:{boxWidth:10, boxHeight:10}}, title:{display:true, text:'Traditional Kolucheh Line — weekly output', color:'#D9B9A8', font:{size:12, weight:'normal'}, padding:{bottom:10}}},
-    scales:{x:{stacked:true, grid:{display:false}}, y:{stacked:true, grid:{color:'#4a2413'}, ticks:{callback:v=>fmt(v)}}}
+    interaction:{mode:'index', intersect:false},
+    plugins:{legend},
+    scales:{x:{stacked:true, grid:{display:false}}, y:{stacked:true, grid:{color:GRID}, ticks:{callback:v=>fmt(v)}}}
   }
 });
 
@@ -363,13 +488,12 @@ new Chart(document.getElementById('unmetChart'), {
   type:'bar',
   data:{
     labels: D.top_unmet.map(p=>p.product_name),
-    datasets:[{label:'Revenue lost (IRR)', data:D.top_unmet.map(p=>p.revenue_lost), backgroundColor:'#D62839', borderRadius:3}]
+    datasets:[{label:'Revenue lost (IRR)', data:D.top_unmet.map(p=>p.revenue_lost), backgroundColor:'#D62839', borderRadius:4, maxBarThickness:56}]
   },
   options:{
     indexAxis:'y',
-    responsive:true,
-    plugins:{legend:{display:false}, title:{display:true, text:'Revenue lost to unmet demand, by SKU', color:'#D9B9A8', font:{size:12, weight:'normal'}, padding:{bottom:10}}},
-    scales:{x:{grid:{color:'#4a2413'}, ticks:{callback:v=>fmtM(v)}}, y:{grid:{display:false}}}
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:c => fmtIRR(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtM(v)}}, y:{grid:{display:false}}}
   }
 });
 
@@ -378,17 +502,16 @@ new Chart(document.getElementById('materialChart'), {
   type:'bar',
   data:{
     labels: D.weekly.map(w=>weekLabel(w.week_start)),
-    datasets:[{label:'Materials below safety stock', data:D.weekly.map(w=>w.materials_below_safety_stock), backgroundColor:'#B8431E', borderRadius:3}]
+    datasets:[{label:'Materials below safety stock', data:D.weekly.map(w=>w.materials_below_safety_stock), backgroundColor:'#F2994A', borderRadius:3}]
   },
   options:{
-    responsive:true,
     plugins:{legend:{display:false}},
-    scales:{y:{grid:{color:'#4a2413'}, beginAtZero:true}, x:{grid:{display:false}}}
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{precision:0}}, x:{grid:{display:false}}}
   }
 });
 
-// Cash conversion cycle: DIO / DSO / DPO as a stacked area-like set of
-// lines, with CCC as the bold headline line on top.
+// Cash conversion cycle: DIO / DSO / DPO as a set of thin lines, with
+// CCC as the bold headline line on top.
 if (D.ccc && D.ccc.length) {
   new Chart(document.getElementById('cccChart'), {
     type:'line',
@@ -396,15 +519,15 @@ if (D.ccc && D.ccc.length) {
       labels: D.ccc.map(w=>weekLabel(w.week_start)),
       datasets:[
         {label:'DSO', data:D.ccc.map(w=>w.dso), borderColor:'#F2994A', backgroundColor:'#F2994A', tension:0.3, pointRadius:0, borderWidth:1.5},
-        {label:'DPO', data:D.ccc.map(w=>w.dpo), borderColor:'#8FA377', backgroundColor:'#8FA377', tension:0.3, pointRadius:0, borderWidth:1.5},
-        {label:'DIO', data:D.ccc.map(w=>w.dio), borderColor:'#B08872', backgroundColor:'#B08872', tension:0.3, pointRadius:0, borderWidth:1.5},
-        {label:'CCC', data:D.ccc.map(w=>w.ccc), borderColor:'#EB5B2A', backgroundColor:'#EB5B2A', tension:0.3, pointRadius:0, borderWidth:3},
+        {label:'DPO', data:D.ccc.map(w=>w.dpo), borderColor:'#5F7C4A', backgroundColor:'#5F7C4A', tension:0.3, pointRadius:0, borderWidth:1.5},
+        {label:'DIO', data:D.ccc.map(w=>w.dio), borderColor:'#9A7A69', backgroundColor:'#9A7A69', tension:0.3, pointRadius:0, borderWidth:1.5},
+        {label:'CCC', data:D.ccc.map(w=>w.ccc), borderColor:'#E0531F', backgroundColor:'#E0531F', tension:0.3, pointRadius:0, borderWidth:3},
       ]
     },
     options:{
-      responsive:true,
-      plugins:{legend:{position:'top', align:'end', labels:{boxWidth:10, boxHeight:10}}},
-      scales:{y:{grid:{color:'#4a2413'}, ticks:{callback:v=>v+'d'}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}
+      interaction:{mode:'index', intersect:false},
+      plugins:{legend},
+      scales:{y:{grid:{color:GRID}, ticks:{callback:v=>v+'d'}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}
     }
   });
 }
@@ -414,8 +537,8 @@ if (D.ccc && D.ccc.length) {
 if (typeof Chart !== 'undefined') {
   renderCharts();
 } else {
-  document.querySelectorAll('canvas').forEach(c => {
-    c.outerHTML = '<p style="color:var(--text-faint); font-size:13px;">Chart could not load (offline or the Chart.js CDN was blocked). The numbers above and the table below are unaffected.</p>';
+  document.querySelectorAll('.chart-box').forEach(c => {
+    c.outerHTML = '<p style="color:var(--text-faint); font-size:13px;">Chart could not load (the Chart.js file is missing or blocked). The numbers above and the tables are unaffected.</p>';
   });
 }
 </script>
