@@ -88,9 +88,10 @@ week, weeks short, forecast error, material reorders), followed by the weekly
 plan, the bottleneck line, a scorecard for every production line, the MRP's
 materials at risk and largest reorders, the cash conversion cycle, and
 forecast accuracy. Open it
-directly, or enable **GitHub Pages** (Settings → Pages → Deploy from a
-branch → `main` → folder `/dashboard`) to get a live link for the README /
-your portfolio. It reads from `dashboard/data.js`, a plain JS file exported
+directly, or see the live version at
+**[milad-shabani.github.io/Food-manufacturing-sop-planning-engine](https://milad-shabani.github.io/Food-manufacturing-sop-planning-engine/)**,
+which `.github/workflows/pages.yml` republishes on every push to `main`.
+It reads from `dashboard/data.js`, a plain JS file exported
 straight from `planning_warehouse.db` after a pipeline run:
 
 ```bash
