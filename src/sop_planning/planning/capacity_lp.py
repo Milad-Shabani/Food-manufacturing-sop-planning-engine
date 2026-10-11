@@ -62,7 +62,7 @@ def plan_line_week(
     if n == 0:
         return pd.DataFrame(columns=["product_id", "allocated_units", "forecast_units"])
 
-    prices = products_on_line.set_index("product_id")["unit_price_irr"].reindex(product_ids).values
+    prices = products_on_line.set_index("product_id")["unit_price_usd"].reindex(product_ids).values
     forecasts = np.array([forecast_by_product.get(pid, 0.0) for pid in product_ids])
 
     # linprog minimizes, so negate the revenue objective to maximize it.

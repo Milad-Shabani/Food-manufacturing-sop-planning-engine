@@ -69,9 +69,9 @@ def build_receivables_ledger(
         regions[["region_id", "payment_terms_days"]], on="region_id"
     )
     daily_revenue = daily_revenue.groupby(["date", "payment_terms_days"], as_index=False)[
-        "revenue_irr"
+        "revenue_usd"
     ].sum()
-    daily_revenue = daily_revenue.rename(columns={"revenue_irr": "amount"})
+    daily_revenue = daily_revenue.rename(columns={"revenue_usd": "amount"})
     return _shifted_ledger(
         daily_revenue, "amount", "date", "payment_terms_days", "payment_terms_days", seed
     )
@@ -82,7 +82,7 @@ def build_payables_ledger(
 ) -> pd.DataFrame:
     po = purchase_orders.merge(suppliers[["supplier_id", "payment_terms_days"]], on="supplier_id")
     po = po.copy()
-    po["amount"] = po["quantity"] * po["unit_cost_irr"]
+    po["amount"] = po["quantity"] * po["unit_cost_usd"]
     # The payable is recognized when goods are received, not when ordered.
     po = po.groupby(["actual_delivery_date", "payment_terms_days"], as_index=False)["amount"].sum()
     return _shifted_ledger(
@@ -95,7 +95,7 @@ def build_inventory_value_series(
 ) -> pd.DataFrame:
     """Daily raw-material inventory value (on-hand) and consumption value,
     valued at each material's unit cost."""
-    unit_cost = dict(zip(raw_materials["material_id"], raw_materials["unit_cost_irr"]))
+    unit_cost = dict(zip(raw_materials["material_id"], raw_materials["unit_cost_usd"]))
     df = inventory.copy()
     df["date"] = pd.to_datetime(df["date"])
     df["value"] = df.apply(lambda r: r["quantity"] * unit_cost.get(r["material_id"], 0.0), axis=1)
@@ -133,12 +133,12 @@ def compute_ccc_timeseries(
 
     revenue_by_day = sales_history.copy()
     revenue_by_day["date"] = pd.to_datetime(revenue_by_day["date"])
-    revenue_by_day = revenue_by_day.groupby("date")["revenue_irr"].sum()
+    revenue_by_day = revenue_by_day.groupby("date")["revenue_usd"].sum()
 
     purchase_value_by_day = purchase_orders.copy()
     purchase_value_by_day["date"] = pd.to_datetime(purchase_value_by_day["actual_delivery_date"])
     purchase_value_by_day["amount"] = (
-        purchase_value_by_day["quantity"] * purchase_value_by_day["unit_cost_irr"]
+        purchase_value_by_day["quantity"] * purchase_value_by_day["unit_cost_usd"]
     )
     purchase_value_by_day = purchase_value_by_day.groupby("date")["amount"].sum()
 

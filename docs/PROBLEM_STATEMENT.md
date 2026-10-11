@@ -2,7 +2,7 @@
 
 ## Context
 
-**Zarrin Cake & Confectionery Industries Co.** is a mid-size industrial food
+The **Cake & Confectionery Factory** (a fictional company) is a mid-size industrial food
 manufacturer producing cakes, cookies, wafers, and traditional pastries at
 scale, running five production lines and roughly 200 employees. Its product
 range spans everyday items (sponge cakes, wafers, biscuits) and

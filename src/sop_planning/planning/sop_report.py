@@ -11,11 +11,11 @@ import pandas as pd
 def build_weekly_summary(
     production_plan: pd.DataFrame, products: pd.DataFrame, mrp: pd.DataFrame
 ) -> pd.DataFrame:
-    prices = products.set_index("product_id")["unit_price_irr"]
+    prices = products.set_index("product_id")["unit_price_usd"]
 
     plan = production_plan.copy()
-    plan["revenue_captured_irr"] = plan["allocated_units"] * plan["product_id"].map(prices)
-    plan["revenue_lost_irr"] = plan["unmet_units"] * plan["product_id"].map(prices)
+    plan["revenue_captured_usd"] = plan["allocated_units"] * plan["product_id"].map(prices)
+    plan["revenue_lost_usd"] = plan["unmet_units"] * plan["product_id"].map(prices)
 
     weekly = (
         plan.groupby("week_start")
@@ -23,8 +23,8 @@ def build_weekly_summary(
             forecast_units=("forecast_units", "sum"),
             allocated_units=("allocated_units", "sum"),
             unmet_units=("unmet_units", "sum"),
-            revenue_captured_irr=("revenue_captured_irr", "sum"),
-            revenue_lost_irr=("revenue_lost_irr", "sum"),
+            revenue_captured_usd=("revenue_captured_usd", "sum"),
+            revenue_lost_usd=("revenue_lost_usd", "sum"),
         )
         .reset_index()
     )

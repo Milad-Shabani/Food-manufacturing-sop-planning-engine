@@ -1,6 +1,6 @@
 """Generate the dimension tables for the synthetic food manufacturing dataset.
 
-Everything here is fictional: a made-up company ("Zarrin Cake & Confectionery Industries Co."),
+Everything here is fictional: a made-up cake & confectionery factory,
 made-up employees, made-up suppliers. Values are randomized but seeded, so
 the same seed always reproduces the same dataset — useful for a portfolio
 repo where reviewers should see the same numbers you describe in the README.
@@ -72,34 +72,35 @@ PRODUCTION_LINES = [
     },
 ]
 
-# (product_name, category, primary_line_id, unit_weight_g, shelf_life_days, unit_price_irr,
+# (product_name, category, primary_line_id, unit_weight_g, shelf_life_days, unit_price_usd,
 #  is_seasonal, seasonal_peak)
+# Kolucheh is sold as a pack of 6 pieces (price and weight are per pack).
 PRODUCTS = [
-    ("Classic Vanilla Sponge Cake", "Sponge Cake", "L1", 400, 21, 185000, False, None),
-    ("Chocolate Sponge Cake", "Sponge Cake", "L1", 400, 21, 195000, False, None),
-    ("Lemon Yogurt Sponge Cake", "Sponge Cake", "L1", 380, 18, 175000, False, None),
-    ("Honey Sponge Roll", "Sponge Cake", "L1", 300, 14, 165000, False, None),
-    ("Vanilla Cream Cake", "Cream Cake", "L2", 450, 10, 245000, False, None),
-    ("Chocolate Cream Cake", "Cream Cake", "L2", 450, 10, 255000, False, None),
-    ("Strawberry Cream Roll", "Cream Cake", "L2", 350, 8, 235000, False, None),
-    ("Hazelnut Cream Cake", "Cream Cake", "L2", 420, 9, 265000, False, None),
-    ("Walnut Kolucheh", "Kolucheh", "L3", 55, 45, 68000, True, "Nowruz"),
-    ("Date Kolucheh", "Kolucheh", "L3", 60, 45, 65000, True, "Nowruz"),
-    ("Cardamom Kolucheh", "Kolucheh", "L3", 50, 45, 62000, True, "Nowruz"),
-    ("Fars-style Kolucheh (Rice Flour)", "Kolucheh", "L3", 55, 40, 70000, True, "Nowruz"),
-    ("Plain Butter Kolucheh", "Kolucheh", "L3", 50, 45, 58000, False, None),
-    ("Rosewater Kolucheh", "Kolucheh", "L3", 55, 45, 66000, True, "Yalda"),
-    ("Vanilla Wafer", "Wafer", "L4", 45, 90, 32000, False, None),
-    ("Chocolate Wafer", "Wafer", "L4", 45, 90, 34000, False, None),
-    ("Hazelnut Wafer", "Wafer", "L4", 45, 90, 36000, False, None),
-    ("Plain Butter Biscuit", "Cookie", "L4", 200, 120, 48000, False, None),
-    ("Oat & Honey Cookie", "Cookie", "L4", 200, 100, 55000, False, None),
-    ("Cocoa Sandwich Cookie", "Cookie", "L4", 180, 100, 52000, False, None),
-    ("Yalda Night Gift Box", "Seasonal", "L5", 900, 30, 480000, True, "Yalda"),
-    ("Nowruz Sweets Assortment Box", "Seasonal", "L5", 1000, 40, 520000, True, "Nowruz"),
-    ("Ramadan Date & Nut Pack", "Seasonal", "L5", 500, 60, 310000, True, "Ramadan"),
-    ("Summer Fruit Roll Cake", "Seasonal", "L5", 380, 12, 210000, True, "Summer"),
-    ("Back-to-School Snack Pack", "Seasonal", "L5", 250, 60, 145000, True, "AutumnStart"),
+    ("Classic Vanilla Sponge Cake", "Sponge Cake", "L1", 400, 21, 1.85, False, None),
+    ("Chocolate Sponge Cake", "Sponge Cake", "L1", 400, 21, 1.95, False, None),
+    ("Lemon Yogurt Sponge Cake", "Sponge Cake", "L1", 380, 18, 1.75, False, None),
+    ("Honey Sponge Roll", "Sponge Cake", "L1", 300, 14, 1.65, False, None),
+    ("Vanilla Cream Cake", "Cream Cake", "L2", 450, 10, 2.45, False, None),
+    ("Chocolate Cream Cake", "Cream Cake", "L2", 450, 10, 2.55, False, None),
+    ("Strawberry Cream Roll", "Cream Cake", "L2", 350, 8, 2.35, False, None),
+    ("Hazelnut Cream Cake", "Cream Cake", "L2", 420, 9, 2.65, False, None),
+    ("Walnut Kolucheh", "Kolucheh", "L3", 330, 45, 4.08, True, "Nowruz"),
+    ("Date Kolucheh", "Kolucheh", "L3", 360, 45, 3.90, True, "Nowruz"),
+    ("Cardamom Kolucheh", "Kolucheh", "L3", 300, 45, 3.72, True, "Nowruz"),
+    ("Fars-style Kolucheh (Rice Flour)", "Kolucheh", "L3", 330, 40, 4.20, True, "Nowruz"),
+    ("Plain Butter Kolucheh", "Kolucheh", "L3", 300, 45, 3.48, False, None),
+    ("Rosewater Kolucheh", "Kolucheh", "L3", 330, 45, 3.96, True, "Yalda"),
+    ("Vanilla Wafer", "Wafer", "L4", 45, 90, 0.32, False, None),
+    ("Chocolate Wafer", "Wafer", "L4", 45, 90, 0.34, False, None),
+    ("Hazelnut Wafer", "Wafer", "L4", 45, 90, 0.36, False, None),
+    ("Plain Butter Biscuit", "Cookie", "L4", 200, 120, 1.15, False, None),
+    ("Oat & Honey Cookie", "Cookie", "L4", 200, 100, 1.30, False, None),
+    ("Cocoa Sandwich Cookie", "Cookie", "L4", 180, 100, 1.25, False, None),
+    ("Yalda Night Gift Box", "Seasonal", "L5", 900, 30, 4.80, True, "Yalda"),
+    ("Nowruz Sweets Assortment Box", "Seasonal", "L5", 1000, 40, 5.20, True, "Nowruz"),
+    ("Ramadan Date & Nut Pack", "Seasonal", "L5", 500, 60, 3.10, True, "Ramadan"),
+    ("Summer Fruit Roll Cake", "Seasonal", "L5", 380, 12, 3.40, True, "Summer"),
+    ("Back-to-School Snack Pack", "Seasonal", "L5", 250, 60, 2.60, True, "AutumnStart"),
 ]
 
 SUPPLIERS = [
@@ -110,43 +111,43 @@ SUPPLIERS = [
     # while dry goods, packaging, and imported flavorings carry standard
     # net-30/45 commercial terms. This is the supplier side of the cash
     # conversion cycle in analytics/working_capital.py.
-    ("SUP01", "Alborz Flour Mills", "Wheat Flour, Rice Flour", 5, 0.97, 40),
-    ("SUP02", "Karaj Sugar Trading Co.", "Sugar", 4, 0.98, 35),
-    ("SUP03", "Fresh Dairy Distributors", "Eggs, Butter, Milk Powder", 2, 0.95, 10),
-    ("SUP04", "Golestan Nut & Dried Fruit Co.", "Walnuts, Dates, Almonds", 7, 0.93, 30),
+    ("SUP01", "Supplier 1", "Wheat Flour, Rice Flour", 5, 0.97, 40),
+    ("SUP02", "Supplier 2", "Sugar", 4, 0.98, 35),
+    ("SUP03", "Supplier 3", "Eggs, Butter, Milk Powder", 2, 0.95, 10),
+    ("SUP04", "Supplier 4", "Walnuts, Dates, Almonds", 7, 0.93, 30),
     (
         "SUP05",
-        "Persia Cocoa & Flavoring Imports",
+        "Supplier 5",
         "Cocoa Powder, Vanilla, Cardamom, Rosewater",
         12,
         0.90,
         40,
     ),
-    ("SUP06", "National Packaging Industries", "Packaging Film, Cartons, Labels", 6, 0.96, 45),
-    ("SUP07", "Alborz Vegetable Oil Refinery", "Vegetable Oil, Baking Powder, Yeast", 5, 0.97, 30),
-    ("SUP08", "Sepahan Industrial Sugar & Additives", "Sugar, Baking Powder", 5, 0.94, 35),
+    ("SUP06", "Supplier 6", "Packaging Film, Cartons, Labels", 6, 0.96, 45),
+    ("SUP07", "Supplier 7", "Vegetable Oil, Baking Powder, Yeast", 5, 0.97, 30),
+    ("SUP08", "Supplier 8", "Sugar, Baking Powder", 5, 0.94, 35),
 ]
 
-# (material_name, unit, unit_cost_irr, supplier_id, lead_time_days, safety_stock_days)
+# (material_name, unit, unit_cost_usd, supplier_id, lead_time_days, safety_stock_days)
 RAW_MATERIALS = [
-    ("Wheat Flour", "kg", 28000, "SUP01", 5, 7),
-    ("Rice Flour", "kg", 42000, "SUP01", 6, 10),
-    ("Sugar", "kg", 45000, "SUP02", 4, 7),
-    ("Eggs", "unit", 6500, "SUP03", 2, 3),
-    ("Butter", "kg", 210000, "SUP03", 3, 5),
-    ("Milk Powder", "kg", 165000, "SUP03", 4, 7),
-    ("Vegetable Oil", "L", 95000, "SUP07", 5, 7),
-    ("Cocoa Powder", "kg", 320000, "SUP05", 12, 15),
-    ("Walnuts", "kg", 480000, "SUP04", 7, 10),
-    ("Dates", "kg", 190000, "SUP04", 7, 10),
-    ("Cardamom", "kg", 950000, "SUP05", 12, 20),
-    ("Rosewater", "L", 140000, "SUP05", 12, 15),
-    ("Vanilla Extract", "L", 380000, "SUP05", 12, 15),
-    ("Baking Powder", "kg", 65000, "SUP07", 5, 10),
-    ("Yeast", "kg", 120000, "SUP07", 4, 7),
-    ("Packaging Film", "unit", 1800, "SUP06", 6, 10),
-    ("Cartons", "unit", 4200, "SUP06", 6, 10),
-    ("Gift Box Packaging", "unit", 22000, "SUP06", 8, 12),
+    ("Wheat Flour", "kg", 0.76, "SUP01", 5, 7),
+    ("Rice Flour", "kg", 1.13, "SUP01", 6, 10),
+    ("Sugar", "kg", 1.21, "SUP02", 4, 7),
+    ("Eggs", "unit", 0.18, "SUP03", 2, 3),
+    ("Butter", "kg", 5.67, "SUP03", 3, 5),
+    ("Milk Powder", "kg", 4.46, "SUP03", 4, 7),
+    ("Vegetable Oil", "L", 2.56, "SUP07", 5, 7),
+    ("Cocoa Powder", "kg", 8.64, "SUP05", 12, 15),
+    ("Walnuts", "kg", 12.96, "SUP04", 7, 10),
+    ("Dates", "kg", 5.13, "SUP04", 7, 10),
+    ("Cardamom", "kg", 25.65, "SUP05", 12, 20),
+    ("Rosewater", "L", 3.78, "SUP05", 12, 15),
+    ("Vanilla Extract", "L", 10.26, "SUP05", 12, 15),
+    ("Baking Powder", "kg", 1.75, "SUP07", 5, 10),
+    ("Yeast", "kg", 3.24, "SUP07", 4, 7),
+    ("Packaging Film", "unit", 0.05, "SUP06", 6, 10),
+    ("Cartons", "unit", 0.11, "SUP06", 6, 10),
+    ("Gift Box Packaging", "unit", 0.59, "SUP06", 8, 12),
 ]
 
 REGIONS = [
@@ -156,13 +157,13 @@ REGIONS = [
     # (letters of credit + customs). This asymmetry with supplier payment
     # terms (see SUPPLIERS below) is the main driver of the cash conversion
     # cycle computed in analytics/working_capital.py.
-    ("R01", "Tehran Metro", "Retail Chain", 50),
-    ("R02", "Alborz (Karaj)", "Wholesale Distributor", 80),
-    ("R03", "Isfahan", "Retail Chain", 55),
-    ("R04", "Fars (Shiraz)", "Wholesale Distributor", 85),
-    ("R05", "Khorasan Razavi (Mashhad)", "Retail Chain", 60),
-    ("R06", "East Azerbaijan (Tabriz)", "Wholesale Distributor", 90),
-    ("R07", "National Export", "Export", 120),
+    ("R01", "Region 1", "Retail Chain", 50),
+    ("R02", "Region 2", "Wholesale Distributor", 80),
+    ("R03", "Region 3", "Retail Chain", 55),
+    ("R04", "Region 4", "Wholesale Distributor", 85),
+    ("R05", "Region 5", "Retail Chain", 60),
+    ("R06", "Region 6", "Wholesale Distributor", 90),
+    ("R07", "Export", "Export", 120),
 ]
 
 
@@ -205,7 +206,7 @@ def generate_employees(engine_seed: int, n_employees: int = 200) -> pd.DataFrame
             "Plant Management": 2.4,
             "HR / Support": 1.1,
         }
-        monthly_wage_irr = int(rng.normal(base_by_role[role] * 55_000_000, 4_000_000))
+        monthly_wage_usd = int(rng.normal(base_by_role[role] * 1_250, 100))
 
         rows.append(
             {
@@ -225,7 +226,7 @@ def generate_employees(engine_seed: int, n_employees: int = 200) -> pd.DataFrame
                 "shift": shift,
                 "employment_type": employment_type,
                 "hire_date": hire_date,
-                "monthly_wage_irr": max(monthly_wage_irr, 40_000_000),
+                "monthly_wage_usd": max(monthly_wage_usd, 950),
             }
         )
     return pd.DataFrame(rows)
@@ -242,7 +243,7 @@ def generate_products() -> pd.DataFrame:
         "primary_line_id",
         "unit_weight_g",
         "shelf_life_days",
-        "unit_price_irr",
+        "unit_price_usd",
         "is_seasonal",
         "seasonal_peak",
     ]
@@ -267,7 +268,7 @@ def generate_raw_materials() -> pd.DataFrame:
     cols = [
         "material_name",
         "unit_of_measure",
-        "unit_cost_irr",
+        "unit_cost_usd",
         "default_supplier_id",
         "lead_time_days",
         "safety_stock_days",

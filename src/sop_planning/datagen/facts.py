@@ -18,13 +18,16 @@ from .seasonality import seasonal_multiplier, weekday_multiplier
 # Baseline daily demand (units/day, company-wide) for each product category
 # before seasonality/weekday/trend/noise are applied.
 CATEGORY_BASE_DEMAND = {
-    "Sponge Cake": 380,
-    "Cream Cake": 260,
+    "Sponge Cake": 5700,
+    "Cream Cake": 3640,
     "Kolucheh": 900,
-    "Wafer": 1500,
-    "Cookie": 700,
-    "Seasonal": 120,
+    "Wafer": 5400,
+    "Cookie": 2520,
+    "Seasonal": 2160,
 }
+
+# Mean scrap rate by line (hand-finished kolucheh and cream cakes waste the most).
+SCRAP_BY_LINE = {"L1": 0.024, "L2": 0.032, "L3": 0.038, "L4": 0.018, "L5": 0.026}
 
 REGION_WEIGHTS = {
     "R01": 0.34,
@@ -79,15 +82,15 @@ def generate_sales_history(
             for region_id, qty in zip(region_ids, region_split):
                 if qty == 0:
                     continue
-                unit_price = product["unit_price_irr"] * (0.9 if promo_days[i] else 1.0)
+                unit_price = product["unit_price_usd"] * (0.9 if promo_days[i] else 1.0)
                 rows.append(
                     {
                         "date": d.date(),
                         "product_id": product["product_id"],
                         "region_id": region_id,
                         "units_sold": int(qty),
-                        "unit_price_irr": int(unit_price),
-                        "revenue_irr": int(qty * unit_price),
+                        "unit_price_usd": round(float(unit_price), 2),
+                        "revenue_usd": round(float(qty * unit_price), 2),
                         "is_promo_day": bool(promo_days[i]),
                     }
                 )
@@ -122,6 +125,11 @@ def generate_production_log(
     ).astype(int)
     demand_by_day_product["line_id"] = demand_by_day_product["product_id"].map(line_for_product)
 
+    product_factor = dict(
+        zip(
+            products["product_id"], np.random.default_rng(seed + 7).uniform(0.7, 1.4, len(products))
+        )
+    )
     rows = []
     for _, r in demand_by_day_product.iterrows():
         hours_available = line_shifts[r["line_id"]] * 8
@@ -131,7 +139,11 @@ def generate_production_log(
         planned = min(r["planned_units"], max(max_capacity, 1))
 
         downtime_minutes = int(max(rng.normal(20, 15), 0))
-        scrap_rate = np.clip(rng.normal(0.015, 0.006), 0, 0.08)
+        scrap_rate = np.clip(
+            rng.normal(SCRAP_BY_LINE[r["line_id"]] * product_factor[r["product_id"]], 0.008),
+            0,
+            0.12,
+        )
         produced = int(round(planned * (1 - downtime_minutes / (hours_available * 60) * 0.5)))
         scrap = int(round(produced * scrap_rate))
 
@@ -244,7 +256,7 @@ def generate_purchase_orders_and_inventory(
                         ).date(),
                         "actual_delivery_date": delivery_date,
                         "quantity": round(order_qty, 2),
-                        "unit_cost_irr": mat["unit_cost_irr"],
+                        "unit_cost_usd": mat["unit_cost_usd"],
                         "status": "Delivered",
                     }
                 )

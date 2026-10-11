@@ -7,8 +7,8 @@ from sop_planning.planning.mrp import explode_requirements, net_requirements_and
 def _products_on_line():
     return pd.DataFrame(
         [
-            {"product_id": "P1", "unit_price_irr": 100000, "primary_line_id": "L1"},
-            {"product_id": "P2", "unit_price_irr": 300000, "primary_line_id": "L1"},
+            {"product_id": "P1", "unit_price_usd": 100000, "primary_line_id": "L1"},
+            {"product_id": "P2", "unit_price_usd": 300000, "primary_line_id": "L1"},
         ]
     )
 

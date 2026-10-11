@@ -18,7 +18,7 @@ def _synthetic_sales(n_days=400, seed=1):
                 {
                     "date": d.date(),
                     "region_id": region_id,
-                    "revenue_irr": float(rng.integers(8_000_000, 12_000_000)),
+                    "revenue_usd": float(rng.integers(8_000_000, 12_000_000)),
                 }
             )
     return pd.DataFrame(rows)
@@ -36,7 +36,7 @@ def _synthetic_purchase_orders(n_orders=200, seed=2):
                 "supplier_id": rng.choice(["SUP01", "SUP02"]),
                 "actual_delivery_date": pd.Timestamp(d).date(),
                 "quantity": float(rng.integers(100, 1000)),
-                "unit_cost_irr": float(rng.integers(10000, 50000)),
+                "unit_cost_usd": float(rng.integers(10000, 50000)),
             }
         )
     return pd.DataFrame(rows)
@@ -71,7 +71,7 @@ def test_payables_ledger_balance_is_never_negative():
 
 
 def test_receivables_ledger_balance_roughly_tracks_payment_terms():
-    # With ~10M IRR/day/region flowing in and ~45-day blended terms, the
+    # With ~10M USD/day/region flowing in and ~45-day blended terms, the
     # steady-state AR balance should be in the same order of magnitude as
     # (daily revenue * payment terms), not wildly larger or smaller.
     ledger = build_receivables_ledger(_synthetic_sales(), _regions())
@@ -108,7 +108,7 @@ def test_compute_ccc_timeseries_shape_and_positivity():
             for d in pd.date_range("2024-01-01", periods=400, freq="D")
         ]
     )
-    materials = pd.DataFrame([{"material_id": "M01", "unit_cost_irr": 1000.0}])
+    materials = pd.DataFrame([{"material_id": "M01", "unit_cost_usd": 1000.0}])
 
     ccc = compute_ccc_timeseries(
         sales, po, inv, _regions(), _suppliers(), materials, window_days=60
@@ -143,7 +143,7 @@ def test_ccc_equals_dio_plus_dso_minus_dpo():
             for d in pd.date_range("2024-01-01", periods=400, freq="D")
         ]
     )
-    materials = pd.DataFrame([{"material_id": "M01", "unit_cost_irr": 1000.0}])
+    materials = pd.DataFrame([{"material_id": "M01", "unit_cost_usd": 1000.0}])
 
     ccc = compute_ccc_timeseries(
         sales, po, inv, _regions(), _suppliers(), materials, window_days=60

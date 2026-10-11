@@ -7,7 +7,7 @@ from sop_planning.datagen.bom import generate_bom
 def test_generate_employees_count_and_columns():
     employees = dimensions.generate_employees(engine_seed=1, n_employees=50)
     assert len(employees) == 50
-    assert {"employee_id", "role", "production_line_id", "shift", "monthly_wage_irr"}.issubset(
+    assert {"employee_id", "role", "production_line_id", "shift", "monthly_wage_usd"}.issubset(
         employees.columns
     )
     assert employees["employee_id"].is_unique

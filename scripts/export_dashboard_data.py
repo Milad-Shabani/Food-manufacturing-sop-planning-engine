@@ -16,6 +16,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from sop_planning.analytics import bullwhip, economics, operations
+
 WAREHOUSE = Path("data/processed/planning_warehouse.db")
 RAW_DIR = Path("data/raw")
 OUT_FILE = Path("dashboard/data.js")
@@ -55,9 +57,9 @@ def main() -> None:
     l3 = line_week[line_week["line_id"] == bottleneck_line_id].sort_values("week_start")
 
     plan_products = plan.merge(
-        products[["product_id", "product_name", "unit_price_irr", "category"]], on="product_id"
+        products[["product_id", "product_name", "unit_price_usd", "category"]], on="product_id"
     )
-    plan_products["revenue_lost"] = plan_products["unmet_units"] * plan_products["unit_price_irr"]
+    plan_products["revenue_lost"] = plan_products["unmet_units"] * plan_products["unit_price_usd"]
     top_unmet = (
         plan_products[plan_products["unmet_units"] > 0]
         .groupby(["product_id", "product_name", "category"], as_index=False)
@@ -68,7 +70,7 @@ def main() -> None:
 
     # Line scorecard: every line over the whole horizon.
     plan_products["revenue_planned"] = (
-        plan_products["allocated_units"] * plan_products["unit_price_irr"]
+        plan_products["allocated_units"] * plan_products["unit_price_usd"]
     )
     line_scores = (
         plan_products.groupby("line_id", as_index=False)
@@ -97,16 +99,16 @@ def main() -> None:
                     "material_id",
                     "material_name",
                     "unit_of_measure",
-                    "unit_cost_irr",
+                    "unit_cost_usd",
                     "lead_time_days",
                 ]
             ],
             on="material_id",
         )
     )
-    reorders["order_value_irr"] = reorders["recommended_order_qty"] * reorders["unit_cost_irr"]
+    reorders["order_value_usd"] = reorders["recommended_order_qty"] * reorders["unit_cost_usd"]
     reorders = reorders[reorders["recommended_order_qty"] > 0].sort_values(
-        "order_value_irr", ascending=False
+        "order_value_usd", ascending=False
     )
 
     acc_per_product = (
@@ -119,7 +121,27 @@ def main() -> None:
     overall_wape = float(accuracy.loc[accuracy["product_id"] == "__OVERALL__", "wape"].iloc[0])
     avg_ccc = float(ccc["ccc"].tail(12).mean()) if not ccc.empty else None
 
+    # Bullwhip / tied-up-cash analysis (also writes data/raw/fact_replenishment_chain.csv).
+    bullwhip.write_chain(str(RAW_DIR))
+    bw = bullwhip.summarize(str(RAW_DIR))
+
+    # Waste, plant economics and the value-opportunity ledger (USD).
+    waste = economics.waste_detail(str(RAW_DIR))
+    econ = economics.plant_economics(str(RAW_DIR), str(WAREHOUSE))
+    bn = line_scores[line_scores["line_id"] == bottleneck_line_id].iloc[0]
+    bn_econ = next(r for r in econ["lines"] if r["line_name"] == bn["line_name"])
+    bn_gross = 1 - bn_econ["materials"] / bn_econ["revenue"]
+    ledger = economics.value_ledger(
+        bw, waste, econ, {"bottleneck_margin": float(bn["revenue_lost"] * bn_gross)}
+    )
+
     payload = {
+        "bw": bw,
+        "econ": econ,
+        "waste": waste,
+        "ledger": ledger,
+        "ops": operations.line_detail(str(RAW_DIR), str(WAREHOUSE)),
+        "wh": operations.warehouse_detail(str(RAW_DIR)),
         "weekly": weekly.to_dict(orient="records"),
         "l3": l3.to_dict(orient="records"),
         "top_unmet": top_unmet.to_dict(orient="records"),
@@ -132,14 +154,14 @@ def main() -> None:
             "total_forecast": int(weekly["forecast_units"].sum()),
             "total_allocated": int(weekly["allocated_units"].sum()),
             "total_unmet": int(weekly["unmet_units"].sum()),
-            "total_revenue_planned": int(weekly["revenue_captured_irr"].sum()),
-            "total_revenue_lost": int(weekly["revenue_lost_irr"].sum()),
+            "total_revenue_planned": int(weekly["revenue_captured_usd"].sum()),
+            "total_revenue_lost": int(weekly["revenue_lost_usd"].sum()),
             "min_fill_rate": float(weekly["fill_rate"].min()),
             "min_fill_week": str(weekly.loc[weekly["fill_rate"].idxmin(), "week_start"]),
             "weeks_short": int((weekly["fill_rate"] < 1).sum()),
             "n_weeks": int(len(weekly)),
             "n_products": int(len(acc_per_product)),
-            "purchase_value": float(reorders["order_value_irr"].sum()),
+            "purchase_value": float(reorders["order_value_usd"].sum()),
             "materials_to_reorder": int(len(reorders)),
             "avg_ccc": avg_ccc,
         },

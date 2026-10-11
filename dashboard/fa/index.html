@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<link rel="alternate" hreflang="en" href="../">
+<title>کارخانه کیک و شیرینی — اتاق کنترل S&amp;OP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="../chart.umd.min.js"></script>
+<script src="../data.js"></script>
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --panel:#FFFFFF;
+    --panel-2:#F3F6F9;
+    --line:#DCE3EA;
+    --grid:#E9EEF3;
+    --accent:#1D5FA8;
+    --accent-ink:#12497F;
+    --accent-soft:#E6EFFA;
+    --jam:#D62839;
+    --jam-soft:#FCE8EA;
+    --sage:#2F8F5B;
+    --sage-soft:#E3F3EA;
+    --tan:#C9D3DD;
+    --text:#12202E;
+    --text-dim:#42556A;
+    --text-faint:#6B7C8F;
+    --radius:12px;
+    --shadow:0 1px 2px rgba(18,32,46,0.04), 0 6px 18px rgba(18,32,46,0.05);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Vazirmatn', Tahoma, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    line-height:1.75;
+  }
+  .toprow{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+  .lang{font-size:12.5px; font-weight:600; color:var(--accent-ink); text-decoration:none; border:1px solid var(--line); border-radius:20px; padding:4px 14px; background:var(--panel-2);}
+  .lang:hover{background:var(--accent-soft);}
+  .topbar{height:6px; background:linear-gradient(90deg, var(--accent), var(--jam) 60%, #F4B400);}
+  .wrap{max-width:1160px; margin:0 auto; padding:48px 28px 80px;}
+  header{margin-bottom:32px;}
+  .eyebrow{
+    font-family:'Vazirmatn', Tahoma, sans-serif;
+    font-size:12.5px;
+    color:var(--accent-ink);
+  }
+  h1{
+    font-family:'Vazirmatn', Tahoma, serif;
+    font-weight:500;
+    font-size:clamp(28px, 4vw, 42px);
+    line-height:1.55;
+    margin:8px 0 12px;
+    color:var(--text);
+    max-width:900px;
+    text-wrap:balance;
+  }
+  header p{
+    color:var(--text-dim);
+    max-width:680px;
+    font-size:15px;
+    margin:0;
+  }
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:14px;
+    margin:32px 0 48px;
+  }
+  .kpi{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-top:3px solid var(--accent);
+    border-radius:var(--radius);
+    padding:16px 18px 15px;
+    box-shadow:var(--shadow);
+    min-width:0;
+  }
+  .kpi.risk{border-top-color:var(--jam);}
+  .kpi.good{border-top-color:var(--sage);}
+  .kpi .label{
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--text-dim);
+  }
+  .kpi .num{
+    font-family:'Vazirmatn', Tahoma, serif;
+    font-size:30px;
+    font-weight:500;
+    color:var(--text);
+    line-height:1.15;
+    margin-top:6px;
+    font-variant-numeric:tabular-nums;
+  }
+  .kpi.risk .num{color:var(--jam);}
+  .kpi .sub{
+    font-size:12px;
+    color:var(--text-faint);
+    margin-top:4px;
+  }
+  section{margin-bottom:52px;}
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:14px;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  h2{
+    font-family:'Vazirmatn', Tahoma, serif;
+    font-weight:500;
+    font-size:21px;
+    margin:0;
+    color:var(--text);
+  }
+  .section-note{
+    font-size:13px;
+    color:var(--text-faint);
+    max-width:460px;
+    text-align:left;
+  }
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 22px 16px;
+    box-shadow:var(--shadow);
+    min-width:0;
+  }
+  .panel-title{font-size:12.5px; font-weight:600; color:var(--text-dim); margin:0 0 10px;}
+  .two-col{
+    display:grid;
+    grid-template-columns:minmax(0, 1.3fr) minmax(0, 1fr);
+    gap:20px;
+  }
+  .two-col.even{grid-template-columns:repeat(2, minmax(0, 1fr));}
+  .two-col > *{min-width:0;}
+  /* Charts fill a box of fixed height, so they keep a readable shape at any width. */
+  .chart-box{position:relative; width:100%; height:300px; overflow:hidden;}
+  /* The canvas is taken out of flow so its size never feeds back into the box's height. */
+  .chart-box > canvas{position:absolute; left:0; top:0; max-width:100%;}
+  .chart-box.tall{height:340px;}
+  .chart-box.short{height:240px;}
+  /* A chart beside a taller table grows to the table's height. */
+  .panel.fill{display:flex; flex-direction:column;}
+  .panel.fill .chart-box{flex:1 1 0; height:auto; min-height:280px;}
+  .table-scroll{overflow-x:auto;}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+  }
+  th, td{
+    text-align:right;
+    padding:9px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  th{
+    color:var(--text-faint);
+    font-weight:600;
+    font-size:11.5px;
+    
+    white-space:nowrap;
+  }
+  td.num, th.num{text-align:left; white-space:nowrap;}
+  td.num{font-family:'Vazirmatn', Tahoma, sans-serif; font-size:12.5px;}
+  td.nowrap{white-space:nowrap;}
+  table.compact th, table.compact td{padding:9px 6px;}
+  table.compact th:first-child, table.compact td:first-child{padding-right:0;}
+  tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--panel-2);}
+  .pill{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:20px;
+    font-size:11px;
+    font-family:'Vazirmatn', Tahoma, sans-serif;
+    white-space:nowrap;
+  }
+  .pill.good{background:var(--sage-soft); color:var(--sage);}
+  .pill.tight{background:var(--jam-soft); color:var(--jam);}
+  .bar{display:inline-block; vertical-align:middle; width:90px; height:7px; border-radius:4px; background:var(--grid); margin-left:8px; overflow:hidden;}
+  .bar > i{display:block; height:100%; background:var(--sage); border-radius:4px;}
+  .bar.tight > i{background:var(--jam);}
+  .story{
+    font-size:14px;
+    color:var(--text-dim);
+    max-width:720px;
+    margin:14px 0 0;
+  }
+  .story b{color:var(--text);}
+  .ccc-side{display:flex; flex-direction:column; justify-content:center; gap:14px;}
+  .ccc-big{font-family:'Vazirmatn', Tahoma, serif; font-size:36px; color:var(--accent-ink);}
+  .ccc-side .explain{border-top:1px solid var(--line); padding-top:14px; font-size:13.5px; color:var(--text-dim); line-height:1.6;}
+  .ccc-side b{color:var(--text);}
+  .bw-kpis{margin:0 0 24px;}
+  .rules{margin:0 0 6px; padding-inline-start:20px; font-size:14px; color:var(--text-dim);}
+  .rules li{margin:7px 0;}
+  .rules b{color:var(--text);}
+  .pill.warn{background:#FFF1BF; color:#7A5A00;}
+  .heat{width:100%; border-collapse:separate; border-spacing:3px;}
+  .heat th{font-size:10.5px; padding:2px 0; text-align:center; border-bottom:none; color:var(--text-faint); white-space:nowrap;}
+  .heat td{text-align:center; font-size:11.5px; padding:9px 0; border-bottom:none; border-radius:5px; font-variant-numeric:tabular-nums;}
+  .heat td.name{text-align:start; font-size:12.5px; padding-inline-end:10px; white-space:nowrap; background:none !important;}
+  .nav{position:sticky; top:0; z-index:20; display:flex; gap:8px; overflow-x:auto; padding:10px 0; margin:0 0 18px; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); scrollbar-width:none;}
+  .nav::-webkit-scrollbar{display:none;}
+  .nav a{flex:none; font-size:12.5px; font-weight:600; color:var(--text-dim); text-decoration:none; padding:6px 14px; border-radius:20px; border:1px solid var(--line); background:var(--panel-2);}
+  .nav a:hover{color:var(--accent-ink); background:var(--accent-soft);}
+  html{scroll-behavior:smooth; scroll-padding-top:62px;}
+    .chart-box{direction:ltr;}
+  .ltr, code{direction:ltr; unicode-bidi:isolate; display:inline-block;}
+  code{background:var(--panel-2); padding:1px 5px; border-radius:3px; font-size:12px;}
+  footer{
+    margin-top:60px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+    font-size:12.5px;
+    color:var(--text-faint);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  footer a{color:var(--accent-ink);}
+  @media (max-width: 1100px){
+    .two-col.even{grid-template-columns:minmax(0, 1fr);}
+  }
+  @media (max-width: 900px){
+    .kpi-row{grid-template-columns:repeat(2, minmax(0, 1fr));}
+    .two-col, .two-col.even{grid-template-columns:minmax(0, 1fr);}
+    .section-note{text-align:right;}
+  }
+  @media (max-width: 560px){
+    .wrap{padding:32px 16px 60px;}
+    .kpi-row{gap:10px;}
+    .kpi{padding:12px 12px 11px;}
+    .kpi .num{font-size:23px;}
+    .panel{padding:16px 12px 12px;}
+    .chart-box, .chart-box.tall{height:260px;}
+    /* one line per row; the table scrolls sideways inside its panel */
+    .table-scroll td{white-space:nowrap;}
+  }
+
+  /* ===== Redesign: factory-floor identity (stainless, process blue, safety yellow) ===== */
+  :root{ --bg:#EEF1F4; --panel:#FFFFFF; --radius:6px; --shadow:none;
+         --f-disp:'Vazirmatn',Tahoma,sans-serif; --f-body:'Vazirmatn',Tahoma,system-ui,sans-serif; }
+  body{background:var(--bg); font-family:var(--f-body); line-height:1.8; -webkit-font-smoothing:antialiased;}
+  .topbar{height:8px; background:repeating-linear-gradient(135deg,#F4B400 0 14px,#12202E 14px 28px);}
+  .wrap{padding:28px 28px 80px;}
+  .toprow{align-items:center; margin-bottom:34px;}
+  .brand{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+  .brand b{font-family:var(--f-disp); font-size:20px; font-weight:800; color:var(--text);}
+  .brand .tag{font-size:12.5px; font-weight:600; color:var(--text); background:#F4B400; border-radius:3px; padding:2px 9px;}
+  .lang{border-radius:6px; border:1.5px solid var(--text); background:#fff; color:var(--text); font-weight:700; padding:5px 14px;}
+  .lang:hover{background:var(--text); color:#fff;}
+  .hero{display:grid; grid-template-columns:minmax(0,1.12fr) minmax(300px,0.88fr); gap:44px; align-items:start; margin-bottom:40px;}
+  h1{font-family:var(--f-disp); font-weight:800; font-size:clamp(30px, 5.4vw, 50px); line-height:1.55; margin:0 0 20px; max-width:none; text-wrap:balance; color:var(--text);}
+  .hero-text p{font-size:15.5px; max-width:56ch; color:var(--text-dim);}
+  .facts{background:#fff; border:2px solid var(--text); padding:14px 16px 12px; max-width:440px; justify-self:end; width:100%;}
+  .facts h3{font-family:var(--f-disp); font-size:26px; font-weight:800; line-height:1.1; margin:0; color:var(--text);}
+  .facts .sub{font-size:12.5px; color:var(--text-dim); margin:2px 0 6px; padding-bottom:6px; border-bottom:8px solid var(--text);}
+  .facts .row{display:grid; grid-template-columns:1fr auto 4.6em; gap:10px; align-items:baseline; padding:6px 0; border-bottom:1px solid var(--text); font-size:14px; font-variant-numeric:tabular-nums;}
+  .facts .row .v{font-weight:700;} .facts .row .s{text-align:end; font-weight:700;}
+  .facts .row.sep{border-bottom:5px solid var(--text);}
+  .facts .row.hl{background:#FFF1BF; margin-inline:-16px; padding-inline:16px; border-bottom:none;}
+  .facts .row.dim{color:var(--text-dim);} .facts .row.dim .v, .facts .row.dim .s{font-weight:500;}
+  .facts .foot{font-size:11.5px; color:var(--text-dim); margin:8px 0 0;}
+  .facts .row{opacity:0; transform:translateY(6px); animation:rowin .5s ease forwards; animation-delay:calc(var(--i) * 80ms + 150ms);}
+  @keyframes rowin{to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion:reduce){.facts .row{opacity:1; transform:none; animation:none;} html{scroll-behavior:auto;}}
+  .nav{top:10px; background:var(--text); border:none; border-radius:8px; padding:6px; margin:0 0 32px; gap:4px; backdrop-filter:none;}
+  .nav a{border:none; background:transparent; color:#C9D3DD; border-radius:5px; padding:7px 14px; font-weight:600;}
+  .nav a:hover{background:rgba(255,255,255,0.12); color:#fff;}
+  .nav a.active{background:#F4B400; color:var(--text);}
+  html{scroll-padding-top:84px;}
+  a:focus-visible, .nav a:focus-visible{outline:3px solid #F4B400; outline-offset:2px;}
+  .kpi-row{gap:0; border:1px solid var(--line); border-radius:var(--radius); background:#fff; overflow:hidden; margin:0 0 30px;}
+  .kpi{border:none; border-radius:0; box-shadow:none; background:#fff; border-inline-start:4px solid var(--accent); border-bottom:1px solid var(--line); padding:16px 18px;}
+  .kpi.risk{border-inline-start-color:var(--jam);} .kpi.good{border-inline-start-color:var(--sage);}
+  .kpi .label{font-size:12.5px; font-weight:600; color:var(--text-dim);}
+  .kpi .num{font-family:var(--f-disp); font-weight:800; color:var(--text); line-height:1.1; margin-top:6px;}
+  .kpi.risk .num{color:var(--jam);} .kpi.good .num{color:var(--sage);}
+  section{margin-bottom:60px;}
+  .section-head{border-top:3px solid var(--text); padding-top:12px; margin-bottom:20px; align-items:flex-end;}
+  h2{font-family:var(--f-disp); font-weight:800; font-size:24px; line-height:1.15; color:var(--text);}
+  .section-note{font-size:13px; max-width:46ch; text-align:end; color:var(--text-dim);}
+  .panel{border-radius:var(--radius); box-shadow:none; border:1px solid var(--line); background:#fff;}
+  .panel-title{font-size:13px; font-weight:700; color:var(--text); margin-bottom:12px;}
+  th{text-transform:none !important; letter-spacing:0 !important; font-size:12px; font-weight:700; color:var(--text-dim);}
+  td.num, th.num, .pill, .heat td{font-family:var(--f-body); font-variant-numeric:tabular-nums;}
+  .pill{border-radius:4px; font-weight:700;}
+  .story{font-size:14.5px; color:var(--text); max-width:72ch; border-inline-start:4px solid #F4B400; padding-inline-start:14px; margin:18px 0;}
+  footer{border-top:3px solid var(--text); padding-top:14px; color:var(--text-dim);}
+  footer a{color:var(--accent-ink); font-weight:600;}
+  @media (max-width:900px){ .hero{grid-template-columns:1fr; gap:26px;} .facts{justify-self:stretch; max-width:none;} .nav{top:6px;} .section-note{text-align:start;} }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<div class="wrap">
+
+  <header>
+    <div class="toprow"><div class="brand"><svg width="30" height="30" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="5" fill="#12202E"/><rect x="8" y="7" width="12" height="7" rx="1.5" fill="#fff"/><path d="M5 19h18" stroke="#F4B400" stroke-width="3" stroke-linecap="round"/></svg><b>کارخانه کیک و شیرینی</b><span class="tag">اتاق کنترل S&amp;OP</span></div><a class="lang" href="../" hreflang="en" lang="en">English</a></div>
+    <div class="hero"><div class="hero-text"><h1 id="h1">دوازده هفته به جلو: خط کلوچه به نوروز می‌خورد — و برنامه از همین حالا خبر دارد.</h1>
+    <p>پیش‌بینی هفتگی تقاضا (هولت-وینترز)، برنامه تولید با محدودیت ظرفیت و نیروی کار (برنامه‌ریزی خطی)، نیازمندی‌های مواد، و تحلیل اثر شلاقی در خرید مواد اولیه؛ خروجی موتور <span class="ltr" style="color:var(--text)">food-manufacturing-sop-planning-engine</span>.</p></div>
+    <aside class="facts" id="facts" aria-label="مشخصات کارخانه"></aside></div>
+  </header>
+
+  <nav class="nav" id="nav"><a href="#value">ارزش</a><a href="#bullwhip">اثر شلاقی</a><a href="#plan">برنامه</a><a href="#linesDeep">خطوط تولید</a><a href="#waste">ضایعات</a><a href="#whDeep">انبار</a><a href="#cash">نقدینگی</a><a href="#accuracy">دقت پیش‌بینی</a></nav>
+
+  <section id="value">
+    <div class="section-head">
+      <h2>ارزش کجاست</h2>
+      <div class="section-note">نقدینگی‌ای که یک‌بار آزاد می‌شود و صرفه‌جویی‌هایی که هر سال تکرار می‌شوند — کشف‌شده توسط موتور از داده‌ی خودِ همین کارخانه.</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="valKpis"></div>
+    <div class="two-col even">
+      <div class="panel"><p class="panel-title">فرصت‌های ارزش (سبز = نقدینگی یک‌باره، آبی = سالانه)</p><div class="chart-box"><canvas id="ledgerChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">درآمد ماهانه به تفکیک خط، آخرین سال کامل</p><div class="chart-box"><canvas id="revChart"></canvas></div></div>
+    </div>
+    <p class="story" id="valStory"></p>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">هر فرصت چگونه اندازه‌گیری می‌شود</p>
+      <table class="compact"><thead><tr><th>فرصت</th><th>نوع</th><th class="num">ارزش</th><th>مبنا</th></tr></thead><tbody id="ledgerTable"></tbody></table>
+    </div>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">سودآوری خطوط، آخرین سال کامل</p>
+      <table class="compact"><thead><tr><th>خط</th><th class="num">درآمد</th><th class="num">مواد</th><th class="num">نیروی کار مستقیم</th><th class="num">حاشیه‌ی مشارکت</th><th class="num">درصد</th><th class="num">به‌ازای ساعت ماشین</th></tr></thead><tbody id="profitTable"></tbody></table>
+    </div>
+  </section>
+
+
+  <section id="bullwhip">
+    <div class="section-head">
+      <h2>اثر شلاقی (Bullwhip): چطور یک نیاز واقعی به نقدینگی خوابیده تبدیل می‌شود</h2>
+      <div class="section-note">هر سفارش خرید از نیاز محاسبه‌شده‌ی انبار شروع می‌شود. هر لایه‌ی مدیریتی «محض احتیاط» چیزی به آن می‌افزاید — و موجودی اضافه همان نقدینگی‌ای است که کارخانه ندارد.</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="bwKpis"></div>
+    <div class="two-col even">
+      <div class="panel"><p class="panel-title">از نیاز انبار تا خرید — سفارش متوسط (نیاز = ۱۰۰)</p><div class="chart-box"><canvas id="stackChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">منشأ موجودی اضافه</p><div class="chart-box"><canvas id="layerChart"></canvas></div></div>
+    </div>
+    <p class="story" id="bwStory"></p>
+    <div class="panel" style="margin-top:20px"><p class="panel-title">نقدینگی خوابیده در موجودی اضافه‌ی مواد اولیه، میانگین هفتگی</p><div class="chart-box tall"><canvas id="tiedChart"></canvas></div></div>
+    <div class="two-col even" style="margin-top:20px">
+      <div class="panel"><p class="panel-title">ارزش موجودی اضافه به تفکیک ماده: وضع فعلی در برابر سیاست مدیریت‌شده</p><div class="chart-box"><canvas id="matExcessChart"></canvas></div></div>
+      <div class="panel table-scroll">
+        <p class="panel-title">بزرگ‌ترین خریدهای مازاد</p>
+        <table class="compact"><thead><tr><th>ماده · سفارش</th><th class="num">نیاز ← خرید</th><th class="num">ارزش مازاد</th><th class="num">سود خالص معامله</th></tr></thead><tbody id="bwTable"></tbody></table>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:20px">
+      <p class="panel-title">سیاست مدیریت‌شده — چه چیزی تغییر می‌کند</p>
+      <ul class="rules">
+        <li><b>یک تلورانس اعلام‌شده برای هر ماده</b>، بر اساس نوسان مصرف در سطح خدمت ۹۵٪ (میانگین <span id="tolAvg"></span>) — به‌جای سه حدس انباشته (روی‌هم <span id="tolStack"></span>).</li>
+        <li><b>دروازه‌ی معامله</b>: مقدار اضافه برای پیشنهاد تأمین‌کننده فقط وقتی خریده می‌شود که تخفیف از هزینه‌ی نقدینگیِ خوابیده بیشتر باشد، با سقف ۱۰٪ نیاز.</li>
+        <li><b>یک دفتر شفاف</b>: هر سفارش، مسیر نیاز ← هر لایه ← خرید را ثبت می‌کند (<code>fact_replenishment_chain</code>)؛ پس هر تلورانس صاحب و عدد دارد و فاصله پیش از خرج‌شدن پول دیده می‌شود.</li>
+      </ul>
+      <p class="story" id="bwResult" style="margin-top:8px"></p>
+      <p class="story" style="font-size:12.5px; color:var(--text-faint)">تلورانس لایه‌ها، احتمال معامله و هزینه‌ی ۵۵٪ سالانه‌ی نقدینگی، فرض‌های مستند شبیه‌سازی‌اند (<code>analytics/bullwhip.py</code>) — برای عدد واقعی، سابقه‌ی سفارش‌های ERP خودتان را جایگزین کنید.</p>
+    </div>
+  </section>
+
+  <section id="plan">
+    <div class="section-head">
+      <h2>نمای کلی برنامه‌ی ۱۲ هفته‌ای</h2>
+      <div class="section-note">پیش‌بینی، برنامه‌ی محدود به ظرفیت و شاخص‌های اصلی سطح خدمت و هزینه.</div>
+    </div>
+    <div class="kpi-row" id="kpiRow" style="margin-bottom:0"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>پیش‌بینی در برابر تولید برنامه‌ریزی‌شده، به تفکیک هفته</h2>
+      <div class="section-note">ستون‌ها: تعداد واحد. خط: نرخ تأمین تقاضا. ستون‌های قرمز هفته‌هایی‌اند که تقاضا از توان واقعی کارخانه بیشتر است.</div>
+    </div>
+    <div class="panel"><div class="chart-box tall"><canvas id="weeklyChart"></canvas></div></div>
+    <p class="story" id="story1"></p>
+  </section>
+
+  <section>
+    <div class="two-col">
+      <div>
+        <div class="section-head">
+          <h2>کمبود دقیقاً کجا رخ می‌دهد</h2>
+        </div>
+        <div class="panel">
+          <p class="panel-title" id="lineChartTitle">خط گلوگاه — تولید هفتگی</p>
+          <div class="chart-box"><canvas id="lineChart"></canvas></div>
+        </div>
+        <p class="story" id="story2"></p>
+      </div>
+      <div>
+        <div class="section-head">
+          <h2>کدام کالاها این کمبود را جذب می‌کنند</h2>
+        </div>
+        <div class="panel">
+          <p class="panel-title">درآمد ازدست‌رفته بر اثر تقاضای تأمین‌نشده، به تفکیک کالا</p>
+          <div class="chart-box"><canvas id="unmetChart"></canvas></div>
+        </div>
+        <p class="story" id="story3"></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>کارنامه خطوط تولید در افق ۱۲ هفته‌ای</h2>
+      <div class="section-note">تولید برنامه‌ریزی‌شده در برابر پیش‌بینی برای هر خط؛ درآمد به قیمت لیست.</div>
+    </div>
+    <div class="panel table-scroll">
+      <table>
+        <thead><tr><th>خط</th><th class="num">پیش‌بینی</th><th class="num">برنامه</th><th>نرخ تأمین</th><th class="num">واحد تأمین‌نشده</th><th class="num">درآمد برنامه</th><th class="num">درآمد ازدست‌رفته</th></tr></thead>
+        <tbody id="lineTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="linesDeep">
+    <div class="section-head">
+      <h2>خطوط تولید در عمق</h2>
+      <div class="section-note">کیفیت اجرا بر اساس لاگ تولید دو ساله، به‌علاوه‌ی میزان فشار برنامه بر هر خط.</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="lnKpis"></div>
+    <div class="two-col even">
+      <div class="panel"><p class="panel-title">هر خط خروجی خود را کجا از دست می‌دهد (سهم از ظرفیت برنامه‌ریزی‌شده)</p><div class="chart-box"><canvas id="lossChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">OEE ماهانه به تفکیک خط</p><div class="chart-box"><canvas id="oeeTrendChart"></canvas></div></div>
+    </div>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">بهره‌برداری برنامه‌ریزی‌شده به تفکیک هفته — محدودکننده‌ترین قید بین ساعت ماشین و ساعت نیروی کار (درصد)</p>
+      <table class="heat" id="heatTable"></table>
+    </div>
+    <p class="story" id="lnStory"></p>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">شناسنامه‌ی خطوط</p>
+      <table class="compact"><thead><tr><th>خط</th><th class="num">اپراتور</th><th class="num">OEE</th><th class="num">ضایعات</th><th class="num">توقف در روز</th><th class="num">اتلاف تعویض قالب</th><th class="num">حضور</th><th class="num">میانگین بار برنامه</th></tr></thead><tbody id="lnTable"></tbody></table>
+    </div>
+    <div class="two-col even" style="margin-top:20px">
+      <div class="panel"><p class="panel-title">حضور نیروی کار به تفکیک ماه (حاضر ÷ برنامه‌ریزی‌شده)</p><div class="chart-box"><canvas id="attChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">حضور به تفکیک شیفت</p><div class="chart-box"><canvas id="shiftChart"></canvas></div></div>
+    </div>
+  </section>
+
+  <section id="waste">
+    <div class="section-head">
+      <h2>ضایعات: کارخانه کجا محصول دور می‌ریزد</h2>
+      <div class="section-note">ضایعات بر پایه‌ی هزینه‌ی مواد به‌علاوه‌ی نیروی کار مستقیم هر واحد، از لاگ تولید دو ساله.</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="wasteKpis"></div>
+    <div class="two-col even">
+      <div class="panel"><p class="panel-title">هزینه‌ی سالانه‌ی ضایعات (ستون) و نرخ ضایعات (نقطه)، به تفکیک خط</p><div class="chart-box"><canvas id="wasteLineChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">هزینه‌ی ماهانه‌ی ضایعات (ستون) و نرخ ضایعات (خط)</p><div class="chart-box"><canvas id="wasteTrendChart"></canvas></div></div>
+    </div>
+    <div class="two-col even" style="margin-top:20px">
+      <div class="panel"><p class="panel-title">۱۰ محصول برتر از نظر هزینه‌ی ضایعات، در سال</p><div class="chart-box" style="height:380px"><canvas id="wasteTopChart"></canvas></div></div>
+      <div class="panel table-scroll"><p class="panel-title">رسیدن به هدف ضایعات چقدر ارزش دارد</p>
+        <table class="compact"><thead><tr><th>محصول</th><th class="num">نرخ ضایعات</th><th class="num">هزینه / سال</th><th class="num">صرفه‌جویی / سال</th></tr></thead><tbody id="wasteTable"></tbody></table></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>مواد در معرض ریسک و سفارش‌های پیشنهادی</h2>
+      <div class="section-note">MRP نیاز مواد برنامه را با موجودی پیش‌بینی‌شده و هدف موجودی اطمینان تطبیق می‌دهد.</div>
+    </div>
+    <div class="two-col even">
+      <div class="panel fill">
+        <p class="panel-title">مواد اولیه زیر هدف موجودی اطمینان، به تفکیک هفته</p>
+        <div class="chart-box"><canvas id="materialChart"></canvas></div>
+      </div>
+      <div class="panel table-scroll">
+        <p class="panel-title">بزرگ‌ترین سفارش‌های پیشنهادی در افق برنامه · <span style="font-weight:400">زمان تأمین: مهلت تحویل تأمین‌کننده · کمبود: هفته‌های زیر موجودی اطمینان</span></p>
+        <table class="compact">
+          <thead><tr><th>ماده</th><th class="num">مقدار سفارش</th><th class="num">ارزش (دلار)</th><th class="num" title="مهلت تحویل تأمین‌کننده">تأمین</th><th class="num" title="هفته‌های زیر هدف موجودی اطمینان">کمبود</th></tr></thead>
+          <tbody id="reorderTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="whDeep">
+    <div class="section-head">
+      <h2>انبار در عمق</h2>
+      <div class="section-note">موجودی مواد اولیه، پوشش در برابر هدف موجودی اطمینان، و قابلیت اتکای ورودی‌ها — از دفتر موجودی دو ساله.</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="whKpis"></div>
+    <div class="two-col even">
+      <div class="panel"><p class="panel-title">روزهای پوشش فعلی در برابر هدف موجودی اطمینان (قرمز = زیر هدف، نارنجی = مازاد)</p><div class="chart-box" style="height:470px"><canvas id="coverChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">تحلیل ABC: چند ماده بخش عمده‌ی ارزش مصرف را دارند</p><div class="chart-box" style="height:470px"><canvas id="paretoChart"></canvas></div></div>
+    </div>
+    <div class="panel" style="margin-top:20px"><p class="panel-title">ارزش موجودی مواد اولیه به تفکیک ماه</p><div class="chart-box"><canvas id="stockValueChart"></canvas></div></div>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">شناسنامه‌ی مواد</p>
+      <table class="compact"><thead><tr><th>ماده</th><th>کلاس</th><th class="num">موجودی</th><th class="num">ارزش</th><th class="num">پوشش</th><th class="num">اطمینان</th><th class="num">تأمین</th><th class="num">گردش سالانه</th><th class="num">زمان زیر اطمینان</th><th>وضعیت</th></tr></thead><tbody id="whTable"></tbody></table>
+    </div>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">ورودی‌ها: قابلیت اتکای تأمین‌کنندگان</p>
+      <table class="compact"><thead><tr><th>تأمین‌کننده</th><th class="num">سهم از هزینه</th><th class="num">سفارش</th><th class="num">به‌موقع</th><th class="num">میانگین تأخیر</th><th class="num">شرایط پرداخت</th></tr></thead><tbody id="supTable"></tbody></table>
+    </div>
+    <p class="story" style="font-size:12.5px; color:var(--text-faint)">دفتر موجودی بالا از شبیه‌سازی پایه می‌آید که در آن هر سفارش به اندازه‌ی نیاز محاسبه‌شده است. بخش اثر شلاقی در بالای گزارش، موجودی اضافه‌ای را نشان می‌دهد که زنجیره‌ی سفارش‌دهی بیش از حد روی آن اضافه می‌کند.</p>
+  </section>
+
+  <section id="cash">
+    <div class="section-head">
+      <h2>چرخه تبدیل وجه نقد (CCC)</h2>
+      <div class="section-note">میانگین متحرک ۹۰ روزه DIO + DSO − DPO، هفتگی؛ فقط هفته‌های پایدار (<span class="ltr">docs/DATA_DICTIONARY.md</span>).</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="wcKpis"></div>
+    <div class="two-col">
+      <div class="panel"><div class="chart-box"><canvas id="cccChart"></canvas></div></div>
+      <div class="panel ccc-side">
+        <div>
+          <div class="ccc-big" id="cccBig">—</div>
+          <div style="font-size:12.5px; color:var(--text-dim);">میانگین CCC در ۱۲ هفته آخر داده</div>
+        </div>
+        <div class="explain">
+          <b>مواد اولیه (DIO) تقریباً روی عدد اثر ندارند</b> — ماندگاری کوتاه، موجودی کالای ساخته‌شده را نزدیک صفر نگه می‌دارد؛ پس نقدینگی در انبار گیر نکرده است.<br><br>عامل اصلی، فاصله‌ی میان <b>کندی پرداخت مشتریان خرده‌فروشی و عمده (DSO)</b> و <b>سرعت لازم برای پرداخت به تأمین‌کنندگان مواد فاسدشدنی (DPO)</b> است — تأمین‌کنندگان لبنیات تقریباً نقدی تسویه می‌کنند، اما زنجیره‌های بزرگ خرده‌فروشی معمولاً ۵۰ تا ۹۰ روز مهلت می‌گیرند.
+        </div>
+      </div>
+    </div>
+    <p class="story">این عدد از دفاتر شبیه‌سازی‌شده‌ی دریافتنی و پرداختنی (<code>analytics/working_capital.py</code>) محاسبه شده، نه فرض شده — همان تصمیم‌های موجودی و خرید که بقیه‌ی موتور بر آن‌ها بنا شده، این عدد را جابه‌جا می‌کنند.</p>
+  </section>
+
+  <section id="accuracy">
+    <div class="section-head">
+      <h2>دقت پیش‌بینی (بک‌تست)</h2>
+      <div class="section-note">بک‌تست غلتان ۸ هفته‌ای، WAPE به‌ازای هر کالا. کل: <b style="color:var(--accent-ink)" id="wapeNote">—</b>.</div>
+    </div>
+    <div class="panel table-scroll">
+      <table>
+        <thead><tr><th>دقیق‌ترین پیش‌بینی‌ها</th><th class="num">WAPE</th><th style="padding-right:40px">سخت‌ترین کالاها برای پیش‌بینی</th><th class="num">WAPE</th></tr></thead>
+        <tbody id="accTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>داده‌ی مصنوعی · ۱۲ جدول · ۱۸۵٬۲۷۴ ردیف · تکرارپذیر (seed ثابت)</span>
+    <span>کد و پایپ‌لاین کامل: <a class="ltr" href="https://github.com/Milad-Shabani/Food-manufacturing-sop-planning-engine">github.com/Milad-Shabani/Food-manufacturing-sop-planning-engine</a></span>
+  </footer>
+
+</div>
+
+<script>
+const D = DASHBOARD_DATA;
+const K = D.kpi;
+const fa = n => new Intl.NumberFormat('fa-IR',{maximumFractionDigits:0}).format(n);
+const fa1 = n => new Intl.NumberFormat('fa-IR',{maximumFractionDigits:1}).format(n);
+const fmt = n => fa(Math.round(n));
+const fmtUSD = n => { const a = Math.abs(n), g = n < 0 ? '−' : ''; return g + (a >= 1e9 ? fa1(a/1e9) + ' میلیارد دلار' : a >= 1e6 ? fa1(a/1e6) + ' میلیون دلار' : a >= 1e3 ? fa1(a/1e3) + ' هزار دلار' : fa(a) + ' دلار'); };
+const fmtM = fmtUSD, fmtShort = fmtUSD;
+const fmtTick = n => { const a = Math.abs(n), g = n < 0 ? '−' : ''; return g + '$' + (a >= 1e9 ? fa1(a/1e9) + 'B' : a >= 1e6 ? fa1(a/1e6) + 'M' : a >= 1e3 ? fa(a/1e3) + 'K' : fa(a)); };
+const pct = x => new Intl.NumberFormat('fa-IR',{minimumFractionDigits:1,maximumFractionDigits:1}).format(x*100) + '٪';
+const weekLabel = s => new Date(s).toLocaleDateString('fa-IR-u-ca-persian', {month:'short', day:'numeric', timeZone:'UTC'});
+// Persian names for lines / products / materials / units. Anything missing falls back to the
+// English name and is listed in the browser console so it can be added here.
+const FA = {"Sponge Cake Line": "خط کیک اسفنجی", "Cream-Filled Cake Line": "خط کیک کرم\u200cدار", "Traditional Kolucheh Line": "خط کلوچه سنتی", "Wafer & Biscuit Line": "خط ویفر و بیسکویت", "Seasonal & Holiday Line": "خط فصلی و مناسبتی", "Classic Vanilla Sponge Cake": "کیک اسفنجی وانیلی کلاسیک", "Chocolate Sponge Cake": "کیک اسفنجی شکلاتی", "Lemon Yogurt Sponge Cake": "کیک اسفنجی ماست و لیمو", "Honey Sponge Roll": "رول اسفنجی عسلی", "Vanilla Cream Cake": "کیک کرم\u200cدار وانیلی", "Chocolate Cream Cake": "کیک کرم\u200cدار شکلاتی", "Strawberry Cream Roll": "رول کرم توت\u200cفرنگی", "Hazelnut Cream Cake": "کیک کرم\u200cدار فندقی", "Walnut Kolucheh": "کلوچه گردویی", "Date Kolucheh": "کلوچه خرمایی", "Cardamom Kolucheh": "کلوچه هل", "Fars-style Kolucheh (Rice Flour)": "کلوچه فارس (آرد برنج)", "Plain Butter Kolucheh": "کلوچه کره\u200cای ساده", "Rosewater Kolucheh": "کلوچه گلاب", "Vanilla Wafer": "ویفر وانیلی", "Chocolate Wafer": "ویفر شکلاتی", "Hazelnut Wafer": "ویفر فندقی", "Plain Butter Biscuit": "بیسکویت کره\u200cای ساده", "Oat & Honey Cookie": "کوکی جو دوسر و عسل", "Cocoa Sandwich Cookie": "کوکی ساندویچی کاکائو", "Yalda Night Gift Box": "جعبه هدیه شب یلدا", "Nowruz Sweets Assortment Box": "جعبه شیرینی\u200cهای نوروزی", "Ramadan Date & Nut Pack": "بسته خرما و مغز ماه رمضان", "Summer Fruit Roll Cake": "رول کیک میوه\u200cای تابستانی", "Back-to-School Snack Pack": "بسته اسنک بازگشت به مدرسه", "Wheat Flour": "آرد گندم", "Rice Flour": "آرد برنج", "Sugar": "شکر", "Eggs": "تخم\u200cمرغ", "Butter": "کره", "Milk Powder": "شیر خشک", "Vegetable Oil": "روغن نباتی", "Cocoa Powder": "پودر کاکائو", "Walnuts": "گردو", "Dates": "خرما", "Cardamom": "هل", "Rosewater": "گلاب", "Vanilla Extract": "عصاره وانیل", "Baking Powder": "بیکینگ پودر", "Yeast": "مخمر", "Packaging Film": "فیلم بسته\u200cبندی", "Cartons": "کارتن", "Gift Box Packaging": "جعبه هدیه"};
+const FAU = {'kg':'کیلوگرم','L':'لیتر','unit':'عدد'};
+const _miss = new Set();
+const tn = s => { if (FA[s]) return FA[s]; _miss.add(s); return s; };
+const tu = s => FAU[s] || s;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// KPI strip and tables render first and don't depend on Chart.js, so the
+// page stays useful even if the charting script fails to load.
+
+const B = D.bw, BK = B.kpi, BS = B.stack;
+const f1 = x => fa1(x);
+const T = {
+  arrow:'←',
+  net: n => (n<0?'−':'+') + fmtUSD(Math.abs(n)),
+  stages:['نیاز انبار','+ تلورانس سرپرست','+ تلورانس مدیر','+ حاشیه‌ی تدارکات','خرید نهایی (با معامله)','سیاست مدیریت‌شده'],
+  layers:['سرپرست + مدیر','حاشیه‌ی تدارکات','معامله با تأمین‌کننده'],
+  wk:s=>new Date(s).toLocaleDateString('fa-IR-u-ca-persian',{month:'short',year:'numeric',timeZone:'UTC'}),
+  excess:'ارزش موجودی اضافه (دلار)', today:'وضع فعلی', managed:'سیاست مدیریت‌شده', held:d=>fmt(d)+' روز', none:'—',
+  h1:a=>'مشکل نقدینگی از سفارش خرید شروع می‌شود: نیاز ۱۰۰ واحدی به خریدی حدود '+fmt(a)+' واحدی تبدیل می‌شود.',
+  kpis:(k,s)=>[
+    {num:new Intl.NumberFormat('fa-IR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(k.amplification)+'×', label:'خرید ÷ نیاز واقعی', sub:'سفارش متوسط · سفارش‌های معامله‌ای '+f1(k.deal_po_amplification)+'×', tone:'risk'},
+    {num:fmtUSD(k.excess_value), label:'خرید بیش از نیاز', sub:pct(k.excess_value/k.purchase_value)+' از ارزش خرید', tone:'risk'},
+    {num:fmtUSD(k.avg_tied), label:'میانگین نقدینگی خوابیده در مازاد', sub:'اوج '+fmtUSD(k.peak_tied), tone:'risk'},
+    {num:fmtUSD(k.holding_cost), label:'هزینه‌ی سرمایه‌ی این موجودی', sub:'با نرخ ۵۵٪ سالانه', tone:'risk'},
+    {num:pct(k.overbuy20_pct), label:'سفارش‌های بیش از ۲۰٪ مازاد', sub:fmt(k.n_pos)+' سفارش خرید', tone:'risk'},
+    {num:pct(k.deals_positive_pct), label:'معامله‌های تأمین‌کننده‌ی سودده', sub:'خالص '+T.net(k.deal_net_total)+' در '+fmt(k.n_deals)+' معامله'},
+    {num:fmtUSD(k.freed_cash), label:'نقدینگی آزادشده با سیاست مدیریت‌شده', sub:'−'+pct(k.freed_cash/k.avg_tied)+' نقدینگی خوابیده', tone:'good'},
+    {num:pct(k.avg_tolerance_managed)+' در برابر '+pct(k.stack_tolerance), label:'یک تلورانس در برابر انباشته', sub:'مدیریت‌شده در برابر امروز، به‌ازای هر سفارش', tone:'good'},
+  ],
+  story:(k,s,L)=>'سفارش خرید از <b>۱۰۰</b> واحد نیاز واقعی شروع می‌شود. تلورانس سرپرست آن را <b>'+f1(s.supervisor)+'</b>، تلورانس مدیر <b>'+f1(s.manager)+'</b> و حاشیه‌ی تدارکات <b>'+f1(s.procurement)+'</b> می‌کند — و پیشنهاد تأمین‌کننده خرید معامله‌ای را به <b>'+f1(k.deal_po_amplification*100)+'</b> می‌رساند. در '+fmt(k.n_pos)+' سفارش، این یعنی <b>'+fmtUSD(k.excess_value)+'</b> خرید بیش از نیاز و به‌طور میانگین <b>'+fmtUSD(k.avg_tied)+'</b> نقدینگی خوابیده در انبار. خودِ معامله‌ها غالباً سودده‌اند ('+pct(k.deals_positive_pct)+' آن‌ها)؛ تلورانس‌های انباشته که هیچ بازدهی ندارند، <b>'+pct(L)+'</b> مازاد را می‌سازند.',
+  result:(k,s)=>'با این سیاست، همین سفارش‌ها به‌ازای هر ۱۰۰ واحد نیاز <b>'+f1(s.managed)+'</b> واحد می‌خرند (به‌جای <b>'+f1(s.purchase)+'</b>) و نقدینگی خوابیده از '+fmtUSD(k.avg_tied)+' به '+fmtUSD(k.managed_avg_tied)+' می‌رسد: <b>'+fmtUSD(k.freed_cash)+'</b> نقدینگی آزاد می‌شود، بدون دست‌زدن به سطح خدمت.',
+  ops:k=>[
+    {num:f1(k.inventory_turns)+'×', label:'گردش مواد اولیه', sub:'مصرف سالانه ÷ میانگین موجودی'},
+    {num:f1(k.days_cover)+' روز', label:'روزهای پوشش مواد اولیه', sub:'ارزش میانگین موجودی ÷ مصرف روزانه'},
+    {num:pct(k.on_time_pct), label:'تحویل به‌موقع تأمین‌کنندگان', sub:'سفارش‌های رسیده تا تاریخ مورد انتظار', tone:k.on_time_pct<0.8?'risk':'good'},
+    {num:f1(k.avg_delay_days)+' روز', label:'میانگین تأخیر تحویل', sub:'در همه‌ی سفارش‌ها'},
+  ],
+};
+
+const O = D.ops, WH = D.wh, OK = O.kpi, WK = WH.kpi;
+const mo = s => new Date(s + '-01').toLocaleDateString('fa-IR-u-ca-persian', {month:'short', year:'numeric'});
+const SUPFA = {"Alborz Flour Mills": "آسیاب\u200cهای آرد البرز", "Karaj Sugar Trading Co.": "بازرگانی شکر کرج", "Fresh Dairy Distributors": "پخش لبنیات تازه", "Golestan Nut & Dried Fruit Co.": "شرکت آجیل و خشکبار گلستان", "Persia Cocoa & Flavoring Imports": "واردات کاکائو و طعم\u200cدهنده\u200cی پرشیا", "National Packaging Industries": "صنایع بسته\u200cبندی ملی", "Alborz Vegetable Oil Refinery": "پالایشگاه روغن نباتی البرز", "Sepahan Industrial Sugar & Additives": "شکر صنعتی و افزودنی\u200cهای سپاهان"};
+const T2 = {
+  dayU:'روز', min:'دقیقه', hr:'ساعت', sup:s=>SUPFA[s]||s,
+  status:{below:'زیر اطمینان', ok:'مناسب', excess:'مازاد'},
+  shift:s=> s.startsWith('Morning')?'صبح (۶ تا ۱۴)': s.startsWith('Evening')?'عصر (۱۴ تا ۲۲)':'شب (۲۲ تا ۶)',
+  mo:mo, unitCover:d=>f1(d)+' روز',
+  loss:['توقف (دسترس‌پذیری)','سرعت / تولید کم‌حجم (عملکرد)','ضایعات (کیفیت)'],
+  lnKpis:(k)=>[
+    {num:pct(k.avg_oee), label:'میانگین OEE خطوط', sub:'دسترس‌پذیری × عملکرد × کیفیت'},
+    {num:pct(k.scrap_pct), label:'نرخ ضایعات', sub:'از واحدهای تولیدشده', tone:'good'},
+    {num:fmt(k.downtime_per_day)+' دقیقه', label:'توقف در هر خط-روز', sub:'میانگین پنج خط'},
+    {num:pct(k.changeover_loss), label:'زمان از دست‌رفته در تعویض', sub:'سهم از زمان برنامه‌ریزی‌شده', tone:'risk'},
+    {num:pct(k.attendance), label:'حضور نیروی کار', sub:fmt(k.operators)+' اپراتور تولید'},
+    {num:pct(k.peak_util), label:'اوج بار برنامه', sub:k.peak_line, tone:'risk'},
+  ],
+  lnStory:(k,O)=>{ const oth=O.lines.filter(l=>l.line_name!==k.peak_line); const a=oth.reduce((x,l)=>x+l.avg_util,0)/oth.length;
+    return '<b>'+k.peak_line+'</b> تنها خطی است که برنامه واقعاً پرش می‌کند — در دو هفته‌ی منتهی به نوروز به '+pct(k.peak_util)+' محدودکننده‌ترین قیدش می‌رسد. چهار خط دیگر به‌طور میانگین با '+pct(a)+' ظرفیت برنامه‌ریزی‌شده کار می‌کنند؛ پس افزودن ظرفیت جای دیگر کمکی نمی‌کند. توسعه‌ی خطِ گلوگاه پرسشی درباره‌ی حاشیه‌ی سود است — این خط کمترین مشارکت را به‌ازای هر ساعت ماشین دارد (جدول سودآوری در بالای گزارش). OEE اندازه‌گیری‌شده خروجی را با برنامه‌ی تولید می‌سنجد، نه با سرعت اسمی؛ ضریب ظرفیت مؤثر '+pct(0.62)+' در مدل برنامه‌ریزی، تعویض قالب و اشتراک محصولات را هم پوشش می‌دهد.'; },
+  whKpis:(k)=>[
+    {num:fmtUSD(k.value_now), label:'ارزش موجودی مواد اولیه', sub:'میانگین '+fmtUSD(k.value_avg)},
+    {num:f1(k.avg_cover)+' روز', label:'میانگین روزهای پوشش', sub:'وزن‌دهی‌شده با ارزش مصرف'},
+    {num:f1(k.turns)+'×', label:'گردش سالانه‌ی موجودی', sub:'مصرف ÷ میانگین موجودی'},
+    {num:fmt(k.n_below)+' از '+fmt(k.n_materials), label:'مواد زیر پوشش اطمینان', sub:fmt(k.n_excess)+' ماده با موجودی مازاد', tone:'risk'},
+    {num:pct(k.a_share), label:'ارزش مواد کلاس A', sub:fmt(k.n_a)+' از '+fmt(k.n_materials)+' ماده'},
+    {num:fmt(k.stockout_days), label:'روزهای کمبود کامل در دو سال', sub:'ماده-روزِ صفر یا کمتر', tone:k.stockout_days>0?'risk':'good'},
+  ],
+  cover:['روزهای پوشش فعلی','هدف موجودی اطمینان (روز)'], share:'سهم از ارزش مصرف', cum:'تجمعی', stock:'ارزش موجودی',
+  att:'حضور', heatTip:(l,w,u,b)=>l+' · '+w+': '+pct(u)+' (قید '+(b==='labor'?'ساعت نیروی کار':'ساعت ماشین')+')',
+  heatHead:'خط',
+};
+
+const E = D.econ, EK = E.kpi, W = D.waste, WKP = W.kpi, LG = D.ledger;
+const avg12 = k => D.ccc.slice(-12).reduce((a, r) => a + r[k], 0) / 12;
+const DSO = avg12('dso'), DIO = avg12('dio'), DPO = avg12('dpo');
+const mDaily = EK.materials / 365;
+const AR = DSO * EK.cash_per_ccc_day, INVV = DIO * mDaily, AP = DPO * mDaily;
+const cashTotal = LG.filter(x => x.kind === 'cash').reduce((a, x) => a + x.value, 0);
+const annTotal = LG.filter(x => x.kind === 'annual').reduce((a, x) => a + x.value, 0);
+const T3 = {
+  kind:{cash:'نقدینگی یک‌باره', annual:'در سال'},
+  led:{inventory_cash:['نقدینگی آزادشده از موجودی اضافه','میانگین نقدینگی خوابیده در موجودی بیش از نیاز، که سیاست خرید مدیریت‌شده آن را حذف می‌کند (بخش اثر شلاقی).'],
+       inventory_cost:['هزینه‌ی سرمایه‌ی موجودی اضافه','هزینه‌ی نقدینگی (۵۵٪ سالانه) روی موجودی‌ای که سیاست مدیریت‌شده دیگر نمی‌خرد.'],
+       scrap:['کاهش ضایعات تا نرخ هدف','هر محصولِ بالاتر از نرخ هدف به آن می‌رسد؛ با هزینه‌ی مواد + نیروی کار مستقیم.'],
+       bottleneck:['کمبود نوروز در خط گلوگاه','حاشیه‌ی ناخالص تقاضایی که خط گلوگاه در دو هفته‌ی اوج نمی‌تواند تأمین کند.'],
+       ccc_day:['وصول مطالبات ۵ روز زودتر','درآمد ۵ روز از مطالبات آزاد می‌شود (درآمد ÷ ۳۶۵ × ۵).']},
+  h1:(a,d)=>'نقدینگی در دو جا گیر کرده است: خرید ' + fmt(a) + '٪ نیاز واقعی است و مشتریان بعد از ' + fmt(d) + ' روز پرداخت می‌کنند.',
+  valKpis:()=>[
+    {num:fmtUSD(cashTotal), label:'نقدینگی آزادشونده (یک‌باره)', sub:'موجودی اضافه + وصول سریع‌تر', tone:'good'},
+    {num:fmtUSD(annTotal), label:'صرفه‌جویی تکرارشونده', sub:pct(annTotal/EK.revenue)+' از درآمد، هر سال', tone:'good'},
+    {num:fmtUSD(EK.revenue), label:'درآمد '+EK.year+' (میلادی)', sub:f1(EK.units/1e6)+' میلیون واحد فروش'},
+    {num:pct(EK.gross_margin), label:'حاشیه‌ی ناخالص', sub:'مواد اولیه '+pct(EK.materials_pct)+' از درآمد است'},
+    {num:pct(EK.contribution_margin), label:'حاشیه‌ی مشارکت', sub:'پس از مواد و حقوق، پیش از انرژی و سربار'},
+    {num:pct(EK.payroll_pct), label:'حقوق و دستمزد', sub:fmt(EK.employees)+' نفر · هر نفر '+fmtUSD(EK.revenue_per_employee)+' درآمد'},
+    {num:fmtUSD(EK.cash_per_ccc_day), label:'نقدینگیِ یک روز از CCC', sub:'درآمد ÷ ۳۶۵'},
+    {num:f1(DSO)+' روز', label:'مشتریان بعد از این مدت می‌پردازند', sub:'مطالبات '+fmtUSD(AR), tone:'risk'},
+  ],
+  valStory:()=>{ const L=E.lines.slice().sort((a,b)=>a.per_machine_hour-b.per_machine_hour), lo=L[0], hi=L[L.length-1], top=LG.slice().sort((a,b)=>b.value-a.value)[0], bn=LG.find(x=>x.key==='bottleneck');
+    return 'موتور <b>'+fmtUSD(cashTotal)+'</b> نقدینگی یک‌باره و <b>'+fmtUSD(annTotal)+'</b> صرفه‌جویی تکرارشونده در سال پیدا می‌کند. بزرگ‌ترین اهرم <b>'+T3.led[top.key][0]+'</b> است ('+fmtUSD(top.value)+'). گلوگاه نوروز واقعی اما کوچک است — حدود <b>'+fmtUSD(bn.value)+'</b> حاشیه‌ی سالانه — و <b>'+tn(lo.line_name)+'</b> کمترین حاشیه‌ی مشارکت را به‌ازای هر ساعت ماشین دارد (<b>'+fmtUSD(lo.per_machine_hour)+'</b> در برابر <b>'+fmtUSD(hi.per_machine_hour)+'</b> در '+tn(hi.line_name)+')؛ پس افزودن ظرفیت آنجا جایی نیست که پول در آن است.'; },
+  wcKpis:()=>[
+    {num:fmtUSD(AR), label:'مطالبات معوق', sub:'مشتریان بعد از '+f1(DSO)+' روز می‌پردازند', tone:'risk'},
+    {num:fmtUSD(INVV), label:'موجودی مواد اولیه', sub:f1(DIO)+' روز موجودی'},
+    {num:fmtUSD(AP), label:'اعتبار تأمین‌کنندگان', sub:'پرداخت به تأمین‌کنندگان بعد از '+f1(DPO)+' روز', tone:'good'},
+    {num:fmtUSD(AR+INVV-AP), label:'نقدینگی خالص گیرکرده', sub:'مطالبات + موجودی − اعتبار تأمین‌کنندگان', tone:'risk'},
+  ],
+  wasteKpis:()=>[
+    {num:fmtUSD(WKP.cost_year), label:'هزینه‌ی سالانه‌ی ضایعات', sub:fmt(WKP.units_year)+' واحد ضایعات', tone:'risk'},
+    {num:pct(WKP.rate), label:'نرخ ضایعات', sub:'از واحدهای شروع‌شده'},
+    {num:pct(WKP.pct_revenue), label:'سهم ضایعات از درآمد', sub:'مواد + نیروی کار مستقیم'},
+    {num:fmtUSD(WKP.save_year), label:'صرفه‌جویی در هدف '+pct(WKP.target), sub:fmt(WKP.n_above_target)+' از '+fmt(WKP.n_products)+' محصول بالاتر از هدف‌اند', tone:'good'},
+    {num:tn(WKP.worst_line), label:'خط با بیشترین ضایعات', sub:'بر اساس نرخ ضایعات', tone:'risk'},
+    {num:pct(OK.changeover_loss), label:'زمان از دست‌رفته در تعویض', sub:'اتلاف از زمان برنامه‌ریزی‌شده'},
+  ],
+  waste:{cost:'هزینه‌ی ضایعات / سال', rate:'نرخ ضایعات', save:'صرفه‌جویی در هدف', cost2:'هزینه / سال'},
+  rev:'درآمد',
+  story1:()=>{ const clean=D.weekly.filter(w=>w.fill_rate>=0.9999).length;
+    return 'در افق '+fmt(K.n_weeks)+' هفته‌ای، برنامه <b>'+pct(K.total_allocated/K.total_forecast)+'</b> تقاضای پیش‌بینی‌شده را پوشش می‌دهد — اما کمبود متمرکز است: <b>'+fmt(K.total_unmet)+'</b> واحد (<b>'+fmtUSD(K.total_revenue_lost)+'</b> درآمد) در هفته‌های منتهی به نوروز تأمین نمی‌شود، وقتی نرخ تأمین به <b>'+pct(K.min_fill_rate)+'</b> می‌افتد (هفته‌ی '+weekLabel(K.min_fill_week)+'). '+(clean===K.n_weeks-K.weeks_short?'در همه‌ی هفته‌های دیگر برنامه <b>۱۰۰٪</b> پیش‌بینی را تأمین می‌کند.':''); },
+  story2:()=>'همه‌ی خطوط بدون مشکل پیش‌بینی و برنامه‌ریزی می‌شوند جز یکی: <b>'+tn(D.l3[0].line_name)+'</b>. ظرفیت این خط (متناسب با سرعت واقعی تا‌کردن دستی خمیر) نمی‌تواند هر دو هفته‌ی اوج را هم‌زمان پوشش دهد.',
+  story3:()=>'تصمیم مدل بهینه‌سازی: ابتدا اقلام با حاشیه‌ی بالاتر کامل تأمین می‌شوند. <b>'+D.top_unmet.map(p=>tn(p.product_name)).join('</b> و <b>')+'</b> — ارزان‌ترین انواع این خط — کمبود را جذب می‌کنند.',
+};
+const kpis = [
+  {num: fmt(K.total_forecast), label: 'واحد پیش‌بینی‌شده', sub: 'افق ' + fa(K.n_weeks) + ' هفته‌ای، ' + fa(K.n_products) + ' کالا'},
+  {num: fmt(K.total_allocated), label: 'واحد قابل‌تولید در برنامه', sub: pct(K.total_allocated / K.total_forecast) + ' از پیش‌بینی'},
+  {num: fmtUSD(K.total_revenue_planned), label: 'درآمد برنامه', sub: 'تولید برنامه‌ریزی‌شده به قیمت لیست', tone: 'good'},
+  {num: fmtUSD(K.total_revenue_lost), label: 'درآمد در معرض ریسک', sub: fmt(K.total_unmet) + ' واحد غیرقابل‌تولید', tone: K.total_revenue_lost > 0 ? 'risk' : 'good'},
+  {num: pct(K.min_fill_rate), label: 'کمترین نرخ تأمین هفتگی', sub: 'هفته‌ی ' + weekLabel(K.min_fill_week), tone: K.min_fill_rate < 0.95 ? 'risk' : 'good'},
+  {num: fa(K.weeks_short) + ' از ' + fa(K.n_weeks), label: 'هفته‌های کمتر از تقاضا', sub: 'سایر هفته‌ها کاملاً تأمین شده', tone: K.weeks_short > 0 ? 'risk' : 'good'},
+  {num: pct(D.overall_wape), label: 'خطای پیش‌بینی (WAPE)', sub: 'بک‌تست غلتان ۸ هفته‌ای'},
+  {num: fmtUSD(K.purchase_value), label: 'سفارش مواد', sub: fa(K.materials_to_reorder) + ' ماده اولیه برای سفارش'},
+  ...T.ops(BK),
+];
+document.getElementById('kpiRow').innerHTML = kpis.map(k =>
+  `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num">${k.num}</div><div class="sub">${k.sub}</div></div>`
+).join('');
+
+
+// ---- Bullwhip section (renders before, and independent of, Chart.js) ----
+const bwLayerSum = B.layers.tolerance_layers + B.layers.procurement_pad + B.layers.deal_uplift;
+const bwStackShare = (B.layers.tolerance_layers + B.layers.procurement_pad) / bwLayerSum;
+document.getElementById('h1').textContent = T.h1(BS.purchase);
+document.getElementById('bwKpis').innerHTML = T.kpis(BK, BS).map(k =>
+  `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num" style="font-size:${k.num.length > 12 ? 20 : 28}px">${k.num}</div><div class="sub">${k.sub}</div></div>`).join('');
+document.getElementById('bwStory').innerHTML = T.story(BK, BS, bwStackShare);
+document.getElementById('bwResult').innerHTML = T.result(BK, BS);
+document.getElementById('tolAvg').textContent = pct(BK.avg_tolerance_managed);
+document.getElementById('tolStack').textContent = pct(BK.stack_tolerance);
+document.getElementById('bwTable').innerHTML = B.top_pos.map(p => `<tr>
+  <td class="nowrap">${esc(tn(p.material_name))}<br><span style="font-size:11px;color:var(--text-faint)">${esc(p.po_id)}</span></td>
+  <td class="num">${fmt(p.need)} ${T.arrow} ${fmt(p.purchase)} ${esc(tu(p.unit))}</td>
+  <td class="num">${fmtUSD(p.excess_value)}</td>
+  <td class="num">${p.deal ? T.net(p.deal_net) : T.none}</td></tr>`).join('');
+
+
+// ---- Line + warehouse deep dive (tables render without Chart.js) ----
+document.getElementById('lnKpis').innerHTML = T2.lnKpis({...OK, peak_line: tn(OK.peak_line)}).map(k =>
+  `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num" style="font-size:${k.num.length > 12 ? 20 : 28}px">${k.num}</div><div class="sub">${k.sub}</div></div>`).join('');
+document.getElementById('whKpis').innerHTML = T2.whKpis(WK).map(k =>
+  `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num" style="font-size:${k.num.length > 12 ? 20 : 28}px">${k.num}</div><div class="sub">${k.sub}</div></div>`).join('');
+document.getElementById('lnStory').innerHTML = T2.lnStory({...OK, peak_line: tn(OK.peak_line)}, {lines: O.lines.map(l => ({...l, line_name: tn(l.line_name)}))});
+document.getElementById('heatTable').innerHTML = '<thead><tr><th></th>' + O.weeks.map(w => `<th>${weekLabel(w)}</th>`).join('') + '</tr></thead><tbody>' +
+  O.heat.map(h => `<tr><td class="name">${esc(tn(h.line_name))}</td>` + h.util.map((u, i) =>
+    `<td title="${T2.heatTip(tn(h.line_name), weekLabel(O.weeks[i]), u, h.binding[i])}" style="background:rgba(29,95,168,${(0.07 + 0.78 * Math.min(u, 1)).toFixed(2)}); color:${u > 0.55 ? '#fff' : 'var(--text)'}; font-weight:${u >= 0.99 ? 700 : 500}">${(u * 100).toFixed(0) === '0' ? '0' : fmt(u * 100)}</td>`).join('') + '</tr>').join('') + '</tbody>';
+document.getElementById('lnTable').innerHTML = O.lines.map(l => `<tr>
+  <td class="nowrap"><b>${esc(tn(l.line_name))}</b><br><span style="font-size:11px;color:var(--text-faint)">${fmt(l.capacity)} / ${T2.hr} · ${l.shifts}×8 ${T2.hr}</span></td>
+  <td class="num">${fmt(l.headcount)}</td><td class="num">${pct(l.oee)}</td><td class="num">${pct(l.scrap_pct)}</td>
+  <td class="num">${fmt(l.downtime_per_day)} ${T2.min}</td><td class="num">${pct(l.changeover_loss)}</td><td class="num">${pct(l.attendance)}</td>
+  <td class="num"><span class="pill ${l.peak_util >= 0.95 ? 'tight' : 'good'}">${pct(l.avg_util)}</span></td></tr>`).join('');
+const stCls = {below:'tight', ok:'good', excess:'warn'};
+document.getElementById('whTable').innerHTML = WH.materials.map(m => `<tr>
+  <td class="nowrap">${esc(tn(m.material_name))}</td><td><span class="pill ${m.abc === 'A' ? 'tight' : m.abc === 'B' ? 'warn' : 'good'}">${m.abc}</span></td>
+  <td class="num">${fmt(m.on_hand)} ${esc(tu(m.unit))}</td><td class="num">${fmtUSD(m.value)}</td><td class="num">${T2.unitCover(m.days_cover)}</td>
+  <td class="num">${fmt(m.safety_days)} ${T2.dayU}</td><td class="num">${fmt(m.lead_days)} ${T2.dayU}</td><td class="num">${f1(m.turns)}</td>
+  <td class="num">${pct(m.below_pct)}</td><td><span class="pill ${stCls[m.status]}">${T2.status[m.status]}</span></td></tr>`).join('');
+document.getElementById('supTable').innerHTML = WH.suppliers.map(r => `<tr>
+  <td class="nowrap">${esc(T2.sup(r.supplier))}</td><td class="num">${pct(r.spend_share)}</td><td class="num">${fmt(r.n)}</td>
+  <td class="num"><span class="pill ${r.on_time < 0.75 ? 'tight' : 'good'}">${pct(r.on_time)}</span></td>
+  <td class="num">${f1(r.delay)} ${T2.dayU}</td><td class="num">${fmt(r.terms)} ${T2.dayU}</td></tr>`).join('');
+
+
+// ---- Value, waste, cash and story blocks ----
+const tile = k => `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num" style="font-size:${k.num.length > 12 ? 20 : 28}px">${k.num}</div><div class="sub">${k.sub}</div></div>`;
+document.getElementById('h1').textContent = T3.h1(BS.purchase, DSO);
+document.getElementById('valKpis').innerHTML = T3.valKpis().map(tile).join('');
+document.getElementById('valStory').innerHTML = T3.valStory();
+document.getElementById('wcKpis').innerHTML = T3.wcKpis().map(tile).join('');
+document.getElementById('wasteKpis').innerHTML = T3.wasteKpis().map(tile).join('');
+document.getElementById('story1').innerHTML = T3.story1();
+document.getElementById('story2').innerHTML = T3.story2();
+document.getElementById('story3').innerHTML = T3.story3();
+document.getElementById('ledgerTable').innerHTML = LG.slice().sort((a,b)=>b.value-a.value).map(x => `<tr><td class="nowrap"><b>${T3.led[x.key][0]}</b></td><td><span class="pill ${x.kind === 'cash' ? 'good' : 'warn'}">${T3.kind[x.kind]}</span></td><td class="num">${fmtUSD(x.value)}</td><td style="white-space:normal; min-width:260px; color:var(--text-dim)">${T3.led[x.key][1]}</td></tr>`).join('');
+document.getElementById('profitTable').innerHTML = E.lines.map(l => `<tr><td class="nowrap"><b>${esc(tn(l.line_name))}</b></td><td class="num">${fmtUSD(l.revenue)}</td><td class="num">${fmtUSD(l.materials)}</td><td class="num">${fmtUSD(l.labor)}</td><td class="num">${fmtUSD(l.contribution)}</td><td class="num"><span class="pill ${l.margin < 0.3 ? 'tight' : 'good'}">${pct(l.margin)}</span></td><td class="num">${fmtUSD(l.per_machine_hour)}</td></tr>`).join('');
+document.getElementById('wasteTable').innerHTML = W.top_products.map(p => `<tr><td class="nowrap">${esc(tn(p.product_name))}</td><td class="num">${pct(p.rate)}</td><td class="num">${fmtUSD(p.cost_year)}</td><td class="num">${fmtUSD(p.save_year)}</td></tr>`).join('');
+
+const T4 = {title:'مشخصات کارخانه', sub:'آخرین سال کامل ('+EK.year+')، کارخانه‌ی فرضی', foot:'سهم = درصد از درآمد. همه‌ی ارقام از جدول‌های مصنوعیِ خودِ موتور محاسبه شده‌اند.',
+  rows:[['درآمد',EK.revenue,1,''],['مواد اولیه',EK.materials,EK.materials/EK.revenue,''],['حقوق و دستمزد',EK.payroll,EK.payroll/EK.revenue,''],['حاشیه‌ی مشارکت، پیش از سربار',EK.contribution,EK.contribution/EK.revenue,'sep'],
+        ['ضایعات (در ارقام بالا)',WKP.cost_year,WKP.cost_year/EK.revenue,'dim'],['میانگین نقدینگیِ گیرکرده در موجودی اضافه',BK.avg_tied,BK.avg_tied/EK.revenue,'dim'],['مطالبات معوق',AR,AR/EK.revenue,'dim'],['فرصت پیداشده، در سال',annTotal,annTotal/EK.revenue,'hl']]};
+document.getElementById('facts').innerHTML = '<h3>' + T4.title + '</h3><div class="sub">' + T4.sub + '</div>' +
+  T4.rows.map((r, i) => `<div class="row ${r[3]}" style="--i:${i}"><span>${r[0]}</span><span class="v">${fmtUSD(r[1])}</span><span class="s">${pct(r[2])}</span></div>`).join('') + '<p class="foot">' + T4.foot + '</p>';
+(() => { const links = [...document.querySelectorAll('#nav a')], map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { links.forEach(l => l.classList.remove('active')); const a = map.get(e.target.id); if (a) a.classList.add('active'); } }), {rootMargin:'-20% 0px -70% 0px'});
+  map.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); }); })();
+
+// Line scorecard
+document.getElementById('lineTable').innerHTML = D.lines.map(l => {
+  const tight = l.fill_rate < 1;
+  return `<tr>
+    <td>${esc(tn(l.line_name))}</td>
+    <td class="num">${fmt(l.forecast_units)}</td>
+    <td class="num">${fmt(l.allocated_units)}</td>
+    <td><span class="bar ${tight ? 'tight' : ''}"><i style="width:${(l.fill_rate*100).toFixed(1)}%"></i></span><span class="pill ${tight ? 'tight' : 'good'}">${pct(l.fill_rate)}</span></td>
+    <td class="num">${l.unmet_units ? fmt(l.unmet_units) : '—'}</td>
+    <td class="num">${fmtUSD(l.revenue_planned)}</td>
+    <td class="num">${l.revenue_lost ? fmtUSD(l.revenue_lost) : '—'}</td>
+  </tr>`;
+}).join('');
+
+// Reorder table
+document.getElementById('reorderTable').innerHTML = D.reorders.map(r => `<tr>
+    <td class="nowrap">${esc(tn(r.material_name))}</td>
+    <td class="num">${fmt(r.recommended_order_qty)} ${esc(tu(r.unit_of_measure))}</td>
+    <td class="num">${fmtShort(r.order_value_irr)}</td>
+    <td class="num">${fa(r.lead_time_days)} روز</td>
+    <td class="num"><span class="pill ${r.weeks_below_safety_stock >= 6 ? 'tight' : 'good'}">${fa(r.weeks_below_safety_stock)} از ${fa(K.n_weeks)}</span></td>
+  </tr>`).join('');
+
+// Accuracy table (best 6 / worst 6)
+const best = D.acc.slice(0,6);
+const worst = D.acc.slice(-6).reverse();
+document.getElementById('accTable').innerHTML = best.map((b,i) => {
+  const w = worst[i];
+  return `<tr>
+    <td>${esc(tn(b.product_name))}</td><td class="num">${pct(b.wape)}</td>
+    <td style="padding-right:40px">${esc(tn(w.product_name))}</td><td class="num">${pct(w.wape)}</td>
+  </tr>`;
+}).join('');
+document.getElementById('wapeNote').textContent = pct(D.overall_wape);
+
+// CCC big number (renders independent of Chart.js, like the KPI strip)
+if (K.avg_ccc != null) {
+  document.getElementById('cccBig').textContent = fa(K.avg_ccc) + ' روز';
+}
+if (D.l3.length) {
+  document.getElementById('lineChartTitle').textContent = tn(D.l3[0].line_name) + ' — تولید هفتگی';
+}
+
+function renderCharts(){
+setTimeout(()=>{ if(_miss.size) console.info('Untranslated names (add to FA):', [..._miss]); }, 0);
+
+const GRID = '#E9EEF3';
+Chart.defaults.color = '#42556A';
+Chart.defaults.font.family = "'Vazirmatn', Tahoma, system-ui, sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.borderColor = '#DCE3EA';
+Chart.defaults.maintainAspectRatio = false;
+Chart.defaults.plugins.tooltip.backgroundColor = '#12202E';
+Chart.defaults.plugins.tooltip.padding = 10;
+const legend = {position:'top', align:'end', textDirection:'rtl', labels:{boxWidth:10, boxHeight:10, usePointStyle:false}};
+Chart.defaults.plugins.tooltip.textDirection = 'rtl';
+Chart.defaults.plugins.tooltip.rtl = true;
+
+// Weekly chart
+new Chart(document.getElementById('weeklyChart'), {
+  type: 'bar',
+  data: {
+    labels: D.weekly.map(w => weekLabel(w.week_start)),
+    datasets: [
+      {type:'bar', label:'پیش‌بینی', data: D.weekly.map(w=>w.forecast_units), backgroundColor:'#C9D3DD', borderRadius:4, order:2},
+      {type:'bar', label:'برنامه', data: D.weekly.map(w=>w.allocated_units), backgroundColor: D.weekly.map(w=> w.fill_rate<1 ? '#D62839' : '#1D5FA8'), borderRadius:4, order:2},
+      {type:'line', label:'نرخ تأمین', data: D.weekly.map(w=>w.fill_rate*100), yAxisID:'y1', borderColor:'#12202E', backgroundColor:'#12202E', tension:0.25, pointRadius:3, borderWidth:2, order:1},
+    ]
+  },
+  options: {
+    interaction:{mode:'index', intersect:false},
+    plugins:{legend, tooltip:{callbacks:{label:c => c.dataset.label + ': ' + (c.dataset.yAxisID === 'y1' ? pct(c.parsed.y/100) : fmt(c.parsed.y))}}},
+    scales:{
+      x:{ grid:{display:false} },
+      y:{ grid:{color:GRID}, ticks:{callback:v=>fmt(v)} },
+      y1:{ position:'right', min:80, max:105, grid:{display:false}, ticks:{callback:v=>fa(v)+'٪'} },
+    }
+  }
+});
+
+// Bottleneck line chart
+new Chart(document.getElementById('lineChart'), {
+  type:'bar',
+  data:{
+    labels: D.l3.map(w=>weekLabel(w.week_start)),
+    datasets:[
+      {label:'برنامه', data:D.l3.map(w=>w.allocated_units), backgroundColor:'#1D5FA8', borderRadius:3, stack:'s'},
+      {label:'تأمین‌نشده', data:D.l3.map(w=>w.unmet_units), backgroundColor:'#D62839', borderRadius:3, stack:'s'},
+    ]
+  },
+  options:{
+    interaction:{mode:'index', intersect:false},
+    plugins:{legend},
+    scales:{x:{stacked:true, grid:{display:false}}, y:{stacked:true, grid:{color:GRID}, ticks:{callback:v=>fmt(v)}}}
+  }
+});
+
+// Top unmet products
+new Chart(document.getElementById('unmetChart'), {
+  type:'bar',
+  data:{
+    labels: D.top_unmet.map(p=>tn(p.product_name)),
+    datasets:[{label:'درآمد ازدست‌رفته (دلار)', data:D.top_unmet.map(p=>p.revenue_lost), backgroundColor:'#D62839', borderRadius:4, maxBarThickness:56}]
+  },
+  options:{
+    indexAxis:'y',
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:c => fmtUSD(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y:{grid:{display:false}}}
+  }
+});
+
+// Material risk
+new Chart(document.getElementById('materialChart'), {
+  type:'bar',
+  data:{
+    labels: D.weekly.map(w=>weekLabel(w.week_start)),
+    datasets:[{label:'مواد زیر موجودی اطمینان', data:D.weekly.map(w=>w.materials_below_safety_stock), backgroundColor:'#F4B400', borderRadius:3}]
+  },
+  options:{
+    plugins:{legend:{display:false}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{precision:0, callback:v=>fa(v)}}, x:{grid:{display:false}}}
+  }
+});
+
+// چرخه تبدیل وجه نقد (CCC): DIO / DSO / DPO as a set of thin lines, with
+// CCC as the bold headline line on top.
+if (D.ccc && D.ccc.length) {
+  new Chart(document.getElementById('cccChart'), {
+    type:'line',
+    data:{
+      labels: D.ccc.map(w=>weekLabel(w.week_start)),
+      datasets:[
+        {label:'DSO', data:D.ccc.map(w=>w.dso), borderColor:'#F4B400', backgroundColor:'#F4B400', tension:0.3, pointRadius:0, borderWidth:1.5},
+        {label:'DPO', data:D.ccc.map(w=>w.dpo), borderColor:'#2F8F5B', backgroundColor:'#2F8F5B', tension:0.3, pointRadius:0, borderWidth:1.5},
+        {label:'DIO', data:D.ccc.map(w=>w.dio), borderColor:'#6B7C8F', backgroundColor:'#6B7C8F', tension:0.3, pointRadius:0, borderWidth:1.5},
+        {label:'CCC', data:D.ccc.map(w=>w.ccc), borderColor:'#1D5FA8', backgroundColor:'#1D5FA8', tension:0.3, pointRadius:0, borderWidth:3},
+      ]
+    },
+    options:{
+      interaction:{mode:'index', intersect:false},
+      plugins:{legend},
+      scales:{y:{grid:{color:GRID}, ticks:{callback:v=>fa(v)+' روز'}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}
+    }
+  });
+}
+
+
+// ---- Bullwhip charts ----
+new Chart(document.getElementById('stackChart'), {
+  type:'bar',
+  data:{labels:T.stages, datasets:[{label:'index', data:[BS.need,BS.supervisor,BS.manager,BS.procurement,BS.purchase,BS.managed],
+    backgroundColor:['#C9D3DD','#F4B400','#1D5FA8','#12497F','#D62839','#2F8F5B'], borderRadius:4, maxBarThickness:56}]},
+  options:{plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>f1(c.parsed.y)}}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmt(v)}}, x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:40, minRotation:0, font:{size:11}}}}}
+});
+new Chart(document.getElementById('layerChart'), {
+  type:'bar',
+  data:{labels:T.layers, datasets:[{label:T.excess, data:[B.layers.tolerance_layers,B.layers.procurement_pad,B.layers.deal_uplift],
+    backgroundColor:['#1D5FA8','#12497F','#D62839'], borderRadius:4, maxBarThickness:48}]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>fmtUSD(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y:{grid:{display:false}, ticks:{font:{size:11}}}}}
+});
+new Chart(document.getElementById('tiedChart'), {
+  type:'line',
+  data:{labels:B.timeline.map(w=>T.wk(w.week)), datasets:[
+    {label:T.today, data:B.timeline.map(w=>w.actual), borderColor:'#D62839', backgroundColor:'rgba(214,40,57,0.12)', fill:true, tension:0.25, pointRadius:0, borderWidth:2},
+    {label:T.managed, data:B.timeline.map(w=>w.managed), borderColor:'#2F8F5B', backgroundColor:'rgba(47,143,91,0.14)', fill:true, tension:0.25, pointRadius:0, borderWidth:2}]},
+  options:{interaction:{mode:'index', intersect:false}, plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtUSD(c.parsed.y)}}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}}
+});
+new Chart(document.getElementById('matExcessChart'), {
+  type:'bar',
+  data:{labels:B.by_material.map(m=>tn(m.material_name)), datasets:[
+    {label:T.today, data:B.by_material.map(m=>m.actual), backgroundColor:'#D62839', borderRadius:3},
+    {label:T.managed, data:B.by_material.map(m=>m.managed), backgroundColor:'#2F8F5B', borderRadius:3}]},
+  options:{indexAxis:'y', plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtUSD(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y:{grid:{display:false}}}}
+});
+
+
+// ---- Line + warehouse charts ----
+const LC = ['#1D5FA8','#7B4FBF','#2BA39B','#F4B400','#8A97A6'];
+new Chart(document.getElementById('lossChart'), {
+  type:'bar',
+  data:{labels:O.lines.map(l=>tn(l.line_name)), datasets:[
+    {label:T2.loss[0], data:O.lines.map(l=>1-l.availability), backgroundColor:'#1D5FA8'},
+    {label:T2.loss[1], data:O.lines.map(l=>l.availability*(1-l.performance)), backgroundColor:'#F4B400'},
+    {label:T2.loss[2], data:O.lines.map(l=>l.availability*l.performance*(1-l.quality)), backgroundColor:'#D62839'}]},
+  options:{indexAxis:'y', plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+pct(c.parsed.x)}}},
+    scales:{x:{stacked:true, grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>pct(v)}}, y:{stacked:true, grid:{display:false}, ticks:{font:{size:11}}}}}
+});
+new Chart(document.getElementById('oeeTrendChart'), {
+  type:'line',
+  data:{labels:O.months.map(T2.mo), datasets:O.lines.map((l,i)=>({label:tn(l.line_name), data:O.oee_trend[l.line_name], borderColor:LC[i], backgroundColor:LC[i], tension:0.25, pointRadius:0, borderWidth:2}))},
+  options:{interaction:{mode:'index', intersect:false}, plugins:{legend:{...legend, labels:{...legend.labels, boxWidth:8, font:{size:10.5}}}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+pct(c.parsed.y)}}},
+    scales:{y:{grid:{color:GRID}, min:0.7, max:1, ticks:{callback:v=>pct(v)}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}}
+});
+new Chart(document.getElementById('attChart'), {
+  type:'line',
+  data:{labels:O.attendance_months.map(T2.mo), datasets:[{label:T2.att, data:O.attendance_trend, borderColor:'#2F8F5B', backgroundColor:'rgba(47,143,91,0.14)', fill:true, tension:0.25, pointRadius:0, borderWidth:2}]},
+  options:{plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>pct(c.parsed.y)}}}, scales:{y:{grid:{color:GRID}, min:0.8, max:1, ticks:{callback:v=>pct(v)}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}}
+});
+new Chart(document.getElementById('shiftChart'), {
+  type:'bar',
+  data:{labels:O.attendance_shift.map(x=>T2.shift(x.shift)), datasets:[{label:T2.att, data:O.attendance_shift.map(x=>x.attendance), backgroundColor:'#2F8F5B', borderRadius:4, maxBarThickness:70}]},
+  options:{plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>pct(c.parsed.y)}}}, scales:{y:{grid:{color:GRID}, min:0, max:1, ticks:{callback:v=>pct(v)}}, x:{grid:{display:false}}}}
+});
+const stCol = {below:'#D62839', ok:'#2F8F5B', excess:'#F4B400'};
+new Chart(document.getElementById('coverChart'), {
+  type:'bar',
+  data:{labels:WH.materials.map(m=>tn(m.material_name)), datasets:[
+    {label:T2.cover[0], data:WH.materials.map(m=>m.days_cover), backgroundColor:WH.materials.map(m=>stCol[m.status]), borderRadius:3},
+    {label:T2.cover[1], data:WH.materials.map(m=>m.safety_days), backgroundColor:'#C9D3DD', borderRadius:3}]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+f1(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmt(v)}}, y:{grid:{display:false}, ticks:{autoSkip:false, font:{size:11}}}}}
+});
+new Chart(document.getElementById('paretoChart'), {
+  type:'bar',
+  data:{labels:WH.pareto.map(p=>tn(p.material_name)), datasets:[
+    {type:'line', label:T2.cum, data:WH.pareto.map(p=>p.cum), borderColor:'#12202E', backgroundColor:'#12202E', yAxisID:'y1', pointRadius:3, borderWidth:2, tension:0},
+    {label:T2.share, data:WH.pareto.map(p=>p.share), backgroundColor:'#1D5FA8', borderRadius:3, yAxisID:'y'}]},
+  options:{plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+pct(c.parsed.y)}}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>pct(v)}}, y1:{position:'right', min:0, max:1, grid:{display:false}, ticks:{callback:v=>pct(v)}},
+      x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:60, minRotation:60, font:{size:10}}}}}
+});
+new Chart(document.getElementById('stockValueChart'), {
+  type:'line',
+  data:{labels:WH.value_trend.map(v=>T2.mo(v.month)), datasets:[{label:T2.stock, data:WH.value_trend.map(v=>v.value), borderColor:'#1D5FA8', backgroundColor:'rgba(29,95,168,0.12)', fill:true, tension:0.25, pointRadius:2, borderWidth:2}]},
+  options:{plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>fmtUSD(c.parsed.y)}}}, scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, x:{grid:{display:false}, ticks:{maxTicksLimit:12}}}}
+});
+
+
+// ---- Value / waste charts ----
+new Chart(document.getElementById('ledgerChart'), {
+  type:'bar',
+  data:{labels:LG.slice().sort((a,b)=>b.value-a.value).map(x=>T3.led[x.key][0]), datasets:[{label:'USD', data:LG.slice().sort((a,b)=>b.value-a.value).map(x=>x.value),
+    backgroundColor:LG.slice().sort((a,b)=>b.value-a.value).map(x=>x.kind==='cash'?'#2F8F5B':'#1D5FA8'), borderRadius:4, maxBarThickness:40}]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>fmtUSD(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y:{grid:{display:false}, ticks:{font:{size:11}}}}}
+});
+const RC = ['#1D5FA8','#7B4FBF','#2BA39B','#F4B400','#8A97A6'];
+new Chart(document.getElementById('revChart'), {
+  type:'bar',
+  data:{labels:E.months.map(T2.mo), datasets:E.lines.map((l,i)=>({label:tn(l.line_name), data:E.monthly_revenue[l.line_name], backgroundColor:RC[i]}))},
+  options:{plugins:{legend:{...legend, labels:{...legend.labels, boxWidth:8, font:{size:10.5}}}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtUSD(c.parsed.y)}}},
+    scales:{x:{stacked:true, grid:{display:false}}, y:{stacked:true, grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}}}
+});
+new Chart(document.getElementById('wasteLineChart'), {
+  type:'bar',
+  data:{labels:W.lines.map(l=>tn(l.line_name)), datasets:[
+    {type:'line', label:T3.waste.rate, data:W.lines.map(l=>l.rate), borderColor:'#12202E', backgroundColor:'#12202E', yAxisID:'y1', pointRadius:4, showLine:false},
+    {label:T3.waste.cost, data:W.lines.map(l=>l.cost_year), backgroundColor:'#D62839', borderRadius:4, maxBarThickness:48, yAxisID:'y'}]},
+  options:{plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.dataset.yAxisID==='y1'?pct(c.parsed.y):fmtUSD(c.parsed.y))}}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y1:{position:'right', min:0, grid:{display:false}, ticks:{callback:v=>pct(v)}}, x:{grid:{display:false}, ticks:{autoSkip:false, font:{size:10.5}, maxRotation:30}}}}
+});
+new Chart(document.getElementById('wasteTrendChart'), {
+  type:'bar',
+  data:{labels:W.months.map(T2.mo), datasets:[
+    {type:'line', label:T3.waste.rate, data:W.monthly_rate, borderColor:'#12202E', backgroundColor:'#12202E', yAxisID:'y1', pointRadius:0, borderWidth:2, tension:0.25},
+    {label:T3.waste.cost2, data:W.monthly_cost, backgroundColor:'#F4B400', borderRadius:2, yAxisID:'y'}]},
+  options:{plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.dataset.yAxisID==='y1'?pct(c.parsed.y):fmtUSD(c.parsed.y))}}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y1:{position:'right', min:0, grid:{display:false}, ticks:{callback:v=>pct(v)}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}}
+});
+new Chart(document.getElementById('wasteTopChart'), {
+  type:'bar',
+  data:{labels:W.top_products.map(p=>tn(p.product_name)), datasets:[
+    {label:T3.waste.cost, data:W.top_products.map(p=>p.cost_year), backgroundColor:'#D62839', borderRadius:3},
+    {label:T3.waste.save, data:W.top_products.map(p=>p.save_year), backgroundColor:'#2F8F5B', borderRadius:3}]},
+  options:{indexAxis:'y', plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtUSD(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y:{grid:{display:false}, ticks:{autoSkip:false, font:{size:10.5}}}}}
+});
+
+} // end renderCharts
+
+if (typeof Chart !== 'undefined') {
+  renderCharts();
+} else {
+  document.querySelectorAll('.chart-box').forEach(c => {
+    c.outerHTML = '<p style="color:var(--text-faint); font-size:13px;">نمودار بارگذاری نشد (فایل Chart.js وجود ندارد یا مسدود است). اعداد و جدول‌ها تحت تأثیر نیستند.</p>';
+  });
+}
+</script>
+</body>
+</html>

@@ -4,51 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>Zarrin Cake & Confectionery Industries — S&amp;OP Control Room</title>
+<title>Cake & Confectionery Factory — S&amp;OP Control Room</title>
+<link rel="alternate" hreflang="fa" href="./fa/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="./chart.umd.min.js"></script>
 <script src="./data.js"></script>
 <style>
   :root{
     --bg:#FFFFFF;
     --panel:#FFFFFF;
-    --panel-2:#FBF5F1;
-    --line:#EEE2D9;
-    --grid:#F3EAE3;
-    --accent:#E0531F;
-    --accent-ink:#B8431E;
-    --accent-soft:#FDEDE5;
+    --panel-2:#F3F6F9;
+    --line:#DCE3EA;
+    --grid:#E9EEF3;
+    --accent:#1D5FA8;
+    --accent-ink:#12497F;
+    --accent-soft:#E6EFFA;
     --jam:#D62839;
     --jam-soft:#FCE8EA;
-    --sage:#5F7C4A;
-    --sage-soft:#EEF3E8;
-    --tan:#EBD8CB;
-    --text:#2B160D;
-    --text-dim:#6A4B3C;
-    --text-faint:#9A7A69;
+    --sage:#2F8F5B;
+    --sage-soft:#E3F3EA;
+    --tan:#C9D3DD;
+    --text:#12202E;
+    --text-dim:#42556A;
+    --text-faint:#6B7C8F;
     --radius:12px;
-    --shadow:0 1px 2px rgba(43,22,13,0.04), 0 6px 18px rgba(43,22,13,0.05);
+    --shadow:0 1px 2px rgba(18,32,46,0.04), 0 6px 18px rgba(18,32,46,0.05);
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
     background:var(--bg);
     color:var(--text);
-    font-family:'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family:'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
     line-height:1.5;
   }
-  .topbar{height:6px; background:linear-gradient(90deg, var(--accent), var(--jam) 60%, #F2994A);}
+  .toprow{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+  .lang{font-size:12.5px; font-weight:600; color:var(--accent-ink); text-decoration:none; border:1px solid var(--line); border-radius:20px; padding:4px 14px; background:var(--panel-2);}
+  .lang:hover{background:var(--accent-soft);}
+  .topbar{height:6px; background:linear-gradient(90deg, var(--accent), var(--jam) 60%, #F4B400);}
   .wrap{max-width:1160px; margin:0 auto; padding:48px 28px 80px;}
   header{margin-bottom:32px;}
   .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'Public Sans', system-ui, sans-serif;
     font-size:12.5px;
     color:var(--accent-ink);
     letter-spacing:0.02em;
   }
   h1{
-    font-family:'Fraunces', serif;
+    font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;
     font-weight:500;
     font-size:clamp(28px, 4vw, 42px);
     line-height:1.2;
@@ -86,7 +90,7 @@
     color:var(--text-dim);
   }
   .kpi .num{
-    font-family:'Fraunces', serif;
+    font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;
     font-size:30px;
     font-weight:500;
     color:var(--text);
@@ -110,7 +114,7 @@
     flex-wrap:wrap;
   }
   h2{
-    font-family:'Fraunces', serif;
+    font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;
     font-weight:500;
     font-size:21px;
     margin:0;
@@ -137,13 +141,16 @@
     gap:20px;
   }
   .two-col.even{grid-template-columns:repeat(2, minmax(0, 1fr));}
+  .two-col > *{min-width:0;}
   /* Charts fill a box of fixed height, so they keep a readable shape at any width. */
-  .chart-box{position:relative; width:100%; height:300px;}
+  .chart-box{position:relative; width:100%; height:300px; overflow:hidden;}
+  /* The canvas is taken out of flow so its size never feeds back into the box's height. */
+  .chart-box > canvas{position:absolute; left:0; top:0; max-width:100%;}
   .chart-box.tall{height:340px;}
   .chart-box.short{height:240px;}
   /* A chart beside a taller table grows to the table's height. */
   .panel.fill{display:flex; flex-direction:column;}
-  .panel.fill .chart-box{flex:1 1 auto; height:auto; min-height:240px;}
+  .panel.fill .chart-box{flex:1 1 0; height:auto; min-height:280px;}
   .table-scroll{overflow-x:auto;}
   table{
     width:100%;
@@ -164,7 +171,7 @@
     white-space:nowrap;
   }
   td.num, th.num{text-align:right; white-space:nowrap;}
-  td.num{font-family:'IBM Plex Mono', monospace; font-size:12.5px;}
+  td.num{font-family:'Public Sans', system-ui, sans-serif; font-size:12.5px;}
   td.nowrap{white-space:nowrap;}
   table.compact th, table.compact td{padding:9px 6px;}
   table.compact th:first-child, table.compact td:first-child{padding-left:0;}
@@ -175,7 +182,7 @@
     padding:2px 8px;
     border-radius:20px;
     font-size:11px;
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'Public Sans', system-ui, sans-serif;
     white-space:nowrap;
   }
   .pill.good{background:var(--sage-soft); color:var(--sage);}
@@ -194,6 +201,20 @@
   .ccc-big{font-family:'Fraunces',serif; font-size:36px; color:var(--accent-ink);}
   .ccc-side .explain{border-top:1px solid var(--line); padding-top:14px; font-size:13.5px; color:var(--text-dim); line-height:1.6;}
   .ccc-side b{color:var(--text);}
+  .bw-kpis{margin:0 0 24px;}
+  .rules{margin:0 0 6px; padding-inline-start:20px; font-size:14px; color:var(--text-dim);}
+  .rules li{margin:7px 0;}
+  .rules b{color:var(--text);}
+  .pill.warn{background:#FFF1BF; color:#7A5A00;}
+  .heat{width:100%; border-collapse:separate; border-spacing:3px;}
+  .heat th{font-size:10.5px; padding:2px 0; text-align:center; border-bottom:none; color:var(--text-faint); white-space:nowrap;}
+  .heat td{text-align:center; font-size:11.5px; padding:9px 0; border-bottom:none; border-radius:5px; font-variant-numeric:tabular-nums;}
+  .heat td.name{text-align:start; font-size:12.5px; padding-inline-end:10px; white-space:nowrap; background:none !important;}
+  .nav{position:sticky; top:0; z-index:20; display:flex; gap:8px; overflow-x:auto; padding:10px 0; margin:0 0 18px; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); scrollbar-width:none;}
+  .nav::-webkit-scrollbar{display:none;}
+  .nav a{flex:none; font-size:12.5px; font-weight:600; color:var(--text-dim); text-decoration:none; padding:6px 14px; border-radius:20px; border:1px solid var(--line); background:var(--panel-2);}
+  .nav a:hover{color:var(--accent-ink); background:var(--accent-soft);}
+  html{scroll-behavior:smooth; scroll-padding-top:62px;}
   code{background:var(--panel-2); padding:1px 5px; border-radius:3px; font-size:12px;}
   footer{
     margin-top:60px;
@@ -225,6 +246,59 @@
     /* one line per row; the table scrolls sideways inside its panel */
     .table-scroll td{white-space:nowrap;}
   }
+
+  /* ===== Redesign: factory-floor identity (stainless, process blue, safety yellow) ===== */
+  :root{ --bg:#EEF1F4; --panel:#FFFFFF; --radius:6px; --shadow:none;
+         --f-disp:'Barlow Condensed','Arial Narrow',sans-serif; --f-body:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif; }
+  body{background:var(--bg); font-family:var(--f-body); line-height:1.55; -webkit-font-smoothing:antialiased;}
+  .topbar{height:8px; background:repeating-linear-gradient(135deg,#F4B400 0 14px,#12202E 14px 28px);}
+  .wrap{padding:28px 28px 80px;}
+  .toprow{align-items:center; margin-bottom:34px;}
+  .brand{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+  .brand b{font-family:var(--f-disp); font-size:20px; font-weight:700; color:var(--text);}
+  .brand .tag{font-size:12.5px; font-weight:600; color:var(--text); background:#F4B400; border-radius:3px; padding:2px 9px;}
+  .lang{border-radius:6px; border:1.5px solid var(--text); background:#fff; color:var(--text); font-weight:700; padding:5px 14px;}
+  .lang:hover{background:var(--text); color:#fff;}
+  .hero{display:grid; grid-template-columns:minmax(0,1.12fr) minmax(300px,0.88fr); gap:44px; align-items:start; margin-bottom:40px;}
+  h1{font-family:var(--f-disp); font-weight:700; font-size:clamp(40px, 5.4vw, 60px); line-height:1.02; margin:0 0 20px; max-width:none; text-wrap:balance; color:var(--text);}
+  .hero-text p{font-size:15.5px; max-width:56ch; color:var(--text-dim);}
+  .facts{background:#fff; border:2px solid var(--text); padding:14px 16px 12px; max-width:440px; justify-self:end; width:100%;}
+  .facts h3{font-family:var(--f-disp); font-size:34px; font-weight:700; line-height:1.1; margin:0; color:var(--text);}
+  .facts .sub{font-size:12.5px; color:var(--text-dim); margin:2px 0 6px; padding-bottom:6px; border-bottom:8px solid var(--text);}
+  .facts .row{display:grid; grid-template-columns:1fr auto 4.6em; gap:10px; align-items:baseline; padding:6px 0; border-bottom:1px solid var(--text); font-size:14px; font-variant-numeric:tabular-nums;}
+  .facts .row .v{font-weight:700;} .facts .row .s{text-align:end; font-weight:700;}
+  .facts .row.sep{border-bottom:5px solid var(--text);}
+  .facts .row.hl{background:#FFF1BF; margin-inline:-16px; padding-inline:16px; border-bottom:none;}
+  .facts .row.dim{color:var(--text-dim);} .facts .row.dim .v, .facts .row.dim .s{font-weight:500;}
+  .facts .foot{font-size:11.5px; color:var(--text-dim); margin:8px 0 0;}
+  .facts .row{opacity:0; transform:translateY(6px); animation:rowin .5s ease forwards; animation-delay:calc(var(--i) * 80ms + 150ms);}
+  @keyframes rowin{to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion:reduce){.facts .row{opacity:1; transform:none; animation:none;} html{scroll-behavior:auto;}}
+  .nav{top:10px; background:var(--text); border:none; border-radius:8px; padding:6px; margin:0 0 32px; gap:4px; backdrop-filter:none;}
+  .nav a{border:none; background:transparent; color:#C9D3DD; border-radius:5px; padding:7px 14px; font-weight:600;}
+  .nav a:hover{background:rgba(255,255,255,0.12); color:#fff;}
+  .nav a.active{background:#F4B400; color:var(--text);}
+  html{scroll-padding-top:84px;}
+  a:focus-visible, .nav a:focus-visible{outline:3px solid #F4B400; outline-offset:2px;}
+  .kpi-row{gap:0; border:1px solid var(--line); border-radius:var(--radius); background:#fff; overflow:hidden; margin:0 0 30px;}
+  .kpi{border:none; border-radius:0; box-shadow:none; background:#fff; border-inline-start:4px solid var(--accent); border-bottom:1px solid var(--line); padding:16px 18px;}
+  .kpi.risk{border-inline-start-color:var(--jam);} .kpi.good{border-inline-start-color:var(--sage);}
+  .kpi .label{font-size:12.5px; font-weight:600; color:var(--text-dim);}
+  .kpi .num{font-family:var(--f-disp); font-weight:700; color:var(--text); line-height:1.1; margin-top:6px;}
+  .kpi.risk .num{color:var(--jam);} .kpi.good .num{color:var(--sage);}
+  section{margin-bottom:60px;}
+  .section-head{border-top:3px solid var(--text); padding-top:12px; margin-bottom:20px; align-items:flex-end;}
+  h2{font-family:var(--f-disp); font-weight:700; font-size:30px; line-height:1.15; color:var(--text);}
+  .section-note{font-size:13px; max-width:46ch; text-align:end; color:var(--text-dim);}
+  .panel{border-radius:var(--radius); box-shadow:none; border:1px solid var(--line); background:#fff;}
+  .panel-title{font-size:13px; font-weight:700; color:var(--text); margin-bottom:12px;}
+  th{text-transform:none !important; letter-spacing:0 !important; font-size:12px; font-weight:700; color:var(--text-dim);}
+  td.num, th.num, .pill, .heat td{font-family:var(--f-body); font-variant-numeric:tabular-nums;}
+  .pill{border-radius:4px; font-weight:700;}
+  .story{font-size:14.5px; color:var(--text); max-width:72ch; border-inline-start:4px solid #F4B400; padding-inline-start:14px; margin:18px 0;}
+  footer{border-top:3px solid var(--text); padding-top:14px; color:var(--text-dim);}
+  footer a{color:var(--accent-ink); font-weight:600;}
+  @media (max-width:900px){ .hero{grid-template-columns:1fr; gap:26px;} .facts{justify-self:stretch; max-width:none;} .nav{top:6px;} .section-note{text-align:start;} }
 </style>
 </head>
 <body>
@@ -232,14 +306,76 @@
 <div class="wrap">
 
   <header>
-    <div class="eyebrow">ZARRIN CAKE & CONFECTIONERY INDUSTRIES — S&amp;OP CONTROL ROOM</div>
-    <h1>Twelve weeks out, the Kolucheh line runs into Nowruz — and the plan already knows it.</h1>
+    <div class="toprow"><div class="brand"><svg width="30" height="30" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="5" fill="#12202E"/><rect x="8" y="7" width="12" height="7" rx="1.5" fill="#fff"/><path d="M5 19h18" stroke="#F4B400" stroke-width="3" stroke-linecap="round"/></svg><b>Cake &amp; Confectionery Factory</b><span class="tag">S&amp;OP control room</span></div><a class="lang" href="./fa/" hreflang="fa" lang="fa">فارسی</a></div>
+    <div class="hero"><div class="hero-text"><h1 id="h1">Twelve weeks out, the Kolucheh line runs into Nowruz — and the plan already knows it.</h1>
     <p>Weekly demand forecast (Holt-Winters), a capacity- and labor-constrained production plan
-      solved as a linear program, and material requirements, generated by
-      <span style="color:var(--text)">food-manufacturing-sop-planning-engine</span>.</p>
+      solved as a linear program, material requirements, and a bullwhip analysis of purchasing, generated by
+      <span style="color:var(--text)">food-manufacturing-sop-planning-engine</span>.</p></div>
+    <aside class="facts" id="facts" aria-label="Plant facts"></aside></div>
   </header>
 
-  <div class="kpi-row" id="kpiRow"></div>
+  <nav class="nav" id="nav"><a href="#value">Value</a><a href="#bullwhip">Bullwhip</a><a href="#plan">Plan</a><a href="#linesDeep">Lines</a><a href="#waste">Waste</a><a href="#whDeep">Warehouse</a><a href="#cash">Cash</a><a href="#accuracy">Accuracy</a></nav>
+
+  <section id="value">
+    <div class="section-head">
+      <h2>Where the value is</h2>
+      <div class="section-note">Cash that can be released once, and savings that repeat every year — found by the engine in this plant's own data.</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="valKpis"></div>
+    <div class="two-col even">
+      <div class="panel"><p class="panel-title">Value opportunities (green = one-off cash, blue = per year)</p><div class="chart-box"><canvas id="ledgerChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">Revenue by month and line, last full year</p><div class="chart-box"><canvas id="revChart"></canvas></div></div>
+    </div>
+    <p class="story" id="valStory"></p>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">How each opportunity is measured</p>
+      <table class="compact"><thead><tr><th>Opportunity</th><th>Type</th><th class="num">Value</th><th>Basis</th></tr></thead><tbody id="ledgerTable"></tbody></table>
+    </div>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">Line profitability, last full year</p>
+      <table class="compact"><thead><tr><th>Line</th><th class="num">Revenue</th><th class="num">Materials</th><th class="num">Direct labor</th><th class="num">Contribution</th><th class="num">Margin</th><th class="num">Per machine-hour</th></tr></thead><tbody id="profitTable"></tbody></table>
+    </div>
+  </section>
+
+
+  <section id="bullwhip">
+    <div class="section-head">
+      <h2>The bullwhip effect: how a real need becomes tied-up cash</h2>
+      <div class="section-note">Every purchase order starts as the warehouse's calculated need. Each layer adds its own "just in case" — and the extra stock is cash the plant doesn't have.</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="bwKpis"></div>
+    <div class="two-col even">
+      <div class="panel"><p class="panel-title">From warehouse need to purchase — average PO (need = 100)</p><div class="chart-box"><canvas id="stackChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">Where the excess stock comes from</p><div class="chart-box"><canvas id="layerChart"></canvas></div></div>
+    </div>
+    <p class="story" id="bwStory"></p>
+    <div class="panel" style="margin-top:20px"><p class="panel-title">Cash tied up in excess raw-material stock, weekly average</p><div class="chart-box tall"><canvas id="tiedChart"></canvas></div></div>
+    <div class="two-col even" style="margin-top:20px">
+      <div class="panel"><p class="panel-title">Excess stock value by material: today vs managed policy</p><div class="chart-box"><canvas id="matExcessChart"></canvas></div></div>
+      <div class="panel table-scroll">
+        <p class="panel-title">Largest over-buys</p>
+        <table class="compact"><thead><tr><th>Material · PO</th><th class="num">Need → bought</th><th class="num">Excess value</th><th class="num">Deal net</th></tr></thead><tbody id="bwTable"></tbody></table>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:20px">
+      <p class="panel-title">The managed policy — what changes</p>
+      <ul class="rules">
+        <li><b>One declared tolerance per material</b>, set from consumption volatility at a 95% service level (<span id="tolAvg"></span> on average) — instead of three stacked guesses (<span id="tolStack"></span> in total).</li>
+        <li><b>A deal gate</b>: take extra quantity for a supplier offer only if the discount beats the cost of the cash it ties up, capped at 10% of the need.</li>
+        <li><b>One transparent ledger</b>: every PO records need → each layer → purchase (<code>fact_replenishment_chain</code>), so each tolerance has an owner and a number, and the gap is visible before the money is spent.</li>
+      </ul>
+      <p class="story" id="bwResult" style="margin-top:8px"></p>
+      <p class="story" style="font-size:12.5px; color:var(--text-faint)">Layer tolerances, deal odds and the 55%/yr cost of cash are documented simulation assumptions (<code>analytics/bullwhip.py</code>) — replace them with your ERP's PO history to get the real numbers.</p>
+    </div>
+  </section>
+
+  <section id="plan">
+    <div class="section-head">
+      <h2>The 12-week plan at a glance</h2>
+      <div class="section-note">Forecast, capacity-constrained plan and the first-order service and cost KPIs.</div>
+    </div>
+    <div class="kpi-row" id="kpiRow" style="margin-bottom:0"></div>
+  </section>
 
   <section>
     <div class="section-head">
@@ -247,10 +383,7 @@
       <div class="section-note">Bars: units. Line: fill rate. Red bars mark the weeks where demand outruns what the plant can actually make.</div>
     </div>
     <div class="panel"><div class="chart-box tall"><canvas id="weeklyChart"></canvas></div></div>
-    <p class="story">Every ordinary week, the plan meets <b>100%</b> of forecast. The two weeks before
-      Nowruz are different: forecast jumps to <b>55,610</b> and <b>54,061</b> units while the plant's
-      real capacity holds — fill rate drops to <b>88.5%</b> and <b>91.0%</b>, worth
-      <b>~690M IRR</b> in unmet demand across the fortnight.</p>
+    <p class="story" id="story1"></p>
   </section>
 
   <section>
@@ -263,9 +396,7 @@
           <p class="panel-title" id="lineChartTitle">Bottleneck line — weekly output</p>
           <div class="chart-box"><canvas id="lineChart"></canvas></div>
         </div>
-        <p class="story">All five lines forecast fine except one: the <b>Traditional Kolucheh Line</b>.
-          Its capacity (tuned to a realistic hand-folded-pastry rate) simply can't clear both peak
-          weeks at once.</p>
+        <p class="story" id="story2"></p>
       </div>
       <div>
         <div class="section-head">
@@ -275,9 +406,7 @@
           <p class="panel-title">Revenue lost to unmet demand, by SKU</p>
           <div class="chart-box"><canvas id="unmetChart"></canvas></div>
         </div>
-        <p class="story">The LP's call: fully serve the higher-margin Nowruz specialty items first.
-          <b>Cardamom</b> and <b>Plain Butter Kolucheh</b> — the two lowest-priced varieties on the
-          line — absorb the entire shortfall instead.</p>
+        <p class="story" id="story3"></p>
       </div>
     </div>
   </section>
@@ -295,6 +424,48 @@
     </div>
   </section>
 
+  <section id="linesDeep">
+    <div class="section-head">
+      <h2>Production lines in depth</h2>
+      <div class="section-note">Execution quality from the two-year production log, plus how hard the plan pushes each line.</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="lnKpis"></div>
+    <div class="two-col even">
+      <div class="panel"><p class="panel-title">Where each line loses output (share of scheduled capacity)</p><div class="chart-box"><canvas id="lossChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">Monthly OEE by line</p><div class="chart-box"><canvas id="oeeTrendChart"></canvas></div></div>
+    </div>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">Planned utilization by week — the tighter of machine hours and labor hours</p>
+      <table class="heat" id="heatTable"></table>
+    </div>
+    <p class="story" id="lnStory"></p>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">Line fact sheet</p>
+      <table class="compact"><thead><tr><th>Line</th><th class="num">Operators</th><th class="num">OEE</th><th class="num">Scrap</th><th class="num">Downtime / day</th><th class="num">Changeover loss</th><th class="num">Attendance</th><th class="num">Avg plan load</th></tr></thead><tbody id="lnTable"></tbody></table>
+    </div>
+    <div class="two-col even" style="margin-top:20px">
+      <div class="panel"><p class="panel-title">Workforce attendance by month (present ÷ scheduled)</p><div class="chart-box"><canvas id="attChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">Attendance by shift</p><div class="chart-box"><canvas id="shiftChart"></canvas></div></div>
+    </div>
+  </section>
+
+  <section id="waste">
+    <div class="section-head">
+      <h2>Waste: where the plant scraps product</h2>
+      <div class="section-note">Scrap costed at material plus direct labor per unit, from the two-year production log.</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="wasteKpis"></div>
+    <div class="two-col even">
+      <div class="panel"><p class="panel-title">Scrap cost per year (bars) and scrap rate (line), by line</p><div class="chart-box"><canvas id="wasteLineChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">Monthly scrap cost (bars) and scrap rate (line)</p><div class="chart-box"><canvas id="wasteTrendChart"></canvas></div></div>
+    </div>
+    <div class="two-col even" style="margin-top:20px">
+      <div class="panel"><p class="panel-title">Top 10 products by scrap cost, per year</p><div class="chart-box" style="height:380px"><canvas id="wasteTopChart"></canvas></div></div>
+      <div class="panel table-scroll"><p class="panel-title">What reaching the scrap target is worth</p>
+        <table class="compact"><thead><tr><th>Product</th><th class="num">Scrap rate</th><th class="num">Cost / yr</th><th class="num">Saving / yr</th></tr></thead><tbody id="wasteTable"></tbody></table></div>
+    </div>
+  </section>
+
   <section>
     <div class="section-head">
       <h2>Materials at risk, and what to reorder</h2>
@@ -308,18 +479,41 @@
       <div class="panel table-scroll">
         <p class="panel-title">Largest recommended reorders over the horizon · <span style="font-weight:400">Lead: supplier lead time · Short: weeks below safety stock</span></p>
         <table class="compact">
-          <thead><tr><th>Material</th><th class="num">Order qty</th><th class="num">Value (IRR)</th><th class="num" title="Supplier lead time">Lead</th><th class="num" title="Weeks below the safety-stock target">Short</th></tr></thead>
+          <thead><tr><th>Material</th><th class="num">Order qty</th><th class="num">Value (USD)</th><th class="num" title="Supplier lead time">Lead</th><th class="num" title="Weeks below the safety-stock target">Short</th></tr></thead>
           <tbody id="reorderTable"></tbody>
         </table>
       </div>
     </div>
   </section>
 
-  <section>
+  <section id="whDeep">
+    <div class="section-head">
+      <h2>The warehouse in depth</h2>
+      <div class="section-note">Raw-material stock, cover against the safety-stock target, and inbound reliability — from the two-year inventory ledger.</div>
+    </div>
+    <div class="kpi-row bw-kpis" id="whKpis"></div>
+    <div class="two-col even">
+      <div class="panel"><p class="panel-title">Days of cover now vs safety-stock target (red = below target, amber = excess)</p><div class="chart-box" style="height:470px"><canvas id="coverChart"></canvas></div></div>
+      <div class="panel"><p class="panel-title">ABC: a few materials carry the consumption value</p><div class="chart-box" style="height:470px"><canvas id="paretoChart"></canvas></div></div>
+    </div>
+    <div class="panel" style="margin-top:20px"><p class="panel-title">Raw-material stock value by month</p><div class="chart-box"><canvas id="stockValueChart"></canvas></div></div>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">Material fact sheet</p>
+      <table class="compact"><thead><tr><th>Material</th><th>Class</th><th class="num">On hand</th><th class="num">Value</th><th class="num">Cover</th><th class="num">Safety</th><th class="num">Lead</th><th class="num">Turns / yr</th><th class="num">Time below safety</th><th>Status</th></tr></thead><tbody id="whTable"></tbody></table>
+    </div>
+    <div class="panel table-scroll" style="margin-top:20px">
+      <p class="panel-title">Inbound: supplier reliability</p>
+      <table class="compact"><thead><tr><th>Supplier</th><th class="num">Share of spend</th><th class="num">Orders</th><th class="num">On time</th><th class="num">Avg delay</th><th class="num">Payment terms</th></tr></thead><tbody id="supTable"></tbody></table>
+    </div>
+    <p class="story" style="font-size:12.5px; color:var(--text-faint)">The ledger above comes from the base simulation, where each order is sized to the calculated need. The bullwhip section at the top shows the extra stock an over-ordering chain adds on top of it.</p>
+  </section>
+
+  <section id="cash">
     <div class="section-head">
       <h2>Cash conversion cycle</h2>
       <div class="section-note">Trailing 90-day DIO + DSO − DPO, weekly. Steady-state weeks only (see docs/DATA_DICTIONARY.md).</div>
     </div>
+    <div class="kpi-row bw-kpis" id="wcKpis"></div>
     <div class="two-col">
       <div class="panel"><div class="chart-box"><canvas id="cccChart"></canvas></div></div>
       <div class="panel ccc-side">
@@ -344,7 +538,7 @@
       plans around are what move this number.</p>
   </section>
 
-  <section>
+  <section id="accuracy">
     <div class="section-head">
       <h2>Forecast accuracy, backtested</h2>
       <div class="section-note">8-week rolling backtest, WAPE per SKU. Overall: <b style="color:var(--accent-ink)" id="wapeNote">—</b>.</div>
@@ -358,8 +552,8 @@
   </section>
 
   <footer>
-    <span>Synthetic dataset · 12 tables · 183,746 rows · seeded, reproducible</span>
-    <span>Full pipeline &amp; source: <a href="https://github.com/Milad-Shabani/food-manufacturing-sop-planning-engine">github.com/Milad-Shabani/food-manufacturing-sop-planning-engine</a></span>
+    <span>Synthetic dataset · 12 tables · 185,274 rows · seeded, reproducible</span>
+    <span>Full pipeline &amp; source: <a href="https://github.com/Milad-Shabani/Food-manufacturing-sop-planning-engine">github.com/Milad-Shabani/Food-manufacturing-sop-planning-engine</a></span>
   </footer>
 
 </div>
@@ -368,28 +562,207 @@
 const D = DASHBOARD_DATA;
 const K = D.kpi;
 const fmt = n => new Intl.NumberFormat('en-US').format(Math.round(n));
-const fmtM = n => (n/1e6).toFixed(0) + 'M';
-const fmtShort = n => n >= 1e9 ? (n/1e9).toFixed(1) + 'B' : fmtM(n);
-const fmtIRR = n => fmtShort(n) + ' IRR';
+const fmtUSD = n => { const a = Math.abs(n), g = n < 0 ? '−' : '';
+  return g + '$' + (a >= 1e9 ? (a/1e9).toFixed(1) + 'B' : a >= 1e6 ? (a/1e6).toFixed(1) + 'M' : a >= 1e3 ? (a/1e3).toFixed(a >= 1e5 ? 0 : 1) + 'K' : Math.round(a)); };
+const fmtM = fmtUSD, fmtShort = fmtUSD, fmtTick = fmtUSD;
 const pct = x => (x*100).toFixed(1) + '%';
-const weekLabel = s => new Date(s).toLocaleDateString('en-US', {month:'short', day:'numeric'});
+const weekLabel = s => new Date(s).toLocaleDateString('en-US', {month:'short', day:'numeric', timeZone:'UTC'});
+const tn = s => s, tu = s => s;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 // KPI strip and tables render first and don't depend on Chart.js, so the
 // page stays useful even if the charting script fails to load.
+
+const B = D.bw, BK = B.kpi, BS = B.stack;
+const f1 = x => x.toFixed(1);
+const T = {
+  arrow:'→',
+  net: n => (n<0?'−':'+') + fmtUSD(Math.abs(n)),
+  stages:['Warehouse need','+ Supervisor tolerance','+ Manager tolerance','+ Procurement pad','Purchased (with deals)','Managed policy'],
+  layers:['Supervisor + manager','Procurement pad','Supplier deal'],
+  wk:s=>new Date(s).toLocaleDateString('en-US',{month:'short',year:'2-digit',timeZone:'UTC'}),
+  excess:'Excess stock value (USD)', today:'Today', managed:'Managed policy', held:d=>fmt(d)+' d', none:'—',
+  h1:a=>'The cash problem starts at the purchase order: a 100-unit need becomes a '+fmt(a)+'-unit buy.',
+  kpis:(k,s)=>[
+    {num:k.amplification.toFixed(2)+'×', label:'Purchase ÷ real need', sub:'average PO · deal POs '+f1(k.deal_po_amplification)+'×', tone:'risk'},
+    {num:fmtUSD(k.excess_value), label:'Stock bought beyond need', sub:pct(k.excess_value/k.purchase_value)+' of purchase value', tone:'risk'},
+    {num:fmtUSD(k.avg_tied), label:'Avg cash tied in excess stock', sub:'peak '+fmtUSD(k.peak_tied), tone:'risk'},
+    {num:fmtUSD(k.holding_cost), label:'Capital cost of that stock', sub:'at 55% a year', tone:'risk'},
+    {num:pct(k.overbuy20_pct), label:'POs over-bought by >20%', sub:fmt(k.n_pos)+' purchase orders', tone:'risk'},
+    {num:pct(k.deals_positive_pct), label:'Supplier deals that pay off', sub:'net '+T.net(k.deal_net_total)+' over '+fmt(k.n_deals)+' deals'},
+    {num:fmtUSD(k.freed_cash), label:'Cash freed by managed policy', sub:'−'+pct(k.freed_cash/k.avg_tied)+' tied-up cash', tone:'good'},
+    {num:pct(k.avg_tolerance_managed)+' vs '+pct(k.stack_tolerance), label:'One tolerance vs the stack', sub:'managed vs today, per PO', tone:'good'},
+  ],
+  story:(k,s,L)=>'A purchase order starts at <b>100</b> units of real need. The supervisor’s tolerance makes it <b>'+f1(s.supervisor)+'</b>, the manager’s <b>'+f1(s.manager)+'</b>, procurement’s own pad <b>'+f1(s.procurement)+'</b> — and a supplier offer pushes deal purchases to <b>'+f1(k.deal_po_amplification*100)+'</b>. Across '+fmt(k.n_pos)+' POs that is <b>'+fmtUSD(k.excess_value)+'</b> of stock bought beyond need, with <b>'+fmtUSD(k.avg_tied)+'</b> sitting idle on average. The supplier deals themselves mostly pay off ('+pct(k.deals_positive_pct)+' of them) — it is the stacked tolerances, which return nothing, that make up <b>'+pct(L)+'</b> of the excess.',
+  result:(k,s)=>'With this policy the same POs buy <b>'+f1(s.managed)+'</b> per 100 of need instead of <b>'+f1(s.purchase)+'</b>, and idle stock cash falls from '+fmtUSD(k.avg_tied)+' to '+fmtUSD(k.managed_avg_tied)+': <b>'+fmtUSD(k.freed_cash)+'</b> of cash freed, without touching service level.',
+  ops:k=>[
+    {num:f1(k.inventory_turns)+'×', label:'Raw-material turns', sub:'annual consumption ÷ avg stock'},
+    {num:f1(k.days_cover)+' d', label:'Days of raw-material cover', sub:'avg on-hand value ÷ daily use'},
+    {num:pct(k.on_time_pct), label:'Supplier on-time delivery', sub:'POs delivered by expected date', tone:k.on_time_pct<0.8?'risk':'good'},
+    {num:f1(k.avg_delay_days)+' d', label:'Avg delivery delay', sub:'across all POs'},
+  ],
+};
+
+const O = D.ops, WH = D.wh, OK = O.kpi, WK = WH.kpi;
+const mo = s => new Date(s + '-01').toLocaleDateString('en-US', {month:'short', year:'2-digit'});
+const T2 = {
+  dayU:'d', min:'min', hr:'h', sup:s=>s,
+  status:{below:'Below safety', ok:'OK', excess:'Excess'},
+  shift:s=>s, mo:mo, unitCover:d=>f1(d)+' d', hrs:d=>fmt(d)+' min',
+  loss:['Downtime (availability)','Speed / short runs (performance)','Scrap (quality)'],
+  lnKpis:(k)=>[
+    {num:pct(k.avg_oee), label:'Average line OEE', sub:'availability × performance × quality'},
+    {num:pct(k.scrap_pct), label:'Scrap rate', sub:'of units produced', tone:'good'},
+    {num:fmt(k.downtime_per_day)+' min', label:'Downtime per line-day', sub:'average across five lines'},
+    {num:pct(k.changeover_loss), label:'Time lost to changeovers', sub:'share of scheduled time', tone:'risk'},
+    {num:pct(k.attendance), label:'Workforce attendance', sub:fmt(k.operators)+' production operators'},
+    {num:pct(k.peak_util), label:'Peak planned load', sub:k.peak_line, tone:'risk'},
+  ],
+  lnStory:(k,O)=>{ const oth=O.lines.filter(l=>l.line_name!==k.peak_line); const a=oth.reduce((x,l)=>x+l.avg_util,0)/oth.length;
+    return '<b>'+k.peak_line+'</b> is the only line the plan actually fills — it hits '+pct(k.peak_util)+' of its tighter constraint in the two weeks before Nowruz. The other four lines run at '+pct(a)+' of their planned capacity on average, so more capacity elsewhere would not help. Whether to expand the bottleneck is a margin question — it earns the least per machine-hour (see the profitability table at the top). Measured OEE compares output with the schedule, not nameplate speed; the planning model’s '+pct(0.62)+' effective-capacity factor also covers changeovers and shared products.'; },
+  whKpis:(k)=>[
+    {num:fmtUSD(k.value_now), label:'Raw-material stock value', sub:'average '+fmtUSD(k.value_avg)},
+    {num:f1(k.avg_cover)+' d', label:'Average days of cover', sub:'weighted by consumption value'},
+    {num:f1(k.turns)+'×', label:'Stock turns per year', sub:'consumption ÷ average stock'},
+    {num:fmt(k.n_below)+' of '+fmt(k.n_materials), label:'Materials below safety cover', sub:fmt(k.n_excess)+' materials in excess', tone:'risk'},
+    {num:pct(k.a_share), label:'Value in class-A materials', sub:fmt(k.n_a)+' of '+fmt(k.n_materials)+' materials'},
+    {num:fmt(k.stockout_days), label:'Stock-out days in two years', sub:'material-days at or below zero', tone:k.stockout_days>0?'risk':'good'},
+  ],
+  cover:['Days of cover now','Safety-stock target (days)'], share:'Share of consumption value', cum:'Cumulative', stock:'Stock value',
+  att:'Attendance', heatTip:(l,w,u,b)=>l+' · '+w+': '+pct(u)+' ('+(b==='labor'?'labor':'machine')+' hours bind)',
+  heatHead:'Line',
+};
+
+const E = D.econ, EK = E.kpi, W = D.waste, WKP = W.kpi, LG = D.ledger;
+const avg12 = k => D.ccc.slice(-12).reduce((a, r) => a + r[k], 0) / 12;
+const DSO = avg12('dso'), DIO = avg12('dio'), DPO = avg12('dpo');
+const mDaily = EK.materials / 365;
+const AR = DSO * EK.cash_per_ccc_day, INVV = DIO * mDaily, AP = DPO * mDaily;
+const cashTotal = LG.filter(x => x.kind === 'cash').reduce((a, x) => a + x.value, 0);
+const annTotal = LG.filter(x => x.kind === 'annual').reduce((a, x) => a + x.value, 0);
+const T3 = {
+  kind:{cash:'one-off cash', annual:'per year'},
+  led:{inventory_cash:['Cash released from excess stock','Average cash tied in stock bought beyond need, removed by the managed purchasing policy (bullwhip section).'],
+       inventory_cost:['Capital cost of excess stock','Cost of cash (55% a year) on the stock the managed policy no longer buys.'],
+       scrap:['Scrap down to the target rate','Every product above the target scrap rate brought down to it, costed at material + direct labor.'],
+       bottleneck:['Nowruz shortfall on the bottleneck line','Gross margin on demand the bottleneck line cannot serve in the two peak weeks.'],
+       ccc_day:['Collect receivables 5 days faster','Five days of revenue released from receivables (revenue ÷ 365 × 5).']},
+  h1:(a,d)=>'Cash is tied up in two places: purchases run at '+fmt(a)+'% of real need, and customers pay after '+fmt(d)+' days.',
+  valKpis:()=>[
+    {num:fmtUSD(cashTotal), label:'One-off cash release', sub:'excess stock + faster collection', tone:'good'},
+    {num:fmtUSD(annTotal), label:'Recurring savings', sub:pct(annTotal/EK.revenue)+' of revenue, every year', tone:'good'},
+    {num:fmtUSD(EK.revenue), label:'Revenue, '+EK.year, sub:f1(EK.units/1e6)+'M units sold'},
+    {num:pct(EK.gross_margin), label:'Gross margin', sub:'raw materials are '+pct(EK.materials_pct)+' of revenue'},
+    {num:pct(EK.contribution_margin), label:'Contribution margin', sub:'after materials and payroll, before energy and overheads'},
+    {num:pct(EK.payroll_pct), label:'Payroll', sub:fmt(EK.employees)+' employees · '+fmtUSD(EK.revenue_per_employee)+' revenue each'},
+    {num:fmtUSD(EK.cash_per_ccc_day), label:'Cash in one day of CCC', sub:'revenue ÷ 365'},
+    {num:f1(DSO)+' d', label:'Customers pay after', sub:'receivables hold '+fmtUSD(AR), tone:'risk'},
+  ],
+  valStory:()=>{ const L=E.lines.slice().sort((a,b)=>a.per_machine_hour-b.per_machine_hour), lo=L[0], hi=L[L.length-1], top=LG.slice().sort((a,b)=>b.value-a.value)[0], bn=LG.find(x=>x.key==='bottleneck');
+    return 'The engine finds <b>'+fmtUSD(cashTotal)+'</b> of one-off cash and <b>'+fmtUSD(annTotal)+'</b> a year in recurring savings. The largest single lever is <b>'+T3.led[top.key][0].toLowerCase()+'</b> ('+fmtUSD(top.value)+'). The Nowruz bottleneck is real but small — about <b>'+fmtUSD(bn.value)+'</b> of margin a year — and <b>'+tn(lo.line_name)+'</b> earns the least contribution per machine-hour (<b>'+fmtUSD(lo.per_machine_hour)+'</b>, against <b>'+fmtUSD(hi.per_machine_hour)+'</b> on '+tn(hi.line_name)+'), so extra capacity there is not where the money is.'; },
+  wcKpis:()=>[
+    {num:fmtUSD(AR), label:'Receivables outstanding', sub:'customers pay after '+f1(DSO)+' days', tone:'risk'},
+    {num:fmtUSD(INVV), label:'Raw-material stock', sub:f1(DIO)+' days of stock'},
+    {num:fmtUSD(AP), label:'Supplier credit', sub:'suppliers paid after '+f1(DPO)+' days', tone:'good'},
+    {num:fmtUSD(AR+INVV-AP), label:'Net cash tied up', sub:'receivables + stock − supplier credit', tone:'risk'},
+  ],
+  wasteKpis:()=>[
+    {num:fmtUSD(WKP.cost_year), label:'Scrap cost per year', sub:fmt(WKP.units_year)+' units scrapped', tone:'risk'},
+    {num:pct(WKP.rate), label:'Scrap rate', sub:'of units started'},
+    {num:pct(WKP.pct_revenue), label:'Scrap as share of revenue', sub:'material + direct labor'},
+    {num:fmtUSD(WKP.save_year), label:'Saving at the '+pct(WKP.target)+' target', sub:fmt(WKP.n_above_target)+' of '+fmt(WKP.n_products)+' products are above it', tone:'good'},
+    {num:tn(WKP.worst_line), label:'Highest-scrap line', sub:'by scrap rate', tone:'risk'},
+    {num:pct(OK.changeover_loss), label:'Time lost to changeovers', sub:'waste of scheduled time'},
+  ],
+  waste:{cost:'Scrap cost / year', rate:'Scrap rate', save:'Saving at target', cost2:'Cost / year'},
+  rev:'Revenue',
+  story1:()=>{ const clean=D.weekly.filter(w=>w.fill_rate>=0.9999).length;
+    return 'Across the '+fmt(K.n_weeks)+'-week horizon the plan covers <b>'+pct(K.total_allocated/K.total_forecast)+'</b> of forecast demand — but the shortfall is concentrated: <b>'+fmt(K.total_unmet)+'</b> units (<b>'+fmtUSD(K.total_revenue_lost)+'</b> of revenue) go unserved in the weeks before Nowruz, when the fill rate dips to <b>'+pct(K.min_fill_rate)+'</b> (week of '+weekLabel(K.min_fill_week)+'). '+(clean===K.n_weeks-K.weeks_short?'In every other week the plan serves <b>100%</b> of forecast.':''); },
+  story2:()=>'Every line forecasts and plans cleanly except one: <b>'+tn(D.l3[0].line_name)+'</b>. Its capacity, tuned to a realistic hand-folded rate, simply can’t clear both peak weeks at once.',
+  story3:()=>'The LP’s call: fully serve the higher-margin items first. <b>'+D.top_unmet.map(p=>tn(p.product_name)).join('</b> and <b>')+'</b> — the lowest-priced varieties on the line — absorb the shortfall instead.',
+};
 const kpis = [
   {num: fmt(K.total_forecast), label: 'Units forecast', sub: K.n_weeks + '-week horizon, ' + K.n_products + ' SKUs'},
   {num: fmt(K.total_allocated), label: 'Units the plan can produce', sub: pct(K.total_allocated / K.total_forecast) + ' of forecast'},
-  {num: fmtIRR(K.total_revenue_planned), label: 'Revenue in the plan', sub: 'planned output at list price', tone: 'good'},
-  {num: fmtIRR(K.total_revenue_lost), label: 'Revenue at risk', sub: fmt(K.total_unmet) + ' units the plant can’t make', tone: K.total_revenue_lost > 0 ? 'risk' : 'good'},
+  {num: fmtUSD(K.total_revenue_planned), label: 'Revenue in the plan', sub: 'planned output at list price', tone: 'good'},
+  {num: fmtUSD(K.total_revenue_lost), label: 'Revenue at risk', sub: fmt(K.total_unmet) + ' units the plant can’t make', tone: K.total_revenue_lost > 0 ? 'risk' : 'good'},
   {num: pct(K.min_fill_rate), label: 'Lowest weekly fill rate', sub: 'week of ' + weekLabel(K.min_fill_week), tone: K.min_fill_rate < 0.95 ? 'risk' : 'good'},
   {num: K.weeks_short + ' of ' + K.n_weeks, label: 'Weeks short of demand', sub: 'all other weeks fully served', tone: K.weeks_short > 0 ? 'risk' : 'good'},
   {num: pct(D.overall_wape), label: 'Forecast error (WAPE)', sub: '8-week rolling backtest'},
-  {num: fmtIRR(K.purchase_value), label: 'Material reorders', sub: K.materials_to_reorder + ' raw materials to reorder'},
+  {num: fmtUSD(K.purchase_value), label: 'Material reorders', sub: K.materials_to_reorder + ' raw materials to reorder'},
+  ...T.ops(BK),
 ];
 document.getElementById('kpiRow').innerHTML = kpis.map(k =>
   `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num">${k.num}</div><div class="sub">${k.sub}</div></div>`
 ).join('');
+
+
+// ---- Bullwhip section (renders before, and independent of, Chart.js) ----
+const bwLayerSum = B.layers.tolerance_layers + B.layers.procurement_pad + B.layers.deal_uplift;
+const bwStackShare = (B.layers.tolerance_layers + B.layers.procurement_pad) / bwLayerSum;
+document.getElementById('h1').textContent = T.h1(BS.purchase);
+document.getElementById('bwKpis').innerHTML = T.kpis(BK, BS).map(k =>
+  `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num" style="font-size:${k.num.length > 12 ? 28 : 40}px">${k.num}</div><div class="sub">${k.sub}</div></div>`).join('');
+document.getElementById('bwStory').innerHTML = T.story(BK, BS, bwStackShare);
+document.getElementById('bwResult').innerHTML = T.result(BK, BS);
+document.getElementById('tolAvg').textContent = pct(BK.avg_tolerance_managed);
+document.getElementById('tolStack').textContent = pct(BK.stack_tolerance);
+document.getElementById('bwTable').innerHTML = B.top_pos.map(p => `<tr>
+  <td class="nowrap">${esc(tn(p.material_name))}<br><span style="font-size:11px;color:var(--text-faint)">${esc(p.po_id)}</span></td>
+  <td class="num">${fmt(p.need)} ${T.arrow} ${fmt(p.purchase)} ${esc(tu(p.unit))}</td>
+  <td class="num">${fmtUSD(p.excess_value)}</td>
+  <td class="num">${p.deal ? T.net(p.deal_net) : T.none}</td></tr>`).join('');
+
+
+// ---- Line + warehouse deep dive (tables render without Chart.js) ----
+document.getElementById('lnKpis').innerHTML = T2.lnKpis({...OK, peak_line: tn(OK.peak_line)}).map(k =>
+  `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num" style="font-size:${k.num.length > 12 ? 28 : 40}px">${k.num}</div><div class="sub">${k.sub}</div></div>`).join('');
+document.getElementById('whKpis').innerHTML = T2.whKpis(WK).map(k =>
+  `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num" style="font-size:${k.num.length > 12 ? 28 : 40}px">${k.num}</div><div class="sub">${k.sub}</div></div>`).join('');
+document.getElementById('lnStory').innerHTML = T2.lnStory({...OK, peak_line: tn(OK.peak_line)}, {lines: O.lines.map(l => ({...l, line_name: tn(l.line_name)}))});
+document.getElementById('heatTable').innerHTML = '<thead><tr><th></th>' + O.weeks.map(w => `<th>${weekLabel(w)}</th>`).join('') + '</tr></thead><tbody>' +
+  O.heat.map(h => `<tr><td class="name">${esc(tn(h.line_name))}</td>` + h.util.map((u, i) =>
+    `<td title="${T2.heatTip(tn(h.line_name), weekLabel(O.weeks[i]), u, h.binding[i])}" style="background:rgba(29,95,168,${(0.07 + 0.78 * Math.min(u, 1)).toFixed(2)}); color:${u > 0.55 ? '#fff' : 'var(--text)'}; font-weight:${u >= 0.99 ? 700 : 500}">${(u * 100).toFixed(0) === '0' ? '0' : fmt(u * 100)}</td>`).join('') + '</tr>').join('') + '</tbody>';
+document.getElementById('lnTable').innerHTML = O.lines.map(l => `<tr>
+  <td class="nowrap"><b>${esc(tn(l.line_name))}</b><br><span style="font-size:11px;color:var(--text-faint)">${fmt(l.capacity)} / ${T2.hr} · ${l.shifts}×8 ${T2.hr}</span></td>
+  <td class="num">${fmt(l.headcount)}</td><td class="num">${pct(l.oee)}</td><td class="num">${pct(l.scrap_pct)}</td>
+  <td class="num">${fmt(l.downtime_per_day)} ${T2.min}</td><td class="num">${pct(l.changeover_loss)}</td><td class="num">${pct(l.attendance)}</td>
+  <td class="num"><span class="pill ${l.peak_util >= 0.95 ? 'tight' : 'good'}">${pct(l.avg_util)}</span></td></tr>`).join('');
+const stCls = {below:'tight', ok:'good', excess:'warn'};
+document.getElementById('whTable').innerHTML = WH.materials.map(m => `<tr>
+  <td class="nowrap">${esc(tn(m.material_name))}</td><td><span class="pill ${m.abc === 'A' ? 'tight' : m.abc === 'B' ? 'warn' : 'good'}">${m.abc}</span></td>
+  <td class="num">${fmt(m.on_hand)} ${esc(tu(m.unit))}</td><td class="num">${fmtUSD(m.value)}</td><td class="num">${T2.unitCover(m.days_cover)}</td>
+  <td class="num">${fmt(m.safety_days)} ${T2.dayU}</td><td class="num">${fmt(m.lead_days)} ${T2.dayU}</td><td class="num">${f1(m.turns)}</td>
+  <td class="num">${pct(m.below_pct)}</td><td><span class="pill ${stCls[m.status]}">${T2.status[m.status]}</span></td></tr>`).join('');
+document.getElementById('supTable').innerHTML = WH.suppliers.map(r => `<tr>
+  <td class="nowrap">${esc(T2.sup(r.supplier))}</td><td class="num">${pct(r.spend_share)}</td><td class="num">${fmt(r.n)}</td>
+  <td class="num"><span class="pill ${r.on_time < 0.75 ? 'tight' : 'good'}">${pct(r.on_time)}</span></td>
+  <td class="num">${f1(r.delay)} ${T2.dayU}</td><td class="num">${fmt(r.terms)} ${T2.dayU}</td></tr>`).join('');
+
+
+// ---- Value, waste, cash and story blocks ----
+const tile = k => `<div class="kpi ${k.tone || ''}"><div class="label">${k.label}</div><div class="num" style="font-size:${k.num.length > 12 ? 28 : 40}px">${k.num}</div><div class="sub">${k.sub}</div></div>`;
+document.getElementById('h1').textContent = T3.h1(BS.purchase, DSO);
+document.getElementById('valKpis').innerHTML = T3.valKpis().map(tile).join('');
+document.getElementById('valStory').innerHTML = T3.valStory();
+document.getElementById('wcKpis').innerHTML = T3.wcKpis().map(tile).join('');
+document.getElementById('wasteKpis').innerHTML = T3.wasteKpis().map(tile).join('');
+document.getElementById('story1').innerHTML = T3.story1();
+document.getElementById('story2').innerHTML = T3.story2();
+document.getElementById('story3').innerHTML = T3.story3();
+document.getElementById('ledgerTable').innerHTML = LG.slice().sort((a,b)=>b.value-a.value).map(x => `<tr><td class="nowrap"><b>${T3.led[x.key][0]}</b></td><td><span class="pill ${x.kind === 'cash' ? 'good' : 'warn'}">${T3.kind[x.kind]}</span></td><td class="num">${fmtUSD(x.value)}</td><td style="white-space:normal; min-width:260px; color:var(--text-dim)">${T3.led[x.key][1]}</td></tr>`).join('');
+document.getElementById('profitTable').innerHTML = E.lines.map(l => `<tr><td class="nowrap"><b>${esc(tn(l.line_name))}</b></td><td class="num">${fmtUSD(l.revenue)}</td><td class="num">${fmtUSD(l.materials)}</td><td class="num">${fmtUSD(l.labor)}</td><td class="num">${fmtUSD(l.contribution)}</td><td class="num"><span class="pill ${l.margin < 0.3 ? 'tight' : 'good'}">${pct(l.margin)}</span></td><td class="num">${fmtUSD(l.per_machine_hour)}</td></tr>`).join('');
+document.getElementById('wasteTable').innerHTML = W.top_products.map(p => `<tr><td class="nowrap">${esc(tn(p.product_name))}</td><td class="num">${pct(p.rate)}</td><td class="num">${fmtUSD(p.cost_year)}</td><td class="num">${fmtUSD(p.save_year)}</td></tr>`).join('');
+
+const T4 = {title:'Plant facts', sub:'Last full year ('+EK.year+'), fictional plant', foot:'Share = % of revenue. Every figure is computed from the engine’s own synthetic tables.',
+  rows:[['Revenue',EK.revenue,1,''],['Raw materials',EK.materials,EK.materials/EK.revenue,''],['Payroll',EK.payroll,EK.payroll/EK.revenue,''],['Contribution before overheads',EK.contribution,EK.contribution/EK.revenue,'sep'],
+        ['Scrap (inside the lines above)',WKP.cost_year,WKP.cost_year/EK.revenue,'dim'],['Excess stock, average cash tied',BK.avg_tied,BK.avg_tied/EK.revenue,'dim'],['Receivables outstanding',AR,AR/EK.revenue,'dim'],['Opportunity found, per year',annTotal,annTotal/EK.revenue,'hl']]};
+document.getElementById('facts').innerHTML = '<h3>' + T4.title + '</h3><div class="sub">' + T4.sub + '</div>' +
+  T4.rows.map((r, i) => `<div class="row ${r[3]}" style="--i:${i}"><span>${r[0]}</span><span class="v">${fmtUSD(r[1])}</span><span class="s">${pct(r[2])}</span></div>`).join('') + '<p class="foot">' + T4.foot + '</p>';
+(() => { const links = [...document.querySelectorAll('#nav a')], map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { links.forEach(l => l.classList.remove('active')); const a = map.get(e.target.id); if (a) a.classList.add('active'); } }), {rootMargin:'-20% 0px -70% 0px'});
+  map.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); }); })();
 
 // Line scorecard
 document.getElementById('lineTable').innerHTML = D.lines.map(l => {
@@ -400,8 +773,8 @@ document.getElementById('lineTable').innerHTML = D.lines.map(l => {
     <td class="num">${fmt(l.allocated_units)}</td>
     <td><span class="bar ${tight ? 'tight' : ''}"><i style="width:${(l.fill_rate*100).toFixed(1)}%"></i></span><span class="pill ${tight ? 'tight' : 'good'}">${pct(l.fill_rate)}</span></td>
     <td class="num">${l.unmet_units ? fmt(l.unmet_units) : '—'}</td>
-    <td class="num">${fmtIRR(l.revenue_planned)}</td>
-    <td class="num">${l.revenue_lost ? fmtIRR(l.revenue_lost) : '—'}</td>
+    <td class="num">${fmtUSD(l.revenue_planned)}</td>
+    <td class="num">${l.revenue_lost ? fmtUSD(l.revenue_lost) : '—'}</td>
   </tr>`;
 }).join('');
 
@@ -436,13 +809,13 @@ if (D.l3.length) {
 
 function renderCharts(){
 
-const GRID = '#F3EAE3';
-Chart.defaults.color = '#6A4B3C';
-Chart.defaults.font.family = "'IBM Plex Sans', system-ui, sans-serif";
+const GRID = '#E9EEF3';
+Chart.defaults.color = '#42556A';
+Chart.defaults.font.family = "'Public Sans', system-ui, sans-serif";
 Chart.defaults.font.size = 12;
-Chart.defaults.borderColor = '#EEE2D9';
+Chart.defaults.borderColor = '#DCE3EA';
 Chart.defaults.maintainAspectRatio = false;
-Chart.defaults.plugins.tooltip.backgroundColor = '#2B160D';
+Chart.defaults.plugins.tooltip.backgroundColor = '#12202E';
 Chart.defaults.plugins.tooltip.padding = 10;
 const legend = {position:'top', align:'end', labels:{boxWidth:10, boxHeight:10, usePointStyle:false}};
 
@@ -452,9 +825,9 @@ new Chart(document.getElementById('weeklyChart'), {
   data: {
     labels: D.weekly.map(w => weekLabel(w.week_start)),
     datasets: [
-      {type:'bar', label:'Forecast', data: D.weekly.map(w=>w.forecast_units), backgroundColor:'#EBD8CB', borderRadius:4, order:2},
-      {type:'bar', label:'Planned', data: D.weekly.map(w=>w.allocated_units), backgroundColor: D.weekly.map(w=> w.fill_rate<1 ? '#D62839' : '#E0531F'), borderRadius:4, order:2},
-      {type:'line', label:'Fill rate', data: D.weekly.map(w=>w.fill_rate*100), yAxisID:'y1', borderColor:'#2B160D', backgroundColor:'#2B160D', tension:0.25, pointRadius:3, borderWidth:2, order:1},
+      {type:'bar', label:'Forecast', data: D.weekly.map(w=>w.forecast_units), backgroundColor:'#C9D3DD', borderRadius:4, order:2},
+      {type:'bar', label:'Planned', data: D.weekly.map(w=>w.allocated_units), backgroundColor: D.weekly.map(w=> w.fill_rate<1 ? '#D62839' : '#1D5FA8'), borderRadius:4, order:2},
+      {type:'line', label:'Fill rate', data: D.weekly.map(w=>w.fill_rate*100), yAxisID:'y1', borderColor:'#12202E', backgroundColor:'#12202E', tension:0.25, pointRadius:3, borderWidth:2, order:1},
     ]
   },
   options: {
@@ -474,7 +847,7 @@ new Chart(document.getElementById('lineChart'), {
   data:{
     labels: D.l3.map(w=>weekLabel(w.week_start)),
     datasets:[
-      {label:'Planned', data:D.l3.map(w=>w.allocated_units), backgroundColor:'#E0531F', borderRadius:3, stack:'s'},
+      {label:'Planned', data:D.l3.map(w=>w.allocated_units), backgroundColor:'#1D5FA8', borderRadius:3, stack:'s'},
       {label:'Unmet', data:D.l3.map(w=>w.unmet_units), backgroundColor:'#D62839', borderRadius:3, stack:'s'},
     ]
   },
@@ -490,12 +863,12 @@ new Chart(document.getElementById('unmetChart'), {
   type:'bar',
   data:{
     labels: D.top_unmet.map(p=>p.product_name),
-    datasets:[{label:'Revenue lost (IRR)', data:D.top_unmet.map(p=>p.revenue_lost), backgroundColor:'#D62839', borderRadius:4, maxBarThickness:56}]
+    datasets:[{label:'Revenue lost (USD)', data:D.top_unmet.map(p=>p.revenue_lost), backgroundColor:'#D62839', borderRadius:4, maxBarThickness:56}]
   },
   options:{
     indexAxis:'y',
-    plugins:{legend:{display:false}, tooltip:{callbacks:{label:c => fmtIRR(c.parsed.x)}}},
-    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtM(v)}}, y:{grid:{display:false}}}
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:c => fmtUSD(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y:{grid:{display:false}}}
   }
 });
 
@@ -504,7 +877,7 @@ new Chart(document.getElementById('materialChart'), {
   type:'bar',
   data:{
     labels: D.weekly.map(w=>weekLabel(w.week_start)),
-    datasets:[{label:'Materials below safety stock', data:D.weekly.map(w=>w.materials_below_safety_stock), backgroundColor:'#F2994A', borderRadius:3}]
+    datasets:[{label:'Materials below safety stock', data:D.weekly.map(w=>w.materials_below_safety_stock), backgroundColor:'#F4B400', borderRadius:3}]
   },
   options:{
     plugins:{legend:{display:false}},
@@ -520,10 +893,10 @@ if (D.ccc && D.ccc.length) {
     data:{
       labels: D.ccc.map(w=>weekLabel(w.week_start)),
       datasets:[
-        {label:'DSO', data:D.ccc.map(w=>w.dso), borderColor:'#F2994A', backgroundColor:'#F2994A', tension:0.3, pointRadius:0, borderWidth:1.5},
-        {label:'DPO', data:D.ccc.map(w=>w.dpo), borderColor:'#5F7C4A', backgroundColor:'#5F7C4A', tension:0.3, pointRadius:0, borderWidth:1.5},
-        {label:'DIO', data:D.ccc.map(w=>w.dio), borderColor:'#9A7A69', backgroundColor:'#9A7A69', tension:0.3, pointRadius:0, borderWidth:1.5},
-        {label:'CCC', data:D.ccc.map(w=>w.ccc), borderColor:'#E0531F', backgroundColor:'#E0531F', tension:0.3, pointRadius:0, borderWidth:3},
+        {label:'DSO', data:D.ccc.map(w=>w.dso), borderColor:'#F4B400', backgroundColor:'#F4B400', tension:0.3, pointRadius:0, borderWidth:1.5},
+        {label:'DPO', data:D.ccc.map(w=>w.dpo), borderColor:'#2F8F5B', backgroundColor:'#2F8F5B', tension:0.3, pointRadius:0, borderWidth:1.5},
+        {label:'DIO', data:D.ccc.map(w=>w.dio), borderColor:'#6B7C8F', backgroundColor:'#6B7C8F', tension:0.3, pointRadius:0, borderWidth:1.5},
+        {label:'CCC', data:D.ccc.map(w=>w.ccc), borderColor:'#1D5FA8', backgroundColor:'#1D5FA8', tension:0.3, pointRadius:0, borderWidth:3},
       ]
     },
     options:{
@@ -533,6 +906,132 @@ if (D.ccc && D.ccc.length) {
     }
   });
 }
+
+
+// ---- Bullwhip charts ----
+new Chart(document.getElementById('stackChart'), {
+  type:'bar',
+  data:{labels:T.stages, datasets:[{label:'index', data:[BS.need,BS.supervisor,BS.manager,BS.procurement,BS.purchase,BS.managed],
+    backgroundColor:['#C9D3DD','#F4B400','#1D5FA8','#12497F','#D62839','#2F8F5B'], borderRadius:4, maxBarThickness:56}]},
+  options:{plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>f1(c.parsed.y)}}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmt(v)}}, x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:40, minRotation:0, font:{size:11}}}}}
+});
+new Chart(document.getElementById('layerChart'), {
+  type:'bar',
+  data:{labels:T.layers, datasets:[{label:T.excess, data:[B.layers.tolerance_layers,B.layers.procurement_pad,B.layers.deal_uplift],
+    backgroundColor:['#1D5FA8','#12497F','#D62839'], borderRadius:4, maxBarThickness:48}]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>fmtUSD(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y:{grid:{display:false}, ticks:{font:{size:11}}}}}
+});
+new Chart(document.getElementById('tiedChart'), {
+  type:'line',
+  data:{labels:B.timeline.map(w=>T.wk(w.week)), datasets:[
+    {label:T.today, data:B.timeline.map(w=>w.actual), borderColor:'#D62839', backgroundColor:'rgba(214,40,57,0.12)', fill:true, tension:0.25, pointRadius:0, borderWidth:2},
+    {label:T.managed, data:B.timeline.map(w=>w.managed), borderColor:'#2F8F5B', backgroundColor:'rgba(47,143,91,0.14)', fill:true, tension:0.25, pointRadius:0, borderWidth:2}]},
+  options:{interaction:{mode:'index', intersect:false}, plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtUSD(c.parsed.y)}}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}}
+});
+new Chart(document.getElementById('matExcessChart'), {
+  type:'bar',
+  data:{labels:B.by_material.map(m=>tn(m.material_name)), datasets:[
+    {label:T.today, data:B.by_material.map(m=>m.actual), backgroundColor:'#D62839', borderRadius:3},
+    {label:T.managed, data:B.by_material.map(m=>m.managed), backgroundColor:'#2F8F5B', borderRadius:3}]},
+  options:{indexAxis:'y', plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtUSD(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y:{grid:{display:false}}}}
+});
+
+
+// ---- Line + warehouse charts ----
+const LC = ['#1D5FA8','#7B4FBF','#2BA39B','#F4B400','#8A97A6'];
+new Chart(document.getElementById('lossChart'), {
+  type:'bar',
+  data:{labels:O.lines.map(l=>tn(l.line_name)), datasets:[
+    {label:T2.loss[0], data:O.lines.map(l=>1-l.availability), backgroundColor:'#1D5FA8'},
+    {label:T2.loss[1], data:O.lines.map(l=>l.availability*(1-l.performance)), backgroundColor:'#F4B400'},
+    {label:T2.loss[2], data:O.lines.map(l=>l.availability*l.performance*(1-l.quality)), backgroundColor:'#D62839'}]},
+  options:{indexAxis:'y', plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+pct(c.parsed.x)}}},
+    scales:{x:{stacked:true, grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>pct(v)}}, y:{stacked:true, grid:{display:false}, ticks:{font:{size:11}}}}}
+});
+new Chart(document.getElementById('oeeTrendChart'), {
+  type:'line',
+  data:{labels:O.months.map(T2.mo), datasets:O.lines.map((l,i)=>({label:tn(l.line_name), data:O.oee_trend[l.line_name], borderColor:LC[i], backgroundColor:LC[i], tension:0.25, pointRadius:0, borderWidth:2}))},
+  options:{interaction:{mode:'index', intersect:false}, plugins:{legend:{...legend, labels:{...legend.labels, boxWidth:8, font:{size:10.5}}}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+pct(c.parsed.y)}}},
+    scales:{y:{grid:{color:GRID}, min:0.7, max:1, ticks:{callback:v=>pct(v)}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}}
+});
+new Chart(document.getElementById('attChart'), {
+  type:'line',
+  data:{labels:O.attendance_months.map(T2.mo), datasets:[{label:T2.att, data:O.attendance_trend, borderColor:'#2F8F5B', backgroundColor:'rgba(47,143,91,0.14)', fill:true, tension:0.25, pointRadius:0, borderWidth:2}]},
+  options:{plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>pct(c.parsed.y)}}}, scales:{y:{grid:{color:GRID}, min:0.8, max:1, ticks:{callback:v=>pct(v)}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}}
+});
+new Chart(document.getElementById('shiftChart'), {
+  type:'bar',
+  data:{labels:O.attendance_shift.map(x=>T2.shift(x.shift)), datasets:[{label:T2.att, data:O.attendance_shift.map(x=>x.attendance), backgroundColor:'#2F8F5B', borderRadius:4, maxBarThickness:70}]},
+  options:{plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>pct(c.parsed.y)}}}, scales:{y:{grid:{color:GRID}, min:0, max:1, ticks:{callback:v=>pct(v)}}, x:{grid:{display:false}}}}
+});
+const stCol = {below:'#D62839', ok:'#2F8F5B', excess:'#F4B400'};
+new Chart(document.getElementById('coverChart'), {
+  type:'bar',
+  data:{labels:WH.materials.map(m=>tn(m.material_name)), datasets:[
+    {label:T2.cover[0], data:WH.materials.map(m=>m.days_cover), backgroundColor:WH.materials.map(m=>stCol[m.status]), borderRadius:3},
+    {label:T2.cover[1], data:WH.materials.map(m=>m.safety_days), backgroundColor:'#C9D3DD', borderRadius:3}]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+f1(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmt(v)}}, y:{grid:{display:false}, ticks:{autoSkip:false, font:{size:11}}}}}
+});
+new Chart(document.getElementById('paretoChart'), {
+  type:'bar',
+  data:{labels:WH.pareto.map(p=>tn(p.material_name)), datasets:[
+    {type:'line', label:T2.cum, data:WH.pareto.map(p=>p.cum), borderColor:'#12202E', backgroundColor:'#12202E', yAxisID:'y1', pointRadius:3, borderWidth:2, tension:0},
+    {label:T2.share, data:WH.pareto.map(p=>p.share), backgroundColor:'#1D5FA8', borderRadius:3, yAxisID:'y'}]},
+  options:{plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+pct(c.parsed.y)}}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>pct(v)}}, y1:{position:'right', min:0, max:1, grid:{display:false}, ticks:{callback:v=>pct(v)}},
+      x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:60, minRotation:60, font:{size:10}}}}}
+});
+new Chart(document.getElementById('stockValueChart'), {
+  type:'line',
+  data:{labels:WH.value_trend.map(v=>T2.mo(v.month)), datasets:[{label:T2.stock, data:WH.value_trend.map(v=>v.value), borderColor:'#1D5FA8', backgroundColor:'rgba(29,95,168,0.12)', fill:true, tension:0.25, pointRadius:2, borderWidth:2}]},
+  options:{plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>fmtUSD(c.parsed.y)}}}, scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, x:{grid:{display:false}, ticks:{maxTicksLimit:12}}}}
+});
+
+
+// ---- Value / waste charts ----
+new Chart(document.getElementById('ledgerChart'), {
+  type:'bar',
+  data:{labels:LG.slice().sort((a,b)=>b.value-a.value).map(x=>T3.led[x.key][0]), datasets:[{label:'USD', data:LG.slice().sort((a,b)=>b.value-a.value).map(x=>x.value),
+    backgroundColor:LG.slice().sort((a,b)=>b.value-a.value).map(x=>x.kind==='cash'?'#2F8F5B':'#1D5FA8'), borderRadius:4, maxBarThickness:40}]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>fmtUSD(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y:{grid:{display:false}, ticks:{font:{size:11}}}}}
+});
+const RC = ['#1D5FA8','#7B4FBF','#2BA39B','#F4B400','#8A97A6'];
+new Chart(document.getElementById('revChart'), {
+  type:'bar',
+  data:{labels:E.months.map(T2.mo), datasets:E.lines.map((l,i)=>({label:tn(l.line_name), data:E.monthly_revenue[l.line_name], backgroundColor:RC[i]}))},
+  options:{plugins:{legend:{...legend, labels:{...legend.labels, boxWidth:8, font:{size:10.5}}}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtUSD(c.parsed.y)}}},
+    scales:{x:{stacked:true, grid:{display:false}}, y:{stacked:true, grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}}}
+});
+new Chart(document.getElementById('wasteLineChart'), {
+  type:'bar',
+  data:{labels:W.lines.map(l=>tn(l.line_name)), datasets:[
+    {type:'line', label:T3.waste.rate, data:W.lines.map(l=>l.rate), borderColor:'#12202E', backgroundColor:'#12202E', yAxisID:'y1', pointRadius:4, showLine:false},
+    {label:T3.waste.cost, data:W.lines.map(l=>l.cost_year), backgroundColor:'#D62839', borderRadius:4, maxBarThickness:48, yAxisID:'y'}]},
+  options:{plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.dataset.yAxisID==='y1'?pct(c.parsed.y):fmtUSD(c.parsed.y))}}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y1:{position:'right', min:0, grid:{display:false}, ticks:{callback:v=>pct(v)}}, x:{grid:{display:false}, ticks:{autoSkip:false, font:{size:10.5}, maxRotation:30}}}}
+});
+new Chart(document.getElementById('wasteTrendChart'), {
+  type:'bar',
+  data:{labels:W.months.map(T2.mo), datasets:[
+    {type:'line', label:T3.waste.rate, data:W.monthly_rate, borderColor:'#12202E', backgroundColor:'#12202E', yAxisID:'y1', pointRadius:0, borderWidth:2, tension:0.25},
+    {label:T3.waste.cost2, data:W.monthly_cost, backgroundColor:'#F4B400', borderRadius:2, yAxisID:'y'}]},
+  options:{plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.dataset.yAxisID==='y1'?pct(c.parsed.y):fmtUSD(c.parsed.y))}}},
+    scales:{y:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y1:{position:'right', min:0, grid:{display:false}, ticks:{callback:v=>pct(v)}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}}}}
+});
+new Chart(document.getElementById('wasteTopChart'), {
+  type:'bar',
+  data:{labels:W.top_products.map(p=>tn(p.product_name)), datasets:[
+    {label:T3.waste.cost, data:W.top_products.map(p=>p.cost_year), backgroundColor:'#D62839', borderRadius:3},
+    {label:T3.waste.save, data:W.top_products.map(p=>p.save_year), backgroundColor:'#2F8F5B', borderRadius:3}]},
+  options:{indexAxis:'y', plugins:{legend, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtUSD(c.parsed.x)}}},
+    scales:{x:{grid:{color:GRID}, beginAtZero:true, ticks:{callback:v=>fmtTick(v)}}, y:{grid:{display:false}, ticks:{autoSkip:false, font:{size:10.5}}}}}
+});
 
 } // end renderCharts
 
